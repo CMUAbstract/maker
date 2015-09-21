@@ -5,12 +5,19 @@ LIBMSP430_ROOT = $(TOOLCHAIN_ROOT)/bin
 DEVICE  = msp430fr5969
 PREFIX = $(TOOLCHAIN_ROOT)/bin/msp430-elf-
 CC      = $(PREFIX)gcc
+AS      = $(PREFIX)as
 GDB     = $(PREFIX)gdb
 
 SRC_DIR := ../src
 
-CFLAGS = \
+COMMONFLAGS = \
 	-mmcu=$(DEVICE) \
+
+ASFLAGS = \
+	$(COMMONFLAGS) \
+
+CFLAGS = \
+	$(COMMONFLAGS) \
 	-O1 \
 	-g \
 	-std=c99 \
@@ -30,6 +37,10 @@ all: $(EXEC)
 %.o: %.c
 	mkdir -p "./$(shell dirname $@)"
 	$(CC) -c -MD $(CFLAGS) $< -o $@
+
+%.o: %.S
+	mkdir -p "./$(shell dirname $@)"
+	$(AS) $(ASFLAGS) $< -o $@
 
 $(EXEC): $(OBJECTS)
 	$(CC) $(CFLAGS) $(LFLAGS) $^ $(LIBS) -o $(EXEC)
