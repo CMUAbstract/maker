@@ -42,8 +42,11 @@ all: $(EXEC)
 	mkdir -p "./$(shell dirname $@)"
 	$(AS) $(ASFLAGS) $< -o $@
 
-$(EXEC): $(OBJECTS)
+%.out: $(OBJECTS)
 	$(CC) $(CFLAGS) $(LFLAGS) $^ $(LIBS) -o $(EXEC)
+
+%.a: $(OBJECTS)
+	$(AR) rcs $@ $^
 
 clean:
 	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(EXEC)
