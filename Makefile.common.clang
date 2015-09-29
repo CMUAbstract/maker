@@ -1,0 +1,79 @@
+include ../../../Makefile.env
+
+LIBMSP430_ROOT = $(TOOLCHAIN_ROOT)/bin
+
+DEVICE  = msp430fr5969
+DEVICEDEF = __MSP430FR5969__
+PREFIX = $(CLANG_ROOT)/bin/
+CC      = $(PREFIX)clang
+LLC     = $(PREFIX)llc
+AS      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-as
+#LD      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-ld
+LD      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-gcc
+GDB     = $(TOOLCHAIN_ROOT)/bin/msp430-elf-gdb
+
+SRC_DIR := ../src
+
+#-mmcu=$(DEVICE) \
+
+CFLAGS = \
+	--target=msp430 \
+	-D$(DEVICEDEF) \
+	-nobuiltininc \
+	-nostdinc++ \
+	-isysroot /none \
+	-O1 \
+	-g \
+	-std=c99 \
+	-pedantic \
+	-Wall \
+	-I $(TOOLCHAIN_ROOT)/lib/gcc/msp430-elf/4.9.1/include \
+	-I $(TOOLCHAIN_ROOT)/msp430-elf/include \
+	-I $(TOOLCHAIN_ROOT)/include \
+	-I $(SRC_DIR) \
+
+LFLAGS = \
+	-T $(DEVICE).ld \
+	-L $(TOOLCHAIN_ROOT)/include \
+
+all: $(EXEC)
+
+-include $(OBJECTS:.o=.d)
+
+# disable implicit rule that for some reason overrides the chained rules below
+%.o : %.c
+%.o : %.S
+%.o : %.s
+%.out : %.o
+
+%.bc: %.c
+	mkdir -p "./$(shell dirname $@)"
+	$(CC) -emit-llvm -c -MD $(CFLAGS) $< -o $@
+
+%.S: %.bc
+	$(LLC) $< -o $@
+
+%.o: %.S
+	mkdir -p "./$(shell dirname $@)"
+	$(AS) $(ASFLAGS) $< -o $@
+
+#%.out: $(OBJECTS)
+#$(LD) $(LFLAGS) $^ $(LIBS) -o $(EXEC)
+
+%.out: $(OBJECTS)
+	$(LD) $(LFLAGS) $^ $(LIBS) -o $(EXEC)
+
+%.a: $(OBJECTS)
+	$(AR) rcs $@ $^
+
+# Do not remove these intermediates
+.PRECIOUS: %.bc %.S
+
+clean:
+	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(OBJECTS:.o=.bc) $(OBJECTS:.o=.S) $(EXEC)
+
+flash: $(EXEC)
+	LD_LIBRARY_PATH=$(LIBMSP430_ROOT) mspdebug tilib "prog $(EXEC)"
+
+debug: $(EXEC)
+	$(GDB) $(EXEC)
