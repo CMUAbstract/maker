@@ -8,6 +8,8 @@ CC      = $(PREFIX)gcc
 AS      = $(PREFIX)as
 GDB     = $(PREFIX)gdb
 
+VOLTAGE = 3300
+
 SRC_DIR := ../src
 
 COMMONFLAGS = \
@@ -52,7 +54,10 @@ clean:
 	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(EXEC)
 
 flash: $(EXEC)
-	LD_LIBRARY_PATH=$(LIBMSP430_ROOT) mspdebug tilib "prog $(EXEC)"
+	LD_LIBRARY_PATH=$(LIBMSP430_ROOT) mspdebug -v $(VOLTAGE) tilib "prog $(EXEC)"
+
+power:
+	LD_LIBRARY_PATH=$(LIBMSP430_ROOT) mspdebug -v $(VOLTAGE) tilib "exit"
 
 debug: $(EXEC)
 	$(GDB) $(EXEC)
