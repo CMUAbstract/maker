@@ -1,4 +1,6 @@
-include ../../../Makefile.env
+MAKER_ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+
+include $(MAKER_ROOT)/Makefile.env
 
 LIBMSP430_ROOT = $(TOOLCHAIN_ROOT)/bin
 
