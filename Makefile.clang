@@ -35,6 +35,7 @@ CFLAGS = \
 	-I $(SRC_DIR) \
 
 LFLAGS = \
+	-Wl,-Map=$(EXEC).map \
 	-T $(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
 
