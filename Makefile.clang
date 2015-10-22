@@ -56,6 +56,8 @@ all: $(EXEC)
 %.o : %.S
 %.o : %.s
 %.out : %.o
+%.out : %
+(%) : %
 
 %.bc: %.c
 	mkdir -p "./$(shell dirname $@)"
