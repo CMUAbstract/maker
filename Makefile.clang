@@ -33,6 +33,7 @@ CFLAGS = \
 	-std=c99 \
 	-pedantic \
 	-Wall \
+	-MD \
 	-I $(TOOLCHAIN_ROOT)/lib/gcc/msp430-elf/4.9.1/include \
 	-I $(TOOLCHAIN_ROOT)/msp430-elf/include \
 	-I $(TOOLCHAIN_ROOT)/include \
@@ -58,7 +59,7 @@ all: $(EXEC)
 
 %.bc: %.c
 	mkdir -p "./$(shell dirname $@)"
-	$(CC) -emit-llvm -c -MD $(CFLAGS) $< -o $@
+	$(CC) -emit-llvm -c $(CFLAGS) $< -o $@
 
 %.bc.a: $(OBJECTS:.o=.bc)
 	$(LLVM_LINK) -o $@ $< $(LLVM_LIBS)
