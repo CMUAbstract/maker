@@ -50,6 +50,7 @@ all: $(EXEC)
 -include $(OBJECTS:.o=.d)
 
 # disable implicit rule that for some reason overrides the chained rules below
+.SUFFIXES:
 %.o : %.c
 %.o : %.S
 %.o : %.s
@@ -65,15 +66,14 @@ all: $(EXEC)
 %.opt.bc.a : %.bc.a
 	$(OPT) $(OPT_FLAGS) -o $@ $<
 
-%.asm: %.opt.bc.a
+%.s: %.opt.bc.a
 	$(LLC) $(LLC_FLAGS) $< -o $@
-	mv $@ $(@:.asm=.s)
 
-%.out: %.asm
-	$(GCC) $(LFLAGS) -o $@ $(^:.asm=.s) $(LIBS)
+%.out: %.s
+	$(GCC) $(LFLAGS) -o $@ $^ $(LIBS)
 
-%.native.o: %.asm
-	$(GCC) -c $(LFLAGS) -o $@ $(^:.asm=.s)
+%.native.o: %.s
+	$(GCC) -c $(LFLAGS) -o $@ $^
 
 %.a: %.native.o
 	$(AR) rcs $@ $^
