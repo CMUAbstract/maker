@@ -11,9 +11,11 @@ CC      = $(PREFIX)clang
 LLC     = $(PREFIX)llc
 LLVM_LINK= $(PREFIX)/llvm-link
 OPT      = $(PREFIX)/opt
+
+GCC     = $(TOOLCHAIN_ROOT)/bin/msp430-elf-gcc
 AS      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-as
 #LD      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-ld
-LD      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-gcc
+LD      = $(GCC)
 GDB     = $(TOOLCHAIN_ROOT)/bin/msp430-elf-gdb
 
 SRC_DIR := ../src
@@ -57,30 +59,30 @@ all: $(EXEC)
 	mkdir -p "./$(shell dirname $@)"
 	$(CC) -emit-llvm -c -MD $(CFLAGS) $< -o $@
 
-%.opt.bc : %.bc
+%.bc.a: $(OBJECTS:.o=.bc)
+	$(LLVM_LINK) -o $@ $<
+
+%.opt.bc.a : %.bc.a
 	$(OPT) $(OPT_FLAGS) -o $@ $<
 
-%.S: %.opt.bc
+%.asm: %.opt.bc.a
 	$(LLC) $(LLC_FLAGS) $< -o $@
+	mv $@ $(@:.asm=.s)
 
-%.o: %.S
-	mkdir -p "./$(shell dirname $@)"
-	$(AS) $(ASFLAGS) $< -o $@
+%.out: %.asm
+	$(GCC) $(LFLAGS) -o $@ $(^:.asm=.s) $(LIBS)
 
-#%.out: $(OBJECTS)
-#$(LD) $(LFLAGS) $^ $(LIBS) -o $(EXEC)
+%.native.o: %.asm
+	$(GCC) -c $(LFLAGS) -o $@ $(^:.asm=.s)
 
-%.out: $(OBJECTS)
-	$(LD) $(LFLAGS) $^ $(LIBS) -o $(EXEC)
-
-%.a: $(OBJECTS)
+%.a: %.native.o
 	$(AR) rcs $@ $^
 
 # Do not remove these intermediates
 .PRECIOUS: %.bc %.S
 
 clean:
-	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(OBJECTS:.o=.bc) $(OBJECTS:.o=.S) $(EXEC)
+	rm -f *.o *.bc *.asm *.s *.map *.out *.a *.d
 
 flash: $(EXEC)
 	LD_LIBRARY_PATH=$(LIBMSP430_ROOT) mspdebug tilib "prog $(EXEC)"
