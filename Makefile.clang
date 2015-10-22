@@ -41,6 +41,8 @@ LFLAGS = \
 	-T $(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
 
+OPT_FLAGS ?= -disable-opt
+
 all: $(EXEC)
 
 -include $(OBJECTS:.o=.d)
@@ -55,8 +57,11 @@ all: $(EXEC)
 	mkdir -p "./$(shell dirname $@)"
 	$(CC) -emit-llvm -c -MD $(CFLAGS) $< -o $@
 
-%.S: %.bc
-	$(LLC) $< -o $@
+%.opt.bc : %.bc
+	$(OPT) $(OPT_FLAGS) -o $@ $<
+
+%.S: %.opt.bc
+	$(LLC) $(LLC_FLAGS) $< -o $@
 
 %.o: %.S
 	mkdir -p "./$(shell dirname $@)"
