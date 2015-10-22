@@ -46,11 +46,9 @@ LFLAGS = \
 
 OPT_FLAGS ?= -disable-opt
 
-LINK_OBJECTS ?= $(foreach obj,$(OBJECTS),$(obj).bc)
-
 all: $(EXEC)
 
--include $(foreach obj,$(OBJECTS),$(obj).d)
+-include $(OBJECTS:.o=.d)
 
 # disable implicit rule that for some reason overrides the chained rules below
 .SUFFIXES:
@@ -68,8 +66,8 @@ all: $(EXEC)
 %.opt.bc.a : %.bc.a
 	$(OPT) $(OPT_FLAGS) -o $@ $^
 
-%.bc.a: $(LINK_OBJECTS)
-	$(LLVM_LINK) -o $@ $^
+%.bc.a: $(OBJECTS:.o=.bc)
+	$(LLVM_LINK) -o $@ $^ $(LLVM_LIBS)
 
 %.s: %.opt.bc.a
 	$(LLC) $(LLC_FLAGS) $^ -o $@
