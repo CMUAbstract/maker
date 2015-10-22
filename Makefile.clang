@@ -62,13 +62,13 @@ all: $(EXEC)
 	$(CC) -emit-llvm -c $(CFLAGS) $< -o $@
 
 %.bc.a: $(OBJECTS:.o=.bc)
-	$(LLVM_LINK) -o $@ $< $(LLVM_LIBS)
+	$(LLVM_LINK) -o $@ $^ $(LLVM_LIBS)
 
 %.opt.bc.a : %.bc.a
-	$(OPT) $(OPT_FLAGS) -o $@ $<
+	$(OPT) $(OPT_FLAGS) -o $@ $^
 
 %.s: %.opt.bc.a
-	$(LLC) $(LLC_FLAGS) $< -o $@
+	$(LLC) $(LLC_FLAGS) $^ -o $@
 
 %.out: %.s
 	$(GCC) $(LFLAGS) -o $@ $^ $(LIBS)
