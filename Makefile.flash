@@ -1,0 +1,9 @@
+include $(MAKER_ROOT)/Makefile.env
+
+VOLTAGE = 3300
+
+flash: $(EXEC)
+	LD_LIBRARY_PATH=$(LIBMSP430_ROOT) mspdebug -v $(VOLTAGE) tilib "prog $(EXEC)"
+
+power:
+	LD_LIBRARY_PATH=$(LIBMSP430_ROOT) mspdebug -v $(VOLTAGE) tilib "exit"

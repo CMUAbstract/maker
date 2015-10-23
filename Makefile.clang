@@ -2,8 +2,6 @@ THIS_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 include $(MAKER_ROOT)/Makefile.env
 
-LIBMSP430_ROOT = $(TOOLCHAIN_ROOT)/bin
-
 DEVICE  = msp430fr5969
 DEVICEDEF = __MSP430FR5969__
 PREFIX = $(CLANG_ROOT)/bin/
@@ -95,8 +93,7 @@ all: $(EXEC)
 clean:
 	rm -f *.o *.bc *.asm *.s *.map *.out *.a *.d
 
-flash: $(EXEC)
-	LD_LIBRARY_PATH=$(LIBMSP430_ROOT) mspdebug tilib "prog $(EXEC)"
-
 debug: $(EXEC)
 	$(GDB) $(EXEC)
+
+include $(MAKER_ROOT)/Makefile.flash
