@@ -15,22 +15,22 @@ OPT_COMMON_FLAGS=-debug -stats -load $(MEMENTOS_LLVM_MODULE)
 OPT_GSIZE_FLAGS = $(OPT_COMMON_FLAGS) -mementos-add-global-size-global -mementos-rename-main 
 
 ifeq ($(MEMENTOS_MODE),latch)
-MEMENTOS_CFLAGS += -DMEMENTOS_LATCH
+CFLAGS += -DMEMENTOS_LATCH
 MEMENTOS_RUNTIME = mementos+latch.bc
 OPT_MEMENTOIZE_FLAGS = -mementos-instrument-all-loop-latches
 endif
 ifeq ($(MEMENTOS_MODE),return)
-MEMENTOS_CFLAGS += -DMEMENTOS_RETURN
+CFLAGS += -DMEMENTOS_RETURN
 MEMENTOS_RUNTIME = mementos+return.bc
 OPT_MEMENTOIZE_FLAGS = -mementos-instrument-all-function-returns
 endif
 ifeq ($(MEMENTOS_MODE),latch+timer)
-MEMENTOS_CFLAGS += -DMEMENTOS_LATCH -DMEMENTOS_TIMER
+CFLAGS += -DMEMENTOS_LATCH -DMEMENTOS_TIMER
 MEMENTOS_RUNTIME = mementos+timer.bc
 OPT_MEMENTOIZE_FLAGS = -mementos-instrument-all-loop-latches
 endif
 ifeq ($(MEMENTOS_MODE),oracle)
-MEMENTOS_CFLAGS += -DMEMENTOS_ORACLE
+CFLAGS += -DMEMENTOS_ORACLE
 MEMENTOS_RUNTIME = mementos+oracle.bc
 OPT_MEMENTOIZE_FLAGS =
 endif
