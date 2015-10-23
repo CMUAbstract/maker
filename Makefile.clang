@@ -69,8 +69,11 @@ all: $(EXEC)
 %.raw.a.bc: $(LINK_OBJECTS)
 	$(LLVM_LINK) -o $@ $^ $(LLVM_LIBS)
 
-%.a.bc : %.raw.a.bc
+%.opt.a.bc : %.raw.a.bc
 	$(OPT) $(OPT_FLAGS) $(OPT_PROGRAM_FLAGS) -o $@ $^
+
+%.a.bc : %.opt.a.bc
+	$(LLVM_LINK) -o $@ $^ $(LLVM_NOOPT_LIBS)
 
 # LLVM bytecode to native assembly
 
