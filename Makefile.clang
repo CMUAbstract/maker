@@ -18,10 +18,6 @@ AS      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-as
 LD      = $(GCC)
 GDB     = $(TOOLCHAIN_ROOT)/bin/msp430-elf-gdb
 
-SRC_DIR := ../src
-
-#-mmcu=$(DEVICE) \
-
 CFLAGS = \
 	--target=msp430 \
 	-D$(DEVICEDEF) \
@@ -37,7 +33,6 @@ CFLAGS = \
 	-I $(TOOLCHAIN_ROOT)/lib/gcc/msp430-elf/4.9.1/include \
 	-I $(TOOLCHAIN_ROOT)/msp430-elf/include \
 	-I $(TOOLCHAIN_ROOT)/include \
-	-I $(SRC_DIR) \
 
 LFLAGS = \
 	-Wl,-Map=$(EXEC).map \
