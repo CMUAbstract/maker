@@ -62,6 +62,8 @@ all: $(EXEC)
 %.out : %
 (%) : %
 
+# LLVM/Clang part of the pipeline
+
 %.bc: %.c
 	mkdir -p "./$(shell dirname $@)"
 	$(CC) -emit-llvm -c $(CFLAGS) $< -o $@
@@ -74,6 +76,9 @@ all: $(EXEC)
 
 %.s: %.opt.bc.a
 	$(LLC) $(LLC_FLAGS) $^ -o $@
+
+
+# Native compiler part of the pipeline
 
 %.out: %.s
 	$(GCC) $(LFLAGS) -o $@ $^ $(LIBS)
