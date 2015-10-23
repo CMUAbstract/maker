@@ -4,6 +4,8 @@ include $(MAKER_ROOT)/Makefile.env
 
 MEMENTOS_MODE ?= oracle
 
+CFLAGS += -DMEMENTOS
+
 LLC_FLAGS=-combiner-alias-analysis
 
 OPT_MODULES = $(LLVM_ROOT)/lib/Mementos.so
