@@ -8,37 +8,32 @@ MEMENTOS_MODE ?= oracle
 #LLC_FLAGS=-march=msp430 -combiner-alias-analysis
 LLC_FLAGS=-combiner-alias-analysis
 
-MEMENTOS_LLVM_MODULE=$(LLVM_ROOT)/lib/Mementos.so
+OPT_MODULES = $(LLVM_ROOT)/lib/Mementos.so
+OPT_FLAGS=-debug -stats
 
-OPT_COMMON_FLAGS=-debug -stats -load $(MEMENTOS_LLVM_MODULE)
-
-OPT_GSIZE_FLAGS = $(OPT_COMMON_FLAGS) -mementos-add-global-size-global -mementos-rename-main 
+OPT_MODULE_FLAGS = $(OPT_COMMON_FLAGS) -mementos-add-global-size-global -mementos-rename-main 
 
 ifeq ($(MEMENTOS_MODE),latch)
 CFLAGS += -DMEMENTOS_LATCH
 MEMENTOS_RUNTIME = mementos+latch.bc
-OPT_MEMENTOIZE_FLAGS = -mementos-instrument-all-loop-latches
+OPT_PROGRAM_FLAGS = -mementos-instrument-all-loop-latches
 endif
 ifeq ($(MEMENTOS_MODE),return)
 CFLAGS += -DMEMENTOS_RETURN
 MEMENTOS_RUNTIME = mementos+return.bc
-OPT_MEMENTOIZE_FLAGS = -mementos-instrument-all-function-returns
+OPT_PROGRAM_FLAGS = -mementos-instrument-all-function-returns
 endif
 ifeq ($(MEMENTOS_MODE),latch+timer)
 CFLAGS += -DMEMENTOS_LATCH -DMEMENTOS_TIMER
 MEMENTOS_RUNTIME = mementos+timer.bc
-OPT_MEMENTOIZE_FLAGS = -mementos-instrument-all-loop-latches
+OPT_PROGRAM_FLAGS = -mementos-instrument-all-loop-latches
 endif
 ifeq ($(MEMENTOS_MODE),oracle)
 CFLAGS += -DMEMENTOS_ORACLE
 MEMENTOS_RUNTIME = mementos+oracle.bc
-OPT_MEMENTOIZE_FLAGS =
+OPT_PROGRAM_FLAGS =
 endif
 
-LINK_OBJECTS=$(OBJECTS:.o=.gsize.bc) $(MEMENTOS_ROOT)/$(MEMENTOS_RUNTIME)
-OPT_FLAGS = $(OPT_COMMON_FLAGS) $(OPT_MEMENTOIZE_FLAGS)
+LLVM_LIBS+=$(MEMENTOS_ROOT)/$(MEMENTOS_RUNTIME)
 
 include $(MAKER_ROOT)/Makefile.clang
-
-%.gsize.bc: %.bc
-	$(OPT) $(OPT_GSIZE_FLAGS) -o $@ $<
