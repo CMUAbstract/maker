@@ -42,7 +42,7 @@ OPT_MODULE_FLAGS  ?= -disable-opt
 OPT_PROGRAM_FLAGS ?= -disable-opt
 
 # By default, link sources (given as object files), compiled bytecode
-LINK_OBJECTS ?= $(OBJECTS:.o=.opt.bc)
+LINK_OBJECTS ?= $(OBJECTS:.o=.bc)
 
 all: $(EXEC)
 
@@ -59,36 +59,31 @@ all: $(EXEC)
 
 # LLVM/Clang compiler and linker part of the pipeline
 
-%.bc: %.c
+%.raw.bc: %.c
 	mkdir -p "./$(shell dirname $@)"
 	$(CC) -emit-llvm -c $(CFLAGS) $< -o $@
 
-%.opt.bc : %.bc
+%.bc : %.raw.bc
 	$(OPT) $(OPT_FLAGS) $(OPT_MODULE_FLAGS) -o $@ $^
 
-%.opt.bc.a : %.bc.a
-	$(OPT) $(OPT_FLAGS) $(OPT_PROGRAM_FLAGS) -o $@ $^
-
-%.bc.a: $(LINK_OBJECTS)
+%.raw.a.bc: $(LINK_OBJECTS)
 	$(LLVM_LINK) -o $@ $^ $(LLVM_LIBS)
 
-%.s: %.opt.bc.a
+%.a.bc : %.raw.a.bc
+	$(OPT) $(OPT_FLAGS) $(OPT_PROGRAM_FLAGS) -o $@ $^
+
+# LLVM bytecode to native assembly
+
+%.s: %.a.bc
 	$(LLC) $(LLC_FLAGS) $^ -o $@
 
-
-# Native assembler part of the pipeline
+# Native assembly to native object code
 
 %.out: %.s
 	$(GCC) $(LFLAGS) -o $@ $^ $(LIBS)
 
-%.native.o: %.s
-	$(GCC) -c $(LFLAGS) -o $@ $^
-
-%.a: %.native.o
-	$(AR) rcs $@ $^
-
 # Do not remove these intermediates
-.PRECIOUS: %.bc %.S
+.PRECIOUS: %.a.bc %.raw.a.bc %.raw.bc %.bc %.s
 
 clean:
 	rm -f *.o *.bc *.asm *.s *.map *.out *.a *.d
