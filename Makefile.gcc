@@ -8,8 +8,6 @@ CC      = $(PREFIX)gcc
 AS      = $(PREFIX)as
 GDB     = $(PREFIX)gdb
 
-SRC_DIR := ../src
-
 COMMONFLAGS = \
 	-mmcu=$(DEVICE) \
 
@@ -24,7 +22,6 @@ CFLAGS = \
 	-pedantic \
 	-Wall \
 	-I $(TOOLCHAIN_ROOT)/include \
-	-I $(SRC_DIR) \
 
 LFLAGS = \
 	-T $(DEVICE).ld \
