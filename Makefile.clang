@@ -44,10 +44,12 @@ LFLAGS = \
 	-T $(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
 
-OPT_FLAGS ?= -disable-opt
+OPT_FLAGS += $(foreach mod,$(OPT_MODULES),-load $(mod))
+OPT_MODULE_FLAGS  ?= -disable-opt
+OPT_PROGRAM_FLAGS ?= -disable-opt
 
 # By default, link sources (given as object files), compiled bytecode
-LINK_OBJECTS ?= $(OBJECTS:.o=.bc)
+LINK_OBJECTS ?= $(OBJECTS:.o=.opt.bc)
 
 all: $(EXEC)
 
@@ -68,8 +70,11 @@ all: $(EXEC)
 	mkdir -p "./$(shell dirname $@)"
 	$(CC) -emit-llvm -c $(CFLAGS) $< -o $@
 
+%.opt.bc : %.bc
+	$(OPT) $(OPT_FLAGS) $(OPT_MODULE_FLAGS) -o $@ $^
+
 %.opt.bc.a : %.bc.a
-	$(OPT) $(OPT_FLAGS) -o $@ $^
+	$(OPT) $(OPT_FLAGS) $(OPT_PROGRAM_FLAGS) -o $@ $^
 
 %.bc.a: $(LINK_OBJECTS)
 	$(LLVM_LINK) -o $@ $^ $(LLVM_LIBS)
