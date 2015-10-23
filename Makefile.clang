@@ -16,7 +16,7 @@ AS      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-as
 LD      = $(GCC)
 GDB     = $(TOOLCHAIN_ROOT)/bin/msp430-elf-gdb
 
-CFLAGS = \
+CFLAGS += \
 	--target=msp430 \
 	-D$(DEVICEDEF) \
 	-nobuiltininc \
@@ -32,7 +32,7 @@ CFLAGS = \
 	-I $(TOOLCHAIN_ROOT)/msp430-elf/include \
 	-I $(TOOLCHAIN_ROOT)/include \
 
-LFLAGS = \
+LFLAGS += \
 	-Wl,-Map=$(EXEC).map \
 	-T $(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
