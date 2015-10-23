@@ -4,8 +4,6 @@ include $(MAKER_ROOT)/Makefile.env
 
 MEMENTOS_MODE ?= oracle
 
-# TODO: march should not be necessary since target specified in CFLAGS for clang
-#LLC_FLAGS=-march=msp430 -combiner-alias-analysis
 LLC_FLAGS=-combiner-alias-analysis
 
 OPT_MODULES = $(LLVM_ROOT)/lib/Mementos.so
