@@ -23,9 +23,9 @@ CFLAGS += -DMEMENTOS_RETURN
 MEMENTOS_RUNTIME = mementos+return.bc
 OPT_PROGRAM_FLAGS = -mementos-instrument-all-function-returns
 endif
-ifeq ($(MEMENTOS_MODE),latch+timer)
+ifeq ($(MEMENTOS_MODE),timer+latch)
 CFLAGS += -DMEMENTOS_LATCH -DMEMENTOS_TIMER
-MEMENTOS_RUNTIME = mementos+timer.bc
+MEMENTOS_RUNTIME = mementos+timer+latch.bc
 OPT_PROGRAM_FLAGS = -mementos-instrument-all-loop-latches
 endif
 ifeq ($(MEMENTOS_MODE),oracle)
