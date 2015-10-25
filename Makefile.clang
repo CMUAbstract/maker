@@ -34,7 +34,7 @@ CFLAGS += \
 
 LFLAGS += \
 	-Wl,-Map=$(EXEC).map \
-	-T $(DEVICE).ld \
+	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
 
 OPT_FLAGS += $(foreach mod,$(OPT_MODULES),-load $(mod))

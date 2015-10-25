@@ -24,7 +24,7 @@ CFLAGS += \
 	-I $(TOOLCHAIN_ROOT)/include \
 
 LFLAGS += \
-	-T $(DEVICE).ld \
+	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
 
 all: $(EXEC)
