@@ -3,6 +3,7 @@ MAKER_ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 include $(MAKER_ROOT)/Makefile.env
 
 DEVICE  = msp430fr5969
+DEVICEDEF = __MSP430FR5969__
 PREFIX = $(TOOLCHAIN_ROOT)/bin/msp430-elf-
 CC      = $(PREFIX)gcc
 AS      = $(PREFIX)as
@@ -16,6 +17,7 @@ ASFLAGS = \
 
 CFLAGS += \
 	$(COMMONFLAGS) \
+	-D$(DEVICEDEF) \
 	-O1 \
 	-g \
 	-std=c99 \
