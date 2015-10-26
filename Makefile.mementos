@@ -1,5 +1,3 @@
-THIS_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-
 include $(MAKER_ROOT)/Makefile.env
 
 MEMENTOS_MODE ?= oracle
