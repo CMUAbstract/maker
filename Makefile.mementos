@@ -2,7 +2,9 @@ include $(MAKER_ROOT)/Makefile.env
 
 MEMENTOS_MODE ?= oracle
 
-CFLAGS += -DMEMENTOS
+CFLAGS += \
+	-DMEMENTOS \
+	-I$(MEMENTOS_ROOT)/include \
 
 LLC_FLAGS=-combiner-alias-analysis
 
