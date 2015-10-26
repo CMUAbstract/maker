@@ -22,7 +22,7 @@ CFLAGS += \
 	-nobuiltininc \
 	-nostdinc++ \
 	-isysroot /none \
-	-O1 \
+	-O0 \
 	-g \
 	-std=c99 \
 	-pedantic \
