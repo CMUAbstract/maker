@@ -1,6 +1,6 @@
 include $(MAKER_ROOT)/Makefile.env
 
-MEMENTOS_MODE ?= oracle
+MEMENTOS_MODE ?= timer+latch
 
 CFLAGS += \
 	-DMEMENTOS \
