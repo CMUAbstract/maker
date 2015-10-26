@@ -1,0 +1,20 @@
+include $(MAKER_ROOT)/Makefile.env
+
+CFLAGS += -DDINO
+
+DINO_LIB = $(LLVM_ROOT)/lib/DINO.so
+
+# TODO: move to external call to OPT:
+#OPT_MODULE_FLAGS = $(OPT_COMMON_FLAGS)
+#OPT_PROGRAM_FLAGS = $(DINO_LIB)
+#OPT_MODULES =
+#OPT_FLAGS=-debug -stats
+
+# ... until then, invoke the passes directly in the clang invocation
+CFLAGS += -Xclang -load -Xclang $(DINO_LIB)
+
+LLVM_LIBS += \
+	$(DINO_ROOT)/dino.a.bc \
+	$(MEMENTOS_ROOT)/mementos+oracle.bc \
+
+include $(MAKER_ROOT)/Makefile.clang
