@@ -11,27 +11,39 @@ LLC_FLAGS=-combiner-alias-analysis
 OPT_MODULES = $(LLVM_ROOT)/lib/Mementos.so
 OPT_FLAGS=-debug -stats
 
-OPT_MODULE_FLAGS = $(OPT_COMMON_FLAGS) -mementos-add-global-size-global -mementos-rename-main 
+# This is optional because mementos can't tell NV globals apart,
+# so this is a quick workaround. Only set this flag if you
+# have no volatile globals in the application.
+ifeq ($(MEMENTOS_IGNORE_GLOBALS),)
+OPT_MODULE_FLAGS += -mementos-add-global-size-global
+endif
 
 ifeq ($(MEMENTOS_MODE),latch)
 CFLAGS += -DMEMENTOS_LATCH
 MEMENTOS_RUNTIME = mementos+latch.bc
-OPT_PROGRAM_FLAGS = -mementos-instrument-all-loop-latches
+OPT_MODULE_FLAGS += -mementos-rename-main
+OPT_PROGRAM_FLAGS += -mementos-instrument-all-loop-latches
 endif
 ifeq ($(MEMENTOS_MODE),return)
 CFLAGS += -DMEMENTOS_RETURN
 MEMENTOS_RUNTIME = mementos+return.bc
-OPT_PROGRAM_FLAGS = -mementos-instrument-all-function-returns
+OPT_MODULE_FLAGS += -mementos-rename-main
+OPT_PROGRAM_FLAGS += -mementos-instrument-all-function-returns
 endif
 ifeq ($(MEMENTOS_MODE),timer+latch)
 CFLAGS += -DMEMENTOS_LATCH -DMEMENTOS_TIMER
 MEMENTOS_RUNTIME = mementos+timer+latch.bc
-OPT_PROGRAM_FLAGS = -mementos-instrument-all-loop-latches
+OPT_MODULE_FLAGS += -mementos-rename-main
+OPT_PROGRAM_FLAGS += -mementos-instrument-all-loop-latches
 endif
 ifeq ($(MEMENTOS_MODE),oracle)
 CFLAGS += -DMEMENTOS_ORACLE
 MEMENTOS_RUNTIME = mementos+oracle.bc
-OPT_PROGRAM_FLAGS =
+OPT_MODULE_FLAGS += -mementos-rename-main
+endif
+ifeq ($(MEMENTOS_MODE),manual)
+CFLAGS += -DMEMENTOS_ORACLE
+MEMENTOS_RUNTIME = mementos+oracle.bc
 endif
 
 LLVM_LIBS+=$(MEMENTOS_ROOT)/$(MEMENTOS_RUNTIME)
