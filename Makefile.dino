@@ -16,6 +16,7 @@ CFLAGS += -Xclang -load -Xclang $(DINO_LIB)
 LLVM_LIBS += \
 	$(DINO_ROOT)/dino.a.bc \
 	$(MEMENTOS_ROOT)/mementos+raw.bc \
+	$(MEMENTOS_ROOT)/mementos_gsize.bc \
 
 CFLAGS += \
 	-I$(DINO_ROOT) \
