@@ -17,4 +17,8 @@ LLVM_LIBS += \
 	$(DINO_ROOT)/dino.a.bc \
 	$(MEMENTOS_ROOT)/mementos+raw.bc \
 
+CFLAGS += \
+	-I$(DINO_ROOT) \
+	-I$(MEMENTOS_ROOT)/include \
+
 include $(MAKER_ROOT)/Makefile.clang
