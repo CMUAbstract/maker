@@ -2,6 +2,9 @@ CONFIG_EDB ?= 0
 CONFIG_PRINTF_LIB ?= libmspconsole
 CONFIG_LIBEDB_PRINTF ?= eif
 
+LIBS += \
+	-lmspprintf \
+
 ifeq ($(CONFIG_PRINTF_LIB),libedb)
 
 ifeq ($(CONFIG_LIBEDB_PRINTF),eif)
@@ -21,10 +24,12 @@ endif # CONFIG_LIBEDB_*
 
 # All console libraries depend on wisp-base
 
-LIBS += -lwisp-base
+LIBS += \
+	-lwisp-base \
 
 CFLAGS += \
 	-I$(WISP_BASE_ROOT)
 
 LFLAGS += \
 	-L$(WISP_BASE_ROOT)/gcc \
+	-L$(LIBMSPPRINTF_ROOT)/bld/gcc \
