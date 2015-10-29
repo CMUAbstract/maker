@@ -1,0 +1,9 @@
+BOARD ?= mspts430
+
+ifeq ($(BOARD),wisp)
+CFLAGS += -DBOARD_WISP
+endif
+
+ifeq ($(BOARD),mspts430)
+CFLAGS += -DBOARD_MSP_TS430
+endif
