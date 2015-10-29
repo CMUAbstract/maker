@@ -1,0 +1,30 @@
+CONFIG_EDB ?= 0
+CONFIG_PRINTF_LIB ?= libmspconsole
+CONFIG_LIBEDB_PRINTF ?= eif
+
+ifeq ($(CONFIG_PRINTF_LIB),libedb)
+
+ifeq ($(CONFIG_LIBEDB_PRINTF),eif)
+CFLAGS += -DCONFIG_LIBEDB_PRINTF_EIF
+else ifeq ($(CONFIG_LIBEDB_PRINTF),bare)
+CFLAGS += -DCONFIG_LIBEDB_PRINTF_BARE
+endif # CONFIG_LIBEDB_PRINTF
+
+else ifeq ($(CONFIG_PRINTF_LIB),libmspconsole)
+CFLAGS += -DCONFIG_LIBMSPCONSOLE_PRINTF
+LFLAGS += -L$(LIBMSPCONSOLE_ROOT)/bld/gcc
+LIBS += -lmspconsole
+
+else # CONFIG_LIBEDB_*
+$(error Unknown CONFIG_PRINTF_LIB value)
+endif # CONFIG_LIBEDB_*
+
+# All console libraries depend on wisp-base
+
+LIBS += -lwisp-base
+
+CFLAGS += \
+	-I$(WISP_BASE_ROOT)
+
+LFLAGS += \
+	-L$(WISP_BASE_ROOT)/gcc \
