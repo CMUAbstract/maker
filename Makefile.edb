@@ -1,0 +1,8 @@
+CONFIG_EDB ?= 0
+
+ifeq ($(CONFIG_EDB),1)
+CFLAGS += -DCONFIG_EDB
+CFLAGS += -I$(LIBEDB_ROOT)/src/include
+LFLAGS += -L$(LIBEDB_ROOT)/gcc
+LIBS += -ledb -lwisp-base
+endif
