@@ -1,6 +1,8 @@
 include $(MAKER_ROOT)/Makefile.env
 
-CFLAGS += -DDINO
+CFLAGS += \
+	-DDINO \
+	-DMEMENTOS_FRAM \
 
 DINO_LIB = $(LLVM_ROOT)/lib/DINO.so
 
