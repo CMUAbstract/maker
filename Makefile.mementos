@@ -1,6 +1,7 @@
 include $(MAKER_ROOT)/Makefile.env
 
 MEMENTOS_MODE ?= timer+latch
+MEMENTOS_IGNORE_GLOBALS ?= 0
 
 CFLAGS += \
 	-DMEMENTOS \
@@ -14,7 +15,7 @@ OPT_FLAGS=-debug -stats
 # This is optional because mementos can't tell NV globals apart,
 # so this is a quick workaround. Only set this flag if you
 # have no volatile globals in the application.
-ifeq ($(MEMENTOS_IGNORE_GLOBALS),)
+ifeq ($(MEMENTOS_IGNORE_GLOBALS),0)
 OPT_MODULE_FLAGS += -mementos-add-global-size-global
 else
 LLVM_LIBS += $(MEMENTOS_ROOT)/mementos_gsize.bc
