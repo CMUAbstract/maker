@@ -1,7 +1,10 @@
 include $(MAKER_ROOT)/Makefile.env
 
 MEMENTOS_MODE ?= timer+latch
-MEMENTOS_IGNORE_GLOBALS ?= 0
+
+# Ignore globals by default until Mementos is fixed to handle them correctly.
+# Currently, it blindly restores globals to .data, despite them being in .bss.
+MEMENTOS_IGNORE_GLOBALS ?= 1
 
 CFLAGS += \
 	-DMEMENTOS \
