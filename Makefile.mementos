@@ -6,6 +6,11 @@ MEMENTOS_MODE ?= timer+latch
 # Currently, it blindly restores globals to .data, despite them being in .bss.
 MEMENTOS_IGNORE_GLOBALS ?= 1
 
+# Mementos is not safe for non-idempotant code that manipulates NV state
+# This flag is provided for convenience for applications that want
+# to have a broken (unsafe) mode for evaluation purposes.
+MEMENTOS_NONVOLATILE ?= 0
+
 CFLAGS += \
 	-DMEMENTOS \
 	-I$(MEMENTOS_ROOT)/include \
@@ -14,6 +19,10 @@ LLC_FLAGS=-combiner-alias-analysis
 
 OPT_MODULES = $(LLVM_ROOT)/lib/Mementos.so
 OPT_FLAGS=-debug -stats
+
+ifeq ($(MEMENTOS_NONVOLATILE),1)
+CFLAGS += -DMEMENTOS_NONVOLATILE
+endif
 
 # This is optional because mementos can't tell NV globals apart,
 # so this is a quick workaround. Only set this flag if you
