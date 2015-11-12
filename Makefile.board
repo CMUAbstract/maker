@@ -1,4 +1,5 @@
 BOARD ?= mspts430
+CONT_POWER ?= 0
 
 ifeq ($(BOARD),wisp)
 CFLAGS += -DBOARD_WISP
@@ -6,4 +7,8 @@ endif
 
 ifeq ($(BOARD),mspts430)
 CFLAGS += -DBOARD_MSP_TS430
+endif
+
+ifeq ($(CONT_POWER),1)
+CFLAGS += -DCONT_POWER
 endif
