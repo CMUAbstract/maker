@@ -1,9 +1,8 @@
 THIS_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 include $(MAKER_ROOT)/Makefile.env
+include $(MAKER_ROOT)/Makefile.board
 
-DEVICE  = msp430fr5969
-DEVICEDEF = __MSP430FR5969__
 PREFIX = $(CLANG_ROOT)/bin/
 CC      = $(PREFIX)clang
 LLC     = $(PREFIX)llc

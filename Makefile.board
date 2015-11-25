@@ -3,10 +3,14 @@ CONT_POWER ?= 0
 
 ifeq ($(BOARD),wisp)
 CFLAGS += -DBOARD_WISP
+DEVICE  = msp430fr5969
+DEVICEDEF = __MSP430FR5969__
 endif
 
 ifeq ($(BOARD),mspts430)
 CFLAGS += -DBOARD_MSP_TS430
+DEVICE  = msp430fr5969
+DEVICEDEF = __MSP430FR5969__
 endif
 
 ifeq ($(CONT_POWER),1)
