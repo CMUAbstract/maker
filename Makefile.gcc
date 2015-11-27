@@ -20,7 +20,6 @@ CFLAGS += \
 	-O1 \
 	-g \
 	-std=c99 \
-	-pedantic \
 	-Wall \
 	-I $(TOOLCHAIN_ROOT)/include \
 
