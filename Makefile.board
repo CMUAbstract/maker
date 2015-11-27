@@ -13,6 +13,12 @@ DEVICE  = msp430fr5969
 DEVICEDEF = __MSP430FR5969__
 endif
 
+ifeq ($(BOARD),sprite)
+CFLAGS += -DBOARD_SPRITE
+DEVICE  = cc430f5137
+DEVICEDEF = __CC430F5137__
+endif
+
 ifeq ($(CONT_POWER),1)
 CFLAGS += -DCONT_POWER
 endif
