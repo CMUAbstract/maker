@@ -13,7 +13,9 @@ DINO_LIB = $(LLVM_ROOT)/lib/DINO.so
 #OPT_FLAGS=-debug -stats
 
 # ... until then, invoke the passes directly in the clang invocation
-CFLAGS += -Xclang -load -Xclang $(DINO_LIB)
+# TODO: until DINO supports versioning arrays (and pointers), we don't
+# use DINO compiler passes, but immitate them manually using macros.
+#CFLAGS += -Xclang -load -Xclang $(DINO_LIB)
 
 LLVM_LIBS += \
 	$(DINO_ROOT)/dino.a.bc \
