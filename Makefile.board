@@ -23,10 +23,34 @@ DEVICE  = msp430f5340
 DEVICEDEF = __MSP430F5340__
 endif
 
-ifeq ($(BOARD),sprite)
-CFLAGS += -DBOARD_SPRITE
+ifeq ($(BOARD),sprite-edb)
+CFLAGS += -DBOARD_SPRITE_EDB
 DEVICE  = cc430f5137
 DEVICEDEF = __CC430F5137__
+endif
+
+ifeq ($(BOARD),sprite-app)
+CFLAGS += -DBOARD_SPRITE_APP
+DEVICE  = msp430fr5949
+DEVICEDEF = __MSP430FR5949__
+endif
+
+ifeq ($(BOARD),sprite-edb-socket-rgz)
+CFLAGS += -DBOARD_SPRITE_EDB_SOCKET_RGZ
+DEVICE  = cc430f5137
+DEVICEDEF = __CC430F5137__
+endif
+
+ifeq ($(BOARD),sprite-app-socket-rha)
+CFLAGS += -DBOARD_SPRITE_APP_SOCKET_RHA
+DEVICE  = msp430fr5949
+DEVICEDEF = __MSP430FR5949__
+endif
+
+ifeq ($(BOARD),sprite-app-socket-rgz)
+CFLAGS += -DBOARD_SPRITE_APP_SOCKET_RGZ
+DEVICE  = msp430fr5969
+DEVICEDEF = __MSP430FR5969__
 endif
 
 ifeq ($(CONT_POWER),1)
