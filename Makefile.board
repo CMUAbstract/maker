@@ -1,5 +1,9 @@
-BOARD ?= mspts430
 CONT_POWER ?= 0
+
+ifeq ($(BOARD),)
+$(error Variable not set in app/lib Makefile: BOARD \
+	    (see maker/Makefile.board for options))
+endif
 
 ifeq ($(BOARD),wisp)
 CFLAGS += -DBOARD_WISP
