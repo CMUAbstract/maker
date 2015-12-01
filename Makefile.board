@@ -53,6 +53,12 @@ DEVICE  = msp430fr5969
 DEVICEDEF = __MSP430FR5969__
 endif
 
+ifeq ($(BOARD),sprite-app-launchpad)
+CFLAGS += -DBOARD_SPRITE_APP_LAUNCHPAD
+DEVICE  = msp430fr5969
+DEVICEDEF = __MSP430FR5969__
+endif
+
 ifeq ($(CONT_POWER),1)
 CFLAGS += -DCONT_POWER
 endif
