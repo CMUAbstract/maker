@@ -4,8 +4,9 @@ CONFIG_LIBEDB_PRINTF ?= eif
 
 VERBOSE ?= 0
 
-LIBS += \
-	-lmspprintf \
+# All output channels use the same printf implementation, what differs is the
+# backend used by the printf implementation.
+LIBS += -lmspprintf
 
 ifeq ($(CONFIG_PRINTF_LIB),libedb)
 
@@ -17,25 +18,15 @@ endif # CONFIG_LIBEDB_PRINTF
 
 else ifeq ($(CONFIG_PRINTF_LIB),libmspconsole)
 CFLAGS += -DCONFIG_LIBMSPCONSOLE_PRINTF
-CFLAGS += -I$(LIBMSPCONSOLE_ROOT)/src/include
-LFLAGS += -L$(LIBMSPCONSOLE_ROOT)/bld/gcc
-LIBS += -lmspconsole
+CFLAGS += -I$(LIBMSPCONSOLE_ROOT)/src/include -I$(WISP_BASE_ROOT)
+LFLAGS += -L$(LIBMSPCONSOLE_ROOT)/bld/gcc -L$(WISP_BASE_ROOT)/gcc
+LIBS += -lmspconsole -lwisp-base
 
-else # CONFIG_LIBEDB_*
+else # CONFIG_PRINTF_LIB_*
 $(error Unknown CONFIG_PRINTF_LIB value)
-endif # CONFIG_LIBEDB_*
+endif # CONFIG_PRINTF_LIB_*
 
 CFLAGS += -DVERBOSE=$(VERBOSE)
 
-# All console libraries depend on wisp-base
-
-LIBS += \
-	-lwisp-base \
-
-CFLAGS += \
-	-I$(WISP_BASE_ROOT) \
-	-I$(LIBIO_ROOT)/src/include \
-
-LFLAGS += \
-	-L$(WISP_BASE_ROOT)/gcc \
-	-L$(LIBMSPPRINTF_ROOT)/bld/gcc \
+CFLAGS += -I$(LIBIO_ROOT)/src/include
+LFLAGS += -L$(LIBMSPPRINTF_ROOT)/bld/gcc
