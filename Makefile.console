@@ -22,6 +22,12 @@ CFLAGS += -I$(LIBMSPCONSOLE_ROOT)/src/include -I$(WISP_BASE_ROOT)
 LFLAGS += -L$(LIBMSPCONSOLE_ROOT)/bld/gcc -L$(WISP_BASE_ROOT)/gcc
 LIBS += -lmspconsole -lwisp-base
 
+else ifeq ($(CONFIG_PRINTF_LIB),libmspsoftuart)
+CFLAGS += -DCONFIG_LIBMSPSOFTUART_PRINTF
+CFLAGS += -I$(LIBMSPSOFTUART_ROOT)/src/include
+LFLAGS += -L$(LIBMSPSOFTUART_ROOT)/bld/gcc
+LIBS += -lmspsoftuart
+
 else # CONFIG_PRINTF_LIB_*
 $(error Unknown CONFIG_PRINTF_LIB value)
 endif # CONFIG_PRINTF_LIB_*
