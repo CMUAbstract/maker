@@ -5,6 +5,7 @@ include $(MAKER_ROOT)/Makefile.board
 
 PREFIX = $(TOOLCHAIN_ROOT)/bin/msp430-elf-
 CC      = $(PREFIX)gcc
+LD      = $(PREFIX)gcc
 AS      = $(PREFIX)as
 GDB     = $(PREFIX)gdb
 
@@ -40,7 +41,7 @@ all: $(EXEC)
 	$(AS) $(ASFLAGS) $< -o $@
 
 %.out: $(OBJECTS)
-	$(CC) $(CFLAGS) $(LFLAGS) $^ $(LIBS) -o $(EXEC)
+	$(LD) $(CFLAGS) $(LFLAGS) $^ $(LIBS) -o $(EXEC)
 
 %.a: $(OBJECTS)
 	$(AR) rcs $@ $^
