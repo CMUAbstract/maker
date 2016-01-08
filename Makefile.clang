@@ -7,6 +7,7 @@ PREFIX = $(CLANG_ROOT)/bin/
 CC      = $(PREFIX)clang
 LLC     = $(PREFIX)llc
 LLVM_LINK= $(PREFIX)/llvm-link
+LLVM_DIS = $(PREFIX)/llvm-dis
 OPT      = $(PREFIX)/opt
 
 GCC     = $(TOOLCHAIN_ROOT)/bin/msp430-elf-gcc
