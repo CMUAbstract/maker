@@ -2,6 +2,7 @@ MAKER_ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 include $(MAKER_ROOT)/Makefile.env
 include $(MAKER_ROOT)/Makefile.board
+include $(MAKER_ROOT)/Makefile.dep
 
 PREFIX = $(TOOLCHAIN_ROOT)/bin/msp430-elf-
 CC      = $(PREFIX)gcc
