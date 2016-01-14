@@ -6,7 +6,14 @@ VERBOSE ?= 0
 
 # All output channels use the same printf implementation, what differs is the
 # backend used by the printf implementation.
+LIBMSPPRINTF_BUILD_DIR = $(LIBMSPPRINTF_ROOT)/bld/gcc
+CFLAGS += -I$(LIBMSPPRINTF_ROOT)/src/include
+LFLAGS += -L$(LIBMSPPRINTF_ROOT)/bld/gcc
 LIBS += -lmspprintf
+LIBMSPPRINTF_BINARY = $(LIBMSPPRINTF_BUILD_DIR)/libmspprintf.a
+$(LIBMSPPRINTF_BINARY) :
+	make -e -C $(LIBMSPPRINTF_BUILD_DIR)
+$(EXEC): $(LIBMSPPRINTF_BINARY)
 
 ifeq ($(CONFIG_PRINTF_LIB),libedb)
 CFLAGS += -DCONFIG_LIBEDB_PRINTF
