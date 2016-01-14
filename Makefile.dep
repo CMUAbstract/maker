@@ -1,0 +1,18 @@
+# Declare a dependency on a library
+#
+# This includes the library into the build and creates rules for making it.
+# Usage: $(eval $(call depend,libxxx,$(PATH_TO_libxxx)))
+
+define depend-rule
+$(2)/$(1).a: $(2)
+	make -e -C $$^
+$(EXEC): $(2)/$(1).a
+endef
+
+define depend
+DEP_BUILD_DIR_$(1) = $(2)/bld/gcc
+CFLAGS += -I$(2)/src/include
+LFLAGS += -L$(DEP_BUILD_DIR_$(1))
+LIBS += -l$(subst lib,,$(1))
+$(call depend-rule,$(1),$$(DEP_BUILD_DIR_$(1)))
+endef
