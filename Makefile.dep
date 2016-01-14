@@ -4,6 +4,12 @@
 # library and cleaning it, as well as aggregate rules 'dep' and 'depclean'.
 #
 # Usage: $(eval $(call depend,libxxx))
+#
+# The library is expected to be in $(LIB_ROOT).
+#
+# TODO: It might be worth it to parametrize the path for each library (in
+# the dependency declaration), but that's more verbose. It should be
+# possible to make the path argument optional.
 
 define depend-rule
 
@@ -20,9 +26,11 @@ depclean: depclean_$(1)
 endef
 
 define depend
-DEP_BUILD_DIR_$(1) = $(2)/bld/gcc
-CFLAGS += -I$(2)/src/include
-LFLAGS += -L$(DEP_BUILD_DIR_$(1))
+DEP_ROOT_$(1) = $(LIB_ROOT)/$(1)
+DEP_INC_$(1) = $$(DEP_ROOT_$(1))/src/include
+DEP_BUILD_DIR_$(1) = $$(DEP_ROOT_$(1))/bld/gcc
+CFLAGS += -I$$(DEP_INC_$(1))
+LFLAGS += -L$$(DEP_BUILD_DIR_$(1))
 LIBS += -l$(subst lib,,$(1))
 $(call depend-rule,$(1),$$(DEP_BUILD_DIR_$(1)))
 endef
