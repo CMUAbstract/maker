@@ -6,14 +6,7 @@ VERBOSE ?= 0
 
 # All output channels use the same printf implementation, what differs is the
 # backend used by the printf implementation.
-LIBMSPPRINTF_BUILD_DIR = $(LIBMSPPRINTF_ROOT)/bld/gcc
-CFLAGS += -I$(LIBMSPPRINTF_ROOT)/src/include
-LFLAGS += -L$(LIBMSPPRINTF_ROOT)/bld/gcc
-LIBS += -lmspprintf
-LIBMSPPRINTF_BINARY = $(LIBMSPPRINTF_BUILD_DIR)/libmspprintf.a
-$(LIBMSPPRINTF_BINARY) :
-	make -e -C $(LIBMSPPRINTF_BUILD_DIR)
-$(EXEC): $(LIBMSPPRINTF_BINARY)
+$(eval $(call depend,libmspprintf))
 
 ifeq ($(CONFIG_PRINTF_LIB),libedb)
 CFLAGS += -DCONFIG_LIBEDB_PRINTF
@@ -31,18 +24,8 @@ LFLAGS += -L$(LIBMSPCONSOLE_ROOT)/bld/gcc -L$(WISP_BASE_ROOT)/gcc
 LIBS += -lmspconsole -lwisp-base
 
 else ifeq ($(CONFIG_PRINTF_LIB),libmspsoftuart)
-LIBMSPSOFTUART_BUILD_DIR = $(LIBMSPSOFTUART_ROOT)/bld/gcc
-
 CFLAGS += -DCONFIG_LIBMSPSOFTUART_PRINTF
-
-CFLAGS += -I$(LIBMSPSOFTUART_ROOT)/src/include
-LFLAGS += -L$(LIBMSPSOFTUART_BUILD_DIR)
-LIBS += -lmspsoftuart
-
-LIBMSPSOFTUART_BINARY = $(LIBMSPSOFTUART_BUILD_DIR)/libmspsoftuart.a
-$(EXEC) : $(LIBMSPSOFTUART_BINARY)
-$(LIBMSPSOFTUART_BINARY) :
-	make -e -C $(LIBMSPSOFTUART_BUILD_DIR)
+$(eval $(call depend,libmspsoftuart))
 
 else # CONFIG_PRINTF_LIB_*
 $(error Unknown CONFIG_PRINTF_LIB value)
