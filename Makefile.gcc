@@ -41,7 +41,7 @@ all: $(EXEC)
 	$(AS) $(ASFLAGS) $< -o $@
 
 %.out: $(OBJECTS)
-	$(LD) $(CFLAGS) $(LFLAGS) $^ $(LIBS) -o $(EXEC)
+	$(LD) $(CFLAGS) $(LFLAGS) $(OBJECTS) $(LIBS) -o $(EXEC)
 
 %.a: $(OBJECTS)
 	$(AR) rcs $@ $^
