@@ -1,12 +1,22 @@
 # Declare a dependency on a library
 #
-# This includes the library into the build and creates rules for making it.
-# Usage: $(eval $(call depend,libxxx,$(PATH_TO_libxxx)))
+# This includes the library into the build and creates rules for making the
+# library and cleaning it, as well as aggregate rules 'dep' and 'depclean'.
+#
+# Usage: $(eval $(call depend,libxxx))
 
 define depend-rule
+
 $(2)/$(1).a: $(2)
 	make -e -C $$^
+
 $(EXEC): $(2)/$(1).a
+dep: $(2)/$(1).a
+
+depclean_$(1): $(2)
+	make -C $$^ clean
+depclean: depclean_$(1)
+
 endef
 
 define depend
