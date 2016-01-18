@@ -4,6 +4,8 @@ export SRC_ROOT = $(abspath src)
 
 BLD_ROOT = bld
 
+include $(MAKER_ROOT)/Makefile.env
+
 # Shortcut: alias '%' to '%.default'
 %: %.default ;
 
