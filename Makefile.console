@@ -21,10 +21,9 @@ else ifeq ($(CONFIG_PRINTF_LIB),libmspconsole)
 CFLAGS += -DCONFIG_LIBMSPCONSOLE_PRINTF
 $(eval $(call depend,libmspconsole))
 
-# TODO: package wispbase for eval (but, ideally, factor out the uart functinality first)
-CFLAGS += -I$(WISP_BASE_ROOT)
-LFLAGS += -L$(WISP_BASE_ROOT)/gcc
-LIBS += -lwisp-base
+DEP_INC_RELDIR_libwispbase = CCS/wisp-base
+DEP_LIB_RELDIR_libwispbase = CCS/wisp-base/gcc
+$(eval $(call depend,libwispbase))
 
 else ifeq ($(CONFIG_PRINTF_LIB),libmspsoftuart)
 CFLAGS += -DCONFIG_LIBMSPSOFTUART_PRINTF
