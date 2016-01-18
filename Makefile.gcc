@@ -1,8 +1,5 @@
-MAKER_ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-
 include $(MAKER_ROOT)/Makefile.env
 include $(MAKER_ROOT)/Makefile.board
-include $(MAKER_ROOT)/Makefile.dep
 
 PREFIX = $(TOOLCHAIN_ROOT)/bin/msp430-elf-
 CC      = $(PREFIX)gcc
@@ -29,6 +26,8 @@ LFLAGS += \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
 
+VPATH = $(SRC_ROOT)
+
 all: $(EXEC)
 
 -include $(OBJECTS:.o=.d)
@@ -54,3 +53,4 @@ debug: $(EXEC)
 	$(GDB) $(EXEC)
 
 include $(MAKER_ROOT)/Makefile.flash
+include $(MAKER_ROOT)/Makefile.dep
