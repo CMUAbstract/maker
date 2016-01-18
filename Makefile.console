@@ -6,7 +6,7 @@ VERBOSE ?= 0
 
 # All output channels use the same printf implementation, what differs is the
 # backend used by the printf implementation.
-$(eval $(call depend,libmspprintf))
+DEPS += libmspprintf
 
 ifeq ($(CONFIG_PRINTF_LIB),libedb)
 CFLAGS += -DCONFIG_LIBEDB_PRINTF
@@ -19,12 +19,11 @@ endif # CONFIG_LIBEDB_PRINTF
 
 else ifeq ($(CONFIG_PRINTF_LIB),libmspconsole)
 CFLAGS += -DCONFIG_LIBMSPCONSOLE_PRINTF
-$(eval $(call depend,libmspconsole))
-$(eval $(call depend,libwispbase))
+DEPS += libmspconsole libwispbase
 
 else ifeq ($(CONFIG_PRINTF_LIB),libmspsoftuart)
 CFLAGS += -DCONFIG_LIBMSPSOFTUART_PRINTF
-$(eval $(call depend,libmspsoftuart))
+DEPS += libmspsoftuart
 
 else # CONFIG_PRINTF_LIB_*
 $(error Unknown CONFIG_PRINTF_LIB value)
