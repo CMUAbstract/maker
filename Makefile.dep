@@ -26,12 +26,15 @@ depclean: depclean_$(1)
 endef
 
 define depend
+
+# These are designed to be overriddable from top-level app makefile
+DEP_ROOT_$(1) ?= $(LIB_ROOT)
+DEP_RELDIR_$(1) ?= $(1)
 DEP_INC_RELDIR_$(1) ?= src/include
 DEP_LIB_RELDIR_$(1) ?= bld/gcc
 
-DEP_ROOT_$(1) = $(LIB_ROOT)/$(1)
-DEP_INC_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_INC_RELDIR_$(1))
-DEP_LIB_DIR_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_LIB_RELDIR_$(1))
+DEP_INC_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_RELDIR_$(1))/$$(DEP_INC_RELDIR_$(1))
+DEP_LIB_DIR_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_RELDIR_$(1))/$$(DEP_LIB_RELDIR_$(1))
 
 CFLAGS += -I$$(DEP_INC_$(1))
 LFLAGS += -L$$(DEP_LIB_DIR_$(1))
