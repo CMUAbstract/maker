@@ -17,6 +17,11 @@ else ifeq ($(CONFIG_LIBEDB_PRINTF),bare)
 CFLAGS += -DCONFIG_LIBEDB_PRINTF_BARE
 endif # CONFIG_LIBEDB_PRINTF
 
+# We don't include libedb dependency here but let the app makefile include it,
+# because libedb might be used without the console, and in that case we would
+# add it twice, which maker can't tolerate.
+# DEPS += libedb libwispbase
+
 else ifeq ($(CONFIG_PRINTF_LIB),libmspconsole)
 CFLAGS += -DCONFIG_LIBMSPCONSOLE_PRINTF
 DEPS += libmspconsole libwispbase
