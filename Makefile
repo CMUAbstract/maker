@@ -14,5 +14,5 @@ define nested-rule
 	make -e -C $(BLD_ROOT)/$$* $(subst default,,$(1))
 endef
 
-NESTED_TARGETS = default clean dep depclean
+NESTED_TARGETS = default clean dep depclean flash
 $(foreach target,$(NESTED_TARGETS),$(eval $(call nested-rule,$(target))))
