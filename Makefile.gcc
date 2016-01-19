@@ -1,6 +1,8 @@
 include $(MAKER_ROOT)/Makefile.env
 include $(MAKER_ROOT)/Makefile.board
 
+LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts
+
 PREFIX = $(TOOLCHAIN_ROOT)/bin/msp430-elf-
 CC      = $(PREFIX)gcc
 LD      = $(PREFIX)gcc
