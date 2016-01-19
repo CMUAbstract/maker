@@ -43,4 +43,7 @@ LIBS += -l$(subst lib,,$(1))
 $(call depend-rule,$(1),$$(DEP_LIB_DIR_$(1)))
 endef
 
+# Also clean the app when cleaning dependencies
+depclean: clean
+
 $(foreach dep,$(DEPS),$(eval $(call depend,$(dep))))
