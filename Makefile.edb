@@ -1,8 +1,13 @@
+# This makefile is for convenience only. The libedb dependency is
+# specified as usual via DEPS var. This makefile exists only because
+# multiple apps want to also have the CONFIG_EDB flag available
+# when depending on libedb. This way we don't repeat this code
+# in every app. To depend on libedb, include this makefile instead
+# of setting DEPS directly.
+
 CONFIG_EDB ?= 0
 
 ifeq ($(CONFIG_EDB),1)
 CFLAGS += -DCONFIG_EDB
-CFLAGS += -I$(LIBEDB_ROOT)/src/include
-LFLAGS += -L$(LIBEDB_ROOT)/bld/gcc -L$(WISP_BASE_ROOT)/gcc
-LIBS += -ledb -lwisp-base
+DEPS += libedb libwispbase
 endif
