@@ -1,5 +1,9 @@
 CONFIG_EDB ?= 0
-CONFIG_PRINTF_LIB ?= libmspconsole
+
+# by default, there's no console
+CONFIG_PRINTF_LIB ?=
+
+# by default, PRINTF maps to libedb's EIF_PRINTF
 CONFIG_LIBEDB_PRINTF ?= eif
 
 VERBOSE ?= 0
@@ -32,6 +36,9 @@ DEPS += libmspconsole
 else ifeq ($(CONFIG_PRINTF_LIB),libmspsoftuart)
 CFLAGS += -DCONFIG_LIBMSPSOFTUART_PRINTF
 DEPS += libmspsoftuart
+
+else ifeq ($(CONFIG_PRINTF_LIB),)
+# no console: nothing to do
 
 else # CONFIG_PRINTF_LIB_*
 $(error Unknown CONFIG_PRINTF_LIB value)
