@@ -3,6 +3,8 @@ THIS_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 include $(MAKER_ROOT)/Makefile.env
 include $(MAKER_ROOT)/Makefile.board
 
+LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts
+
 PREFIX = $(CLANG_ROOT)/bin/
 CC      = $(PREFIX)clang
 LLC     = $(PREFIX)llc
@@ -47,6 +49,8 @@ OPT_PROGRAM_FLAGS ?= -disable-opt
 # By default, link sources (given as object files), compiled bytecode
 LINK_OBJECTS ?= $(OBJECTS:.o=.bc)
 
+VPATH = $(SRC_ROOT)
+
 all: $(EXEC)
 
 -include $(OBJECTS:.o=.d)
@@ -86,7 +90,7 @@ all: $(EXEC)
 # Native assembly to native object code
 
 %.out: %.s
-	$(GCC) $(LFLAGS) -o $@ $^ $(LIBS)
+	$(GCC) $(LFLAGS) -o $@ $< $(LIBS)
 
 # Do not remove these intermediates
 .PRECIOUS: %.a.bc %.raw.a.bc %.raw.bc %.bc %.s
@@ -98,3 +102,4 @@ debug: $(EXEC)
 	$(GDB) $(EXEC)
 
 include $(MAKER_ROOT)/Makefile.flash
+include $(MAKER_ROOT)/Makefile.dep

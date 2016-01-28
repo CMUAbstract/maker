@@ -13,11 +13,11 @@
 
 define depend-rule
 
-$(2)/$(1).a: $(2)
+$(2)/$(1).$(3): $(2)
 	make -e -C $$^
 
-$(EXEC): $(2)/$(1).a
-dep: $(2)/$(1).a
+$(EXEC): $(2)/$(1).$(3)
+dep: $(2)/$(1).$(3)
 
 depclean_$(1): $(2)
 	make -C $$^ clean
@@ -40,10 +40,29 @@ CFLAGS += -I$$(DEP_INC_$(1))
 LFLAGS += -L$$(DEP_LIB_DIR_$(1))
 LIBS += -l$(subst lib,,$(1))
 
-$(call depend-rule,$(1),$$(DEP_LIB_DIR_$(1)))
+$(call depend-rule,$(1),$$(DEP_LIB_DIR_$(1)),a)
+endef
+
+# TODO: unify (it's the same except a toolchain={gcc,clang} parameter and the last two lines)
+define depend-llvm
+
+# These are designed to be overriddable from top-level app makefile
+DEP_ROOT_$(1) ?= $(LIB_ROOT)
+DEP_RELDIR_$(1) ?= $(1)
+DEP_INC_RELDIR_$(1) ?= src/include
+DEP_LIB_RELDIR_$(1) ?= bld/clang
+
+DEP_INC_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_RELDIR_$(1))/$$(DEP_INC_RELDIR_$(1))
+DEP_LIB_DIR_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_RELDIR_$(1))/$$(DEP_LIB_RELDIR_$(1))
+
+CFLAGS += -I$$(DEP_INC_$(1))
+LLVM_LIBS += $$(DEP_LIB_DIR_$(1))/$(1).a.bc
+
+$(call depend-rule,$(1),$$(DEP_LIB_DIR_$(1)),a.bc)
 endef
 
 # Also clean the app when cleaning dependencies
 depclean: clean
 
 $(foreach dep,$(DEPS),$(eval $(call depend,$(dep))))
+$(foreach dep,$(LLVM_DEPS),$(eval $(call depend-llvm,$(dep))))
