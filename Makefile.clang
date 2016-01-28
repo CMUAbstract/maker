@@ -18,6 +18,15 @@ AS      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-as
 LD      = $(GCC)
 GDB     = $(TOOLCHAIN_ROOT)/bin/msp430-elf-gdb
 
+# This makefile supports building either a library or an executable
+ifneq ($(LIB),)
+BIN = $(LIB).a.bc
+else ifneq ($(EXEC),)
+BIN = $(EXEC).out
+else
+$(error Neither LIB nor EXEC is set: what are we building?)
+endif
+
 CFLAGS += \
 	--target=msp430 \
 	-D$(DEVICEDEF) \
@@ -38,7 +47,7 @@ LLC_FLAGS += \
 	-O0 \
 
 LFLAGS += \
-	-Wl,-Map=$(EXEC).map \
+	-Wl,-Map=$(BIN).map \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
 
@@ -51,7 +60,7 @@ LINK_OBJECTS ?= $(OBJECTS:.o=.bc)
 
 VPATH = $(SRC_ROOT)
 
-all: $(EXEC)
+all: $(BIN)
 
 -include $(OBJECTS:.o=.d)
 
@@ -98,8 +107,8 @@ all: $(EXEC)
 clean:
 	rm -f *.o *.bc *.asm *.s *.map *.out *.a *.d
 
-debug: $(EXEC)
-	$(GDB) $(EXEC)
+debug: $(BIN)
+	$(GDB) $(BIN)
 
 include $(MAKER_ROOT)/Makefile.flash
 include $(MAKER_ROOT)/Makefile.dep

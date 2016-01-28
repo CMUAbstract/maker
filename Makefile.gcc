@@ -9,6 +9,15 @@ LD      = $(PREFIX)gcc
 AS      = $(PREFIX)as
 GDB     = $(PREFIX)gdb
 
+# This makefile supports building either a library or an executable
+ifneq ($(LIB),)
+BIN = $(LIB).a
+else ifneq ($(EXEC),)
+BIN = $(EXEC).out
+else
+$(error Neither LIB nor EXEC is set: what are we building?)
+endif
+
 COMMONFLAGS = \
 	-mmcu=$(DEVICE) \
 
@@ -30,7 +39,7 @@ LFLAGS += \
 
 VPATH = $(SRC_ROOT)
 
-all: $(EXEC)
+all: $(BIN)
 
 -include $(OBJECTS:.o=.d)
 
@@ -43,16 +52,16 @@ all: $(EXEC)
 	$(AS) $(ASFLAGS) $< -o $@
 
 %.out: $(OBJECTS)
-	$(LD) $(CFLAGS) $(LFLAGS) $(OBJECTS) $(LIBS) -o $(EXEC)
+	$(LD) $(CFLAGS) $(LFLAGS) $(OBJECTS) $(LIBS) -o $(BIN)
 
 %.a: $(OBJECTS)
 	$(AR) rcs $@ $^
 
 clean:
-	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(EXEC)
+	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(BIN)
 
-debug: $(EXEC)
-	$(GDB) $(EXEC)
+debug: $(BIN)
+	$(GDB) $(BIN)
 
 include $(MAKER_ROOT)/Makefile.flash
 include $(MAKER_ROOT)/Makefile.dep
