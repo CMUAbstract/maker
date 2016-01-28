@@ -6,8 +6,9 @@ BLD_ROOT = bld
 
 include $(MAKER_ROOT)/Makefile.env
 
+# TODO: this stopped working when we started having bld/Makefile
 # Shortcut: alias '%' to '%.default'
-%: %.default ;
+#%: %.default ;
 
 define nested-rule
 %.$(1): $(BLD_ROOT)/%
