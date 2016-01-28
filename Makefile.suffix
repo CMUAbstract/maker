@@ -1,0 +1,10 @@
+# This makefile supports building either a library or an executable
+ifneq ($(LIB),)
+TARGET_TYPE = lib
+BIN = $(LIB).$(LIB_SUFFIX)
+else ifneq ($(EXEC),)
+TARGET_TYPE = exec
+BIN = $(EXEC).$(EXEC_SUFFIX)
+else
+$(error Neither LIB nor EXEC is set: what are we building?)
+endif

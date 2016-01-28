@@ -1,3 +1,5 @@
+TOOLCHAIN = gcc
+
 include $(MAKER_ROOT)/Makefile.env
 include $(MAKER_ROOT)/Makefile.board
 
@@ -9,14 +11,9 @@ LD      = $(PREFIX)gcc
 AS      = $(PREFIX)as
 GDB     = $(PREFIX)gdb
 
-# This makefile supports building either a library or an executable
-ifneq ($(LIB),)
-BIN = $(LIB).a
-else ifneq ($(EXEC),)
-BIN = $(EXEC).out
-else
-$(error Neither LIB nor EXEC is set: what are we building?)
-endif
+LIB_SUFFIX = a
+EXEC_SUFFIX = out
+include $(MAKER_ROOT)/Makefile.suffix
 
 COMMONFLAGS = \
 	-mmcu=$(DEVICE) \
@@ -63,5 +60,13 @@ clean:
 debug: $(BIN)
 	$(GDB) $(BIN)
 
+ifeq ($(TARGET_TYPE),exec)
 include $(MAKER_ROOT)/Makefile.flash
+endif
+
+define add-lib
+LIBS += -l$(subst lib,,$(1))
+LFLAGS += -L$$(DEP_LIB_DIR_$(1))
+endef
+
 include $(MAKER_ROOT)/Makefile.dep

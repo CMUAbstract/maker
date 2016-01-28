@@ -1,4 +1,4 @@
-THIS_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+TOOLCHAIN = clang
 
 include $(MAKER_ROOT)/Makefile.env
 include $(MAKER_ROOT)/Makefile.board
@@ -18,14 +18,9 @@ AS      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-as
 LD      = $(GCC)
 GDB     = $(TOOLCHAIN_ROOT)/bin/msp430-elf-gdb
 
-# This makefile supports building either a library or an executable
-ifneq ($(LIB),)
-BIN = $(LIB).a.bc
-else ifneq ($(EXEC),)
-BIN = $(EXEC).out
-else
-$(error Neither LIB nor EXEC is set: what are we building?)
-endif
+LIB_SUFFIX = a.bc
+EXEC_SUFFIX = out
+include $(MAKER_ROOT)/Makefile.suffix
 
 CFLAGS += \
 	--target=msp430 \
@@ -110,5 +105,12 @@ clean:
 debug: $(BIN)
 	$(GDB) $(BIN)
 
+ifeq ($(TARGET_TYPE),exec)
 include $(MAKER_ROOT)/Makefile.flash
+endif
+
+define add-lib
+LLVM_LIBS += $$(DEP_LIB_DIR_$(1))/$(1).$(LIB_SUFFIX)
+endef
+
 include $(MAKER_ROOT)/Makefile.dep
