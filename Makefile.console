@@ -1,14 +1,18 @@
 CONFIG_EDB ?= 0
-CONFIG_PRINTF_LIB ?= libmspconsole
+
+# by default, there's no console
+CONFIG_PRINTF_LIB ?=
+
+# by default, PRINTF maps to libedb's EIF_PRINTF
 CONFIG_LIBEDB_PRINTF ?= eif
 
 VERBOSE ?= 0
 
 # All output channels use the same printf implementation, what differs is the
 # backend used by the printf implementation.
-DEPS += libmspprintf
 
 ifeq ($(CONFIG_PRINTF_LIB),libedb)
+DEPS += libmspprintf
 CFLAGS += -DCONFIG_LIBEDB_PRINTF
 
 ifeq ($(CONFIG_LIBEDB_PRINTF),eif)
@@ -23,12 +27,20 @@ endif # CONFIG_LIBEDB_PRINTF
 # DEPS += libedb libwispbase
 
 else ifeq ($(CONFIG_PRINTF_LIB),libmspconsole)
+DEPS += libmspprintf
 CFLAGS += -DCONFIG_LIBMSPCONSOLE_PRINTF
-DEPS += libmspconsole libwispbase
+DEPS += libmspconsole
+
+# By same reasoning as above, we don't include libwispbase as a dep here
+# DEPS += libwispbase
 
 else ifeq ($(CONFIG_PRINTF_LIB),libmspsoftuart)
+DEPS += libmspprintf
 CFLAGS += -DCONFIG_LIBMSPSOFTUART_PRINTF
 DEPS += libmspsoftuart
+
+else ifeq ($(CONFIG_PRINTF_LIB),)
+# no console: nothing to do
 
 else # CONFIG_PRINTF_LIB_*
 $(error Unknown CONFIG_PRINTF_LIB value)

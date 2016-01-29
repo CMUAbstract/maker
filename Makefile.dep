@@ -13,11 +13,16 @@
 
 define depend-rule
 
-$(2)/$(1).a: $(2)
+$(2)/$(1).$(3): $(2)
 	make -e -C $$^
 
-$(EXEC): $(2)/$(1).a
-dep: $(2)/$(1).a
+# Only add dependency for executables, not libraries.  Can't have it for libs,
+# because we use dep array in the recipe for linking objects into libraries.
+ifeq ($(TARGET_TYPE),exec)
+$(BIN): $(2)/$(1).$(3)
+endif # TARGET_TYPE
+
+dep: $(2)/$(1).$(3)
 
 depclean_$(1): $(2)
 	make -C $$^ clean
@@ -31,16 +36,15 @@ define depend
 DEP_ROOT_$(1) ?= $(LIB_ROOT)
 DEP_RELDIR_$(1) ?= $(1)
 DEP_INC_RELDIR_$(1) ?= src/include
-DEP_LIB_RELDIR_$(1) ?= bld/gcc
+DEP_LIB_RELDIR_$(1) ?= bld/$(TOOLCHAIN)
 
 DEP_INC_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_RELDIR_$(1))/$$(DEP_INC_RELDIR_$(1))
 DEP_LIB_DIR_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_RELDIR_$(1))/$$(DEP_LIB_RELDIR_$(1))
 
 CFLAGS += -I$$(DEP_INC_$(1))
-LFLAGS += -L$$(DEP_LIB_DIR_$(1))
-LIBS += -l$(subst lib,,$(1))
 
-$(call depend-rule,$(1),$$(DEP_LIB_DIR_$(1)))
+$(eval $(call add-lib,$(1)))
+$(call depend-rule,$(1),$$(DEP_LIB_DIR_$(1)),$(LIB_SUFFIX))
 endef
 
 # Also clean the app when cleaning dependencies

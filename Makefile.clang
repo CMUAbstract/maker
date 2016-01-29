@@ -1,7 +1,9 @@
-THIS_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+TOOLCHAIN = clang
 
 include $(MAKER_ROOT)/Makefile.env
 include $(MAKER_ROOT)/Makefile.board
+
+LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts
 
 PREFIX = $(CLANG_ROOT)/bin/
 CC      = $(PREFIX)clang
@@ -15,6 +17,10 @@ AS      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-as
 #LD      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-ld
 LD      = $(GCC)
 GDB     = $(TOOLCHAIN_ROOT)/bin/msp430-elf-gdb
+
+LIB_SUFFIX = a.bc
+EXEC_SUFFIX = out
+include $(MAKER_ROOT)/Makefile.suffix
 
 CFLAGS += \
 	--target=msp430 \
@@ -36,7 +42,7 @@ LLC_FLAGS += \
 	-O0 \
 
 LFLAGS += \
-	-Wl,-Map=$(EXEC).map \
+	-Wl,-Map=$(BIN).map \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
 
@@ -47,7 +53,9 @@ OPT_PROGRAM_FLAGS ?= -disable-opt
 # By default, link sources (given as object files), compiled bytecode
 LINK_OBJECTS ?= $(OBJECTS:.o=.bc)
 
-all: $(EXEC)
+VPATH = $(SRC_ROOT)
+
+all: $(BIN)
 
 -include $(OBJECTS:.o=.d)
 
@@ -86,7 +94,7 @@ all: $(EXEC)
 # Native assembly to native object code
 
 %.out: %.s
-	$(GCC) $(LFLAGS) -o $@ $^ $(LIBS)
+	$(GCC) $(LFLAGS) -o $@ $< $(LIBS)
 
 # Do not remove these intermediates
 .PRECIOUS: %.a.bc %.raw.a.bc %.raw.bc %.bc %.s
@@ -94,7 +102,21 @@ all: $(EXEC)
 clean:
 	rm -f *.o *.bc *.asm *.s *.map *.out *.a *.d
 
-debug: $(EXEC)
-	$(GDB) $(EXEC)
+debug: $(BIN)
+	$(GDB) $(BIN)
 
+ifeq ($(TARGET_TYPE),exec)
 include $(MAKER_ROOT)/Makefile.flash
+endif
+
+ifeq ($(TARGET_TYPE),exec)
+define add-lib
+LLVM_LIBS += $$(DEP_LIB_DIR_$(1))/$(1).$(LIB_SUFFIX)
+endef
+else # TARGET_TYPE
+define add-lib
+# nothing
+endef
+endif
+
+include $(MAKER_ROOT)/Makefile.dep
