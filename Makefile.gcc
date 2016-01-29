@@ -64,9 +64,15 @@ ifeq ($(TARGET_TYPE),exec)
 include $(MAKER_ROOT)/Makefile.flash
 endif
 
+ifeq ($(TARGET_TYPE),exec)
 define add-lib
 LIBS += -l$(subst lib,,$(1))
 LFLAGS += -L$$(DEP_LIB_DIR_$(1))
 endef
+else # TARGET_TYPE
+define add-lib
+# nothing
+endef
+endif
 
 include $(MAKER_ROOT)/Makefile.dep
