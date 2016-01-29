@@ -1,19 +1,16 @@
-export MAKER_ROOT = $(abspath maker)
-export LIB_ROOT = $(abspath lib)
-export SRC_ROOT = $(abspath src)
+BLD_REL_ROOT = bld
+LIB_REL_ROOT = lib
 
-BLD_ROOT = bld
+export MAKER_ROOT = $(abspath maker)
+export SRC_ROOT = $(abspath src)
+export LIB_ROOT = $(abspath $(LIB_REL_ROOT))
 
 include $(MAKER_ROOT)/Makefile.env
 
-# TODO: this stopped working when we started having bld/Makefile
-# Shortcut: alias '%' to '%.default'
-#%: %.default ;
-
 define nested-rule
-%.$(1): $(BLD_ROOT)/%
-	make -e -C $(BLD_ROOT)/$$* $(subst default,,$(1))
+$(1)/$(2).%:
+	make -e -C $(1)/$(2) $$*
 endef
 
-NESTED_TARGETS = default clean dep depclean flash
-$(foreach target,$(NESTED_TARGETS),$(eval $(call nested-rule,$(target))))
+$(foreach tc,$(TOOLCHAINS),$(eval $(call nested-rule,$(BLD_REL_ROOT),$(tc))))
+$(foreach lib,$(LIBRARIES),$(eval $(call nested-rule,$(LIB_REL_ROOT),$(lib))))
