@@ -16,7 +16,12 @@ define depend-rule
 $(2)/$(1).$(3): $(2)
 	make -e -C $$^
 
+# Only add dependency for executables, not libraries.  Can't have it for libs,
+# because we use dep array in the recipe for linking objects into libraries.
+ifeq ($(TARGET_TYPE),exec)
 $(BIN): $(2)/$(1).$(3)
+endif # TARGET_TYPE
+
 dep: $(2)/$(1).$(3)
 
 depclean_$(1): $(2)
