@@ -1,9 +1,9 @@
 BLD_REL_ROOT = bld
 LIB_REL_ROOT = lib
 
-export MAKER_ROOT = $(abspath maker)
 export SRC_ROOT = $(abspath src)
 export LIB_ROOT = $(abspath $(LIB_REL_ROOT))
+export MAKER_ROOT = $(LIB_ROOT)/maker
 
 include $(MAKER_ROOT)/Makefile.env
 
