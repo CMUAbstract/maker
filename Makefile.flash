@@ -9,8 +9,12 @@ ARGS = \
 	-v $(VOLTAGE) \
 	-d $(FET_DEVICE) \
 
+ifneq ($(LIBMSP430_ROOT),)
+export LD_LIBRARY_PATH := $(LIBMSP430_ROOT)
+endif
+
 flash: $(BIN)
-	LD_LIBRARY_PATH=$(LIBMSP430_ROOT) mspdebug $(ARGS) tilib "prog $(BIN)"
+	mspdebug $(ARGS) tilib "prog $(BIN)"
 
 power:
-	LD_LIBRARY_PATH=$(LIBMSP430_ROOT) mspdebug $(ARGS) tilib "exit"
+	mspdebug $(ARGS) tilib "exit"
