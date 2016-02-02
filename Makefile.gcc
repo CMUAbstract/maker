@@ -1,3 +1,5 @@
+TOOLCHAIN = gcc
+
 include $(MAKER_ROOT)/Makefile.env
 include $(MAKER_ROOT)/Makefile.board
 
@@ -8,6 +10,10 @@ CC      = $(PREFIX)gcc
 LD      = $(PREFIX)gcc
 AS      = $(PREFIX)as
 GDB     = $(PREFIX)gdb
+
+LIB_SUFFIX = a
+EXEC_SUFFIX = out
+include $(MAKER_ROOT)/Makefile.suffix
 
 COMMONFLAGS = \
 	-mmcu=$(DEVICE) \
@@ -30,7 +36,7 @@ LFLAGS += \
 
 VPATH = $(SRC_ROOT)
 
-all: $(EXEC)
+all: $(BIN)
 
 -include $(OBJECTS:.o=.d)
 
@@ -43,16 +49,30 @@ all: $(EXEC)
 	$(AS) $(ASFLAGS) $< -o $@
 
 %.out: $(OBJECTS)
-	$(LD) $(CFLAGS) $(LFLAGS) $(OBJECTS) $(LIBS) -o $(EXEC)
+	$(LD) $(CFLAGS) $(LFLAGS) $(OBJECTS) $(LIBS) -o $(BIN)
 
 %.a: $(OBJECTS)
 	$(AR) rcs $@ $^
 
 clean:
-	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(EXEC)
+	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(BIN)
 
-debug: $(EXEC)
-	$(GDB) $(EXEC)
+debug: $(BIN)
+	$(GDB) $(BIN)
 
+ifeq ($(TARGET_TYPE),exec)
 include $(MAKER_ROOT)/Makefile.flash
+endif
+
+ifeq ($(TARGET_TYPE),exec)
+define add-lib
+LIBS += -l$(subst lib,,$(1))
+LFLAGS += -L$$(DEP_LIB_DIR_$(1))
+endef
+else # TARGET_TYPE
+define add-lib
+# nothing
+endef
+endif
+
 include $(MAKER_ROOT)/Makefile.dep
