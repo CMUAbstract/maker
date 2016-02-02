@@ -17,6 +17,8 @@ DINO_LIB = $(LLVM_ROOT)/lib/DINO.so
 # use DINO compiler passes, but immitate them manually using macros.
 #CFLAGS += -Xclang -load -Xclang $(DINO_LIB)
 
+DINO_ROOT = $(LIB_ROOT)/libdino/DinoRuntime
+
 LLVM_LIBS += \
 	$(DINO_ROOT)/dino.a.bc \
 	$(MEMENTOS_ROOT)/mementos+raw.bc \
