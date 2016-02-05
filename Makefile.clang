@@ -86,6 +86,10 @@ all: $(BIN)
 %.a.bc : %.opt.a.bc
 	$(LLVM_LINK) -o $@ $^ $(LLVM_NOOPT_LIBS)
 
+# Disassemble IR bytecode (this is auxiliary, not part of the build pipeline)
+%.ll : %.raw.bc
+	$(LLVM_DIS) -o $@ $^
+
 # LLVM bytecode to native assembly
 
 %.s: %.a.bc
@@ -100,7 +104,7 @@ all: $(BIN)
 .PRECIOUS: %.a.bc %.raw.a.bc %.raw.bc %.bc %.s
 
 clean:
-	rm -f *.o *.bc *.asm *.s *.map *.out *.a *.d
+	rm -f *.o *.bc *.asm *.s *.map *.out *.a *.d *.ll
 
 debug: $(BIN)
 	$(GDB) $(BIN)
