@@ -46,10 +46,6 @@ LFLAGS += \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
 
-OPT_FLAGS += $(foreach mod,$(OPT_MODULES),-load $(mod))
-OPT_MODULE_FLAGS  ?= -disable-opt
-OPT_PROGRAM_FLAGS ?= -disable-opt
-
 # By default, link sources (given as object files), compiled bytecode
 LINK_OBJECTS ?= $(OBJECTS:.o=.bc)
 
@@ -70,21 +66,12 @@ all: $(BIN)
 
 # LLVM/Clang compiler and linker part of the pipeline
 
-%.raw.bc: %.c
+%.bc: %.c
 	mkdir -p "./$(shell dirname $@)"
 	$(CC) -emit-llvm -c $(CFLAGS) $< -o $@
 
-%.bc : %.raw.bc
-	$(OPT) $(OPT_FLAGS) $(OPT_MODULE_FLAGS) -o $@ $^
-
-%.raw.a.bc: $(LINK_OBJECTS)
+%.a.bc: $(LINK_OBJECTS)
 	$(LLVM_LINK) -o $@ $^ $(LLVM_LIBS)
-
-%.opt.a.bc : %.raw.a.bc
-	$(OPT) $(OPT_FLAGS) $(OPT_PROGRAM_FLAGS) -o $@ $^
-
-%.a.bc : %.opt.a.bc
-	$(LLVM_LINK) -o $@ $^ $(LLVM_NOOPT_LIBS)
 
 # Disassemble IR bytecode (this is auxiliary, not part of the build pipeline)
 %.ll : %.bc
@@ -101,7 +88,7 @@ all: $(BIN)
 	$(GCC) $(LFLAGS) -o $@ $< $(LIBS)
 
 # Do not remove these intermediates
-.PRECIOUS: %.a.bc %.raw.a.bc %.raw.bc %.bc %.s
+.PRECIOUS: %.a.bc %.bc %.s
 
 clean:
 	rm -f *.o *.bc *.asm *.s *.map *.out *.a *.d *.ll
