@@ -1,4 +1,4 @@
-LLVM_ROOT ?= /usr
+include $(MAKER_ROOT)/Makefile.env
 
 CMAKE_VARS = \
 	-DCMAKE_PREFIX_PATH=$(LLVM_ROOT) \
