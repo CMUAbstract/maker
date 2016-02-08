@@ -24,4 +24,6 @@ LIBS += -ledb
 
 endif # TOOLCHAIN != gcc
 
+include $(LIB_ROOT)/libedb/bld/Makefile.config
+
 endif # CONFIG_EDB
