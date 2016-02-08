@@ -87,7 +87,7 @@ all: $(BIN)
 	$(LLVM_LINK) -o $@ $^ $(LLVM_NOOPT_LIBS)
 
 # Disassemble IR bytecode (this is auxiliary, not part of the build pipeline)
-%.ll : %.raw.bc
+%.ll : %.bc
 	$(LLVM_DIS) -o $@ $^
 
 # LLVM bytecode to native assembly
