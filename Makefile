@@ -13,4 +13,4 @@ $(1)/$(2)/%:
 endef
 
 $(foreach tc,$(TOOLCHAINS),$(eval $(call nested-rule,$(BLD_REL_ROOT),$(tc))))
-$(foreach lib,$(LIBRARIES),$(eval $(call nested-rule,$(EXT_REL_ROOT),$(lib))))
+$(foreach lib,$(TOOLS),$(eval $(call nested-rule,$(EXT_REL_ROOT),$(lib))))
