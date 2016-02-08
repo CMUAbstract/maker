@@ -12,7 +12,7 @@ VERBOSE ?= 0
 # backend used by the printf implementation.
 
 ifeq ($(CONFIG_PRINTF_LIB),libedb)
-DEPS += libmspprintf
+DEPS += libmspprintf libio
 CFLAGS += -DCONFIG_LIBEDB_PRINTF
 
 ifeq ($(CONFIG_LIBEDB_PRINTF),eif)
@@ -27,7 +27,7 @@ endif # CONFIG_LIBEDB_PRINTF
 # DEPS += libedb libwispbase
 
 else ifeq ($(CONFIG_PRINTF_LIB),libmspconsole)
-DEPS += libmspprintf
+DEPS += libmspprintf libio
 CFLAGS += -DCONFIG_LIBMSPCONSOLE_PRINTF
 DEPS += libmspconsole
 
@@ -35,7 +35,7 @@ DEPS += libmspconsole
 # DEPS += libwispbase
 
 else ifeq ($(CONFIG_PRINTF_LIB),libmspsoftuart)
-DEPS += libmspprintf
+DEPS += libmspprintf libio
 CFLAGS += -DCONFIG_LIBMSPSOFTUART_PRINTF
 DEPS += libmspsoftuart
 
