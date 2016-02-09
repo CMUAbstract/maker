@@ -57,12 +57,6 @@ all: $(BIN)
 
 # disable implicit rule that for some reason overrides the chained rules below
 .SUFFIXES:
-%.o : %.c
-%.o : %.S
-%.o : %.s
-%.out : %.o
-%.out : %
-(%) : %
 
 # LLVM/Clang compiler and linker part of the pipeline
 
