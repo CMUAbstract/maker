@@ -13,8 +13,8 @@ ifneq ($(LIBMSP430_ROOT),)
 export LD_LIBRARY_PATH := $(LIBMSP430_ROOT)
 endif
 
-flash: $(BIN)
-	mspdebug $(ARGS) tilib "prog $(BIN)"
+%.flash: %.out
+	mspdebug $(ARGS) tilib "prog $<"
 
 power:
 	mspdebug $(ARGS) tilib "exit"
