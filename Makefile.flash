@@ -16,8 +16,5 @@ endif
 power:
 	mspdebug $(ARGS) tilib "exit"
 
-%.flash: %.out
-	mspdebug $(ARGS) tilib "prog $<"
-
 $(EXEC).flash: $(EXEC).out
 	mspdebug $(ARGS) tilib "prog $<"
