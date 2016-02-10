@@ -80,6 +80,10 @@ all: $(BIN)
 %.ll.bc: %.ll
 	$(LLVM_AS) -o $@ $^
 
+# View the CFG graph in a .dot program (via xdg-open)
+%.bc.cfg: %.bc
+	$(OPT) -view-cfg $<
+
 # LLVM bytecode to native assembly
 
 %.s: %.a.bc
