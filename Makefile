@@ -9,7 +9,7 @@ include $(MAKER_ROOT)/Makefile.env
 
 define nested-rule
 $(1)/$(2)/%:
-	make -e -C $(1)/$(2) $$*
+	make TOOLCHAIN=$(2) -e -C $(1)/$(2) $$*
 endef
 
 $(foreach tc,$(TOOLCHAINS),$(eval $(call nested-rule,$(BLD_REL_ROOT),$(tc))))
