@@ -40,6 +40,9 @@ all: $(BIN)
 
 -include $(OBJECTS:.o=.d)
 
+# disable implicit rule that for some reason overrides the chained rules below
+#.SUFFIXES:
+
 %.o: %.c
 	mkdir -p "./$(shell dirname $@)"
 	$(CC) -c -MD $(CFLAGS) $< -o $@
