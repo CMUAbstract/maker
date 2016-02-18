@@ -9,6 +9,7 @@ PREFIX = $(CLANG_ROOT)/bin/
 CC      = $(PREFIX)clang
 LLC     = $(PREFIX)llc
 LLVM_LINK= $(PREFIX)/llvm-link
+LLVM_AS = $(PREFIX)/llvm-as
 LLVM_DIS = $(PREFIX)/llvm-dis
 OPT      = $(PREFIX)/opt
 
@@ -70,6 +71,18 @@ all: $(BIN)
 # Disassemble IR bytecode (this is auxiliary, not part of the build pipeline)
 %.ll : %.bc
 	$(LLVM_DIS) -o $@ $^
+
+# Produce C++ code for constructing the given IR (aux target)
+%.ir : %.bc
+	$(LLC) -march=cpp -o $@ $^
+
+# Compile LLVM IR into LLVM bytecode (aux target)
+%.ll.bc: %.ll
+	$(LLVM_AS) -o $@ $^
+
+# View the CFG graph in a .dot program (via xdg-open)
+%.bc.cfg: %.bc
+	$(OPT) -view-cfg $<
 
 # LLVM bytecode to native assembly
 
