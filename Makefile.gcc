@@ -64,7 +64,7 @@ debug: $(BIN)
 	$(GDB) $(BIN)
 
 ifeq ($(TARGET_TYPE),exec)
-include $(MAKER_ROOT)/Makefile.flash
+include $(MAKER_ROOT)/Makefile.program
 endif
 
 ifeq ($(TARGET_TYPE),exec)
