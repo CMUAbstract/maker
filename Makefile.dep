@@ -50,4 +50,5 @@ endef
 # Also clean the app when cleaning dependencies
 depclean: clean
 
-$(foreach dep,$(DEPS),$(eval $(call depend,$(dep))))
+UNIQUE_DEPS = $(sort $(DEPS))
+$(foreach dep,$(UNIQUE_DEPS),$(eval $(call depend,$(dep))))
