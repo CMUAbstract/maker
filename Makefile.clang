@@ -86,19 +86,22 @@ all: $(BIN)
 
 # LLVM bytecode to native assembly
 
-%.s: %.a.bc
+%.s: %.bc
+	$(LLC) $(LLC_FLAGS) $^ -o $@
+
+%.S: %.a.bc
 	$(LLC) $(LLC_FLAGS) $^ -o $@
 
 # Native assembly to native object code
 
-%.out: %.s
+%.out: %.S
 	$(GCC) $(LFLAGS) -o $@ $< $(LIBS)
 
 # Do not remove these intermediates
-.PRECIOUS: %.a.bc %.bc %.s
+.PRECIOUS: %.a.bc %.bc %.s %.S
 
 clean:
-	rm -f *.o *.bc *.asm *.s *.map *.out *.a *.d *.ll
+	rm -f *.o *.bc *.asm *.s *.S *.map *.out *.a *.d *.ll
 
 debug: $(BIN)
 	$(GDB) $(BIN)
