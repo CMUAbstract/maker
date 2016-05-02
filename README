@@ -24,3 +24,30 @@ targets and toolchains are:
 | --------------- | ----------------- | ------------- | ---------- |
 | MSP430FR5969    |                 Y |             Y |          Y |
 | MSP430F5340     |                   |             Y |          Y |
+
+
+## Usage: defining the build
+
+TODO: explain what makefiles need to be created and what should go into them.
+
+For now, refer to an example app.
+
+
+## Usage: build targets
+
+To carry out a particular piece of the build, tell Maker to build a
+target with a particular name, by invoking make from the application
+root directory. The target name usually includes a hierarchical path, and
+sometimes a suffix. For example,
+
+    make bld/gcc/dep
+
+builds the dependencies of the application with the GCC toolchain, and
+
+    make bld/gcc/all
+
+builds the application with the GCC toolchain.
+
+    make bld/gcc/theapp.prog
+
+programs (aka. "flashes") the application onto the MCU.
