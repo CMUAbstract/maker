@@ -6,11 +6,11 @@ tree layout. A packaged library can be used concisely and consistently by
 including it into the app repo as a git submodule, listing it as a dependency
 in the application makefile:
 
-   DEPS += libbase
+    DEPS += libbase
 
 and by including it's headers in the source:
    
-   #include <libbase/foundation.h>
+    #include <libbase/foundation.h>
 
 Maker reads a high-level toolchain-agnostic build specification for an
 application or a library from a corresponding makefile.  A build can be made
