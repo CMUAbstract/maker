@@ -23,7 +23,13 @@ LIB_SUFFIX = a.bc
 EXEC_SUFFIX = out
 include $(MAKER_ROOT)/Makefile.suffix
 
-CFLAGS += \
+# We override because when this file is included from a nested build directory
+# (say, when the app or toolchain has more than one build artifact, each built
+# by its own makefile), the CFLAGS are passed via '$(MAKE) -e', with which
+# changing the value of a variable is only possible with override. It's ugly,
+# but hopefully, this is enough to make things work.
+
+override CFLAGS += \
 	--target=msp430 \
 	-D$(DEVICEDEF) \
 	-nobuiltininc \
@@ -39,10 +45,10 @@ CFLAGS += \
 	-I $(TOOLCHAIN_ROOT)/msp430-elf/include \
 	-I $(TOOLCHAIN_ROOT)/include \
 
-LLC_FLAGS += \
+override LLC_FLAGS += \
 	-O0 \
 
-LFLAGS += \
+override LFLAGS += \
 	-Wl,-Map=$(BIN).map \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \

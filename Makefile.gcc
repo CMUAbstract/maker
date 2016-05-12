@@ -21,7 +21,13 @@ COMMONFLAGS = \
 ASFLAGS = \
 	$(COMMONFLAGS) \
 
-CFLAGS += \
+# We override because when this file is included from a nested build directory
+# (say, when the app or toolchain has more than one build artifact, each built
+# by its own makefile), the CFLAGS are passed via '$(MAKE) -e', with which
+# changing the value of a variable is only possible with override. It's ugly,
+# but hopefully, this is enough to make things work.
+
+override CFLAGS += \
 	$(COMMONFLAGS) \
 	-D$(DEVICEDEF) \
 	-O1 \
@@ -30,7 +36,7 @@ CFLAGS += \
 	-Wall \
 	-I $(TOOLCHAIN_ROOT)/include \
 
-LFLAGS += \
+override LFLAGS += \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
 
@@ -70,7 +76,7 @@ endif
 ifeq ($(TARGET_TYPE),exec)
 define add-lib
 LIBS += -l$(subst lib,,$(1))
-LFLAGS += -L$$(DEP_LIB_DIR_$(1))
+override LFLAGS += -L$$(DEP_LIB_DIR_$(1))
 endef
 else # TARGET_TYPE
 define add-lib
