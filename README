@@ -1,6 +1,0 @@
-Shared makefiles that can build an app or a library for
-different targets using different toolchains.
-
-List of supported targets and toolchains:
-
-* MSP430FR5969: TI CL430 compiler, TI MSP430 GCC, Clang

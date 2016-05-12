@@ -36,6 +36,11 @@ override CFLAGS += \
 	-Wall \
 	-I $(TOOLCHAIN_ROOT)/include \
 
+# To prevent printf() getting replaced with puts from libc instead of from our
+# I/O backend lib. Note that we used to rely on overriding puts/putchar symbols,
+# but that seems to be fragile. One day it just stopped overriding.
+override CFLAGS += -fno-builtin
+
 override LFLAGS += \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
