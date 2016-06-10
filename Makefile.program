@@ -18,5 +18,9 @@ power:
 
 prog: $(EXEC).prog
 
+define prog
+	mspdebug $(ARGS) tilib "prog $1"
+endef
+
 %.prog: %.out
-	mspdebug $(ARGS) tilib "prog $<"
+	$(call prog,$<)
