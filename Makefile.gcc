@@ -74,6 +74,9 @@ clean:
 debug: $(BIN)
 	$(GDB) $(BIN)
 
+# disable implicit rules, for personal sanity
+.SUFFIXES:
+
 ifeq ($(TARGET_TYPE),exec)
 include $(MAKER_ROOT)/Makefile.program
 endif
