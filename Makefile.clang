@@ -7,11 +7,11 @@ LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts
 
 PREFIX = $(CLANG_ROOT)/bin/
 CC      = $(PREFIX)clang
-LLC     = $(PREFIX)llc
-LLVM_LINK= $(PREFIX)/llvm-link
-LLVM_AS = $(PREFIX)/llvm-as
-LLVM_DIS = $(PREFIX)/llvm-dis
-OPT      = $(PREFIX)/opt
+export LLC     = $(PREFIX)llc
+export LLVM_LINK= $(PREFIX)/llvm-link
+export LLVM_AS = $(PREFIX)/llvm-as
+export LLVM_DIS = $(PREFIX)/llvm-dis
+export OPT      = $(PREFIX)/opt
 
 GCC     = $(TOOLCHAIN_ROOT)/bin/msp430-elf-gcc
 AS      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-as
