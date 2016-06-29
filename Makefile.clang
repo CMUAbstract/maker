@@ -43,6 +43,7 @@ override CFLAGS += \
 	-I $(TOOLCHAIN_ROOT)/lib/gcc/msp430-elf/4.9.1/include \
 	-I $(TOOLCHAIN_ROOT)/msp430-elf/include \
 	-I $(TOOLCHAIN_ROOT)/include \
+	-I $(SRC_ROOT) \
 
 override LLC_FLAGS += \
 	-O0 \
