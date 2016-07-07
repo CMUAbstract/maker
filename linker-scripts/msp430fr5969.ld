@@ -218,7 +218,7 @@ SECTIONS
     KEEP (*(.dtors))
   } > ROM
 
-  .nv_vars :
+  .nv :
   {
     . = ALIGN(2);
     PROVIDE (__fram_vars_start = .);
