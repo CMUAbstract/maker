@@ -1,6 +1,6 @@
 include $(MAKER_ROOT)/Makefile.env
 
-CMAKE_VARS = \
+CMAKE_VARS += \
 	-DCMAKE_PREFIX_PATH=$(LLVM_ROOT) \
 	-DCMAKE_MODULE_PATH=$(LLVM_ROOT)/share/llvm/cmake \
 
