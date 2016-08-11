@@ -9,6 +9,7 @@ PREFIX = $(TOOLCHAIN_ROOT)/bin/msp430-elf-
 CC      = $(PREFIX)gcc
 LD      = $(PREFIX)gcc
 AS      = $(PREFIX)as
+AR      = $(PREFIX)ar
 GDB     = $(PREFIX)gdb
 
 LIB_SUFFIX = a
