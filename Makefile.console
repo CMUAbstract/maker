@@ -12,8 +12,13 @@ VERBOSE ?= 0
 # backend used by the printf implementation.
 
 ifeq ($(CONFIG_PRINTF_LIB),libedb)
-override DEPS += libio libmspprintf libedb libwispbase
+override DEPS += libio libmspprintf
 override CFLAGS += -DCONFIG_LIBEDB_PRINTF
+
+# Can't add libedb to DEPS because it must be built with gcc even when
+# linking into an app built with clang
+include $(LIB_ROOT)/libedb/bld/Makefile.target
+include $(LIB_ROOT)/libwispbase/bld/Makefile.target
 
 ifeq ($(CONFIG_LIBEDB_PRINTF),eif)
 override CFLAGS += -DCONFIG_LIBEDB_PRINTF_EIF
@@ -25,6 +30,10 @@ else ifeq ($(CONFIG_PRINTF_LIB),libmspconsole)
 override DEPS += libio libmspprintf libwispbase
 override CFLAGS += -DCONFIG_LIBMSPCONSOLE_PRINTF
 override DEPS += libmspconsole
+
+# Can't add libwispbase to DEPS because it must be built with gcc even when
+# linking into an app built with clang
+include $(LIB_ROOT)/libwispbase/bld/Makefile.target
 
 else ifeq ($(CONFIG_PRINTF_LIB),libmspsoftuart)
 override DEPS += libmspprintf libio
