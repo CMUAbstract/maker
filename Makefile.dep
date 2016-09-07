@@ -56,5 +56,12 @@ endef
 # Also clean the app when cleaning dependencies
 depclean: clean
 
-UNIQUE_DEPS = $(sort $(DEPS))
-$(foreach dep,$(UNIQUE_DEPS),$(eval $(call depend,$(dep))))
+define unique
+$(if $(filter 1, $(words $(1))),
+     $(1),
+     $(if $(filter $(firstword $(1)), $(wordlist 2, $(words $(1)), $(1))),
+          $(call unique, $(wordlist 2, $(words $(1)), $(1))),
+          $(firstword $(1)) $(call unique, $(wordlist 2, $(words $(1)), $(1)))))
+endef # unique
+
+$(foreach dep,$(call unique,$(DEPS)),$(eval $(call depend,$(dep))))
