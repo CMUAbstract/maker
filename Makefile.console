@@ -12,11 +12,12 @@ VERBOSE ?= 0
 # backend used by the printf implementation.
 
 ifeq ($(CONFIG_PRINTF_LIB),libedb)
-override DEPS += libio libmspprintf
+override DEPS += libio
 override CFLAGS += -DCONFIG_LIBEDB_PRINTF
 
 # Can't add libedb to DEPS because it must be built with gcc even when
 # linking into an app built with clang
+include $(LIB_ROOT)/libmspprintf/bld/Makefile.target
 include $(LIB_ROOT)/libedb/bld/Makefile.target
 include $(LIB_ROOT)/libwispbase/bld/Makefile.target
 
