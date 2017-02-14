@@ -29,6 +29,12 @@ DEVICE  = msp430f5340
 DEVICEDEF = __MSP430F5340__
 endif
 
+ifeq ($(BOARD),edb-1.1)
+override CFLAGS += -DBOARD_EDB_1_1
+DEVICE  = msp430f5340
+DEVICEDEF = __MSP430F5340__
+endif
+
 ifeq ($(BOARD),sprite-edb)
 override CFLAGS += -DBOARD_SPRITE_EDB
 DEVICE  = cc430f5137
