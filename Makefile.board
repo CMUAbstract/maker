@@ -89,6 +89,12 @@ DEVICE  = msp430fr6989
 DEVICEDEF = __MSP430FR6989__
 endif
 
+ifeq ($(BOARD),msp-ts430rha40a)
+override CFLAGS += -DBOARD_MSP_TS430RHA40A
+DEVICE  = msp430fr5949
+DEVICEDEF = __MSP430FR5949__
+endif
+
 ifeq ($(CONT_POWER),1)
 override CFLAGS += -DCONT_POWER
 endif
