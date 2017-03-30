@@ -95,6 +95,12 @@ DEVICE  = msp430fr5949
 DEVICEDEF = __MSP430FR5949__
 endif
 
+ifeq ($(BOARD),capybara)
+override CFLAGS += -DBOARD_CAPYBARA
+DEVICE  = msp430fr5949
+DEVICEDEF = __MSP430FR5949__
+endif
+
 ifeq ($(CONT_POWER),1)
 override CFLAGS += -DCONT_POWER
 endif
