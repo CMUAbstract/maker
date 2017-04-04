@@ -41,13 +41,15 @@ MEMORY {
   SFR              : ORIGIN = 0x0000, LENGTH = 0x0010 /* END=0x0010, size 16 */
   PERIPHERAL_8BIT  : ORIGIN = 0x0010, LENGTH = 0x00F0 /* END=0x0100, size 240 */
   PERIPHERAL_16BIT : ORIGIN = 0x0100, LENGTH = 0x0100 /* END=0x0200, size 256 */
-  RAM              : ORIGIN = 0x1C00, LENGTH = 0x0800 /* END=0x23FF, size 2048 */
-  INFOMEM          : ORIGIN = 0x1800, LENGTH = 0x0200 /* END=0x19FF, size 512 as 4 128-byte segments */
-  INFOA            : ORIGIN = 0x1980, LENGTH = 0x0080 /* END=0x19FF, size 128 */
-  INFOB            : ORIGIN = 0x1900, LENGTH = 0x0080 /* END=0x197F, size 128 */
-  INFOC            : ORIGIN = 0x1880, LENGTH = 0x0080 /* END=0x18FF, size 128 */
-  INFOD            : ORIGIN = 0x1800, LENGTH = 0x0080 /* END=0x187F, size 128 */
-  ROM (rx)         : ORIGIN = 0x4400, LENGTH = 0xBB80 /* END=0xFF7F, size 48000 */
+/*  RAM              : ORIGIN = 0x1C00, LENGTH = 0x0800 */ /* END=0x23FF, size 2048 */
+  INFOMEM          : ORIGIN = 0x1800, LENGTH = 0x0200  /* END=0x19FF, size 512 as 4 128-byte segments */
+  INFOA            : ORIGIN = 0x1980, LENGTH = 0x0080  /* END=0x19FF, size 128 */
+  INFOB            : ORIGIN = 0x1900, LENGTH = 0x0080  /* END=0x197F, size 128 */
+  INFOC            : ORIGIN = 0x1880, LENGTH = 0x0080  /* END=0x18FF, size 128 */
+  INFOD            : ORIGIN = 0x1800, LENGTH = 0x0080  /* END=0x187F, size 128 */
+/*  ROM (rx)         : ORIGIN = 0x4400, LENGTH = 0xBB80 */ /* END=0xFF7F, size 48000 */
+  RAM              : ORIGIN = 0xF780, LENGTH = 0x0800  /* END=0xFF7f, size 2048 */
+  ROM (rx)         : ORIGIN = 0x4400, LENGTH = 0xB380  /* END=0xf77f, size 45952 */
   VECT1            : ORIGIN = 0xFF90, LENGTH = 0x0002
   VECT2            : ORIGIN = 0xFF92, LENGTH = 0x0002
   VECT3            : ORIGIN = 0xFF94, LENGTH = 0x0002
