@@ -2,6 +2,7 @@ TOOLCHAIN = gcc
 
 include $(MAKER_ROOT)/Makefile.env
 include $(MAKER_ROOT)/Makefile.board
+#include $(MAKER_ROOT)/Makefile.console
 
 LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts
 

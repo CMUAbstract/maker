@@ -39,7 +39,7 @@ override CFLAGS += \
 	-nobuiltininc \
 	-nostdinc++ \
 	-isysroot /none \
-	-O0 \
+	-O3 \
 	-g \
 	-std=c99 \
 	-Wall \
@@ -52,7 +52,7 @@ override CFLAGS += \
 #	-I /home/reviewer/src/apps/app-temp-log-alpaca-new/ext/libwispbase/src/include \
 
 override LLC_FLAGS += \
-	-O0 \
+	-O3 \
 
 ifneq ($(HWMULT),1)
 override LLC_FLAGS += -msp430-hwmult-mode=no

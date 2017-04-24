@@ -13,6 +13,7 @@ VERBOSE ?= 0
 
 ifeq ($(CONFIG_PRINTF_LIB),libedb)
 override DEPS += libio
+#override DEPS += libio 
 override CFLAGS += -DCONFIG_LIBEDB_PRINTF
 
 # Can't add libedb to DEPS because it must be built with gcc even when
@@ -28,13 +29,17 @@ override CFLAGS += -DCONFIG_LIBEDB_PRINTF_BARE
 endif # CONFIG_LIBEDB_PRINTF
 
 else ifeq ($(CONFIG_PRINTF_LIB),libmspconsole)
-override DEPS += libio libmspprintf
+override DEPS += libio
+#override DEPS += libio
 override CFLAGS += -DCONFIG_LIBMSPCONSOLE_PRINTF
-override DEPS += libmspconsole
+#override DEPS += libmspconsole libwispbase
 
 # Can't add libwispbase to DEPS because it must be built with gcc even when
 # linking into an app built with clang
+include $(LIB_ROOT)/libmspprintf/bld/Makefile.target
+include $(LIB_ROOT)/libmspconsole/bld/Makefile.target
 include $(LIB_ROOT)/libwispbase/bld/Makefile.target
+#include $(LIB_ROOT)/libmspprintf/bld/Makefile.target
 
 else ifeq ($(CONFIG_PRINTF_LIB),libmspsoftuart)
 override DEPS += libmspprintf libio
