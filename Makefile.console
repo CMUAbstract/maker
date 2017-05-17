@@ -50,6 +50,10 @@ endif # CONFIG_PRINTF_LIB_*
 
 override CFLAGS += -DVERBOSE=$(VERBOSE)
 
+ifeq ($(USE_PHOTORES),1)
+override CFLAGS += -DUSE_PHOTORES
+endif 
+
 ifeq ($(MEASURE), MEAS_PROX)
 override CFLAGS += -DMEAS_PROX
 
