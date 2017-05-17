@@ -23,6 +23,8 @@ ASFLAGS = \
 
 HWMULT ?= 1
 
+OPT_LEVEL ?= 2
+
 # We override because when this file is included from a nested build directory
 # (say, when the app or toolchain has more than one build artifact, each built
 # by its own makefile), the CFLAGS are passed via '$(MAKE) -e', with which
@@ -32,7 +34,7 @@ HWMULT ?= 1
 override CFLAGS += \
 	$(COMMONFLAGS) \
 	-D$(DEVICEDEF) \
-	-O1 \
+	-O$(OPT_LEVEL) \
 	-g \
 	-std=c99 \
 	-Wall \
