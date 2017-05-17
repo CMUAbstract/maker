@@ -1,6 +1,6 @@
 include $(MAKER_ROOT)/Makefile.env
 
-VOLTAGE = 3300
+VOLTAGE ?= 2400
 DEVICE_IDX ?= 0
 
 FET_DEVICE = /dev/ttyACM$(DEVICE_IDX)
