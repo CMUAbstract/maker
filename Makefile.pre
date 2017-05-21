@@ -1,0 +1,17 @@
+# Functions useful in pre-pre-processor, e.g. for generating macro values
+
+define eval_int
+$(shell echo -e "scale=0\n $(1)" | bc -l)
+endef
+
+# Define macros for port and pin from a pin spec (e.g. '2.4')
+define pin
+-DPORT_$(1)=$(firstword $(subst ., ,$(PIN_$(1)))) \
+-DPIN_$(1)=$(lastword $(subst ., ,$(PIN_$(1))))
+endef
+
+# Define macros for comparator type and channel from chan spec (e.g. 'B.4')
+define comp_chan
+-DCOMP_TYPE_$(1)=$(firstword $(subst ., ,$(COMP_CHAN_$(1)))) \
+-DCOMP_CHAN_$(1)=$(lastword $(subst ., ,$(COMP_CHAN_$(1))))
+endef
