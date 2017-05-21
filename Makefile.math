@@ -1,5 +1,0 @@
-# Functions useful in pre-pre-processor, e.g. for generating macro values
-
-define eval_int
-$(shell echo -e "scale=0\n $(1)" | bc -l)
-endef
