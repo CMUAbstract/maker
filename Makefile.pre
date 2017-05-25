@@ -1,8 +1,17 @@
 # Functions useful in pre-pre-processor, e.g. for generating macro values
 
-define eval_int
-$(shell echo -e "scale=0\n $(1)" | bc -l)
+define calc
+$(shell echo -e "scale=8\n $(1)" | bc -l)
 endef
+
+define calc_int
+$(shell echo -e "scale=0\n ($(call calc,$(1))) / 1" | bc -l)
+endef
+
+define calc_test
+$(shell echo -e "$(1)" | bc -l)
+endef
+
 
 # Define macros for port and pin from a pin spec (e.g. '2.4')
 define pin
@@ -14,4 +23,9 @@ endef
 define comp_chan
 -DCOMP_TYPE_$(1)=$(firstword $(subst ., ,$(COMP_CHAN_$(1)))) \
 -DCOMP_CHAN_$(1)=$(lastword $(subst ., ,$(COMP_CHAN_$(1))))
+endef
+
+# Construct math expression for voltage divider from "R1:R2"
+define vdiv
+($(lastword $(subst :, ,$(1))) / ($(firstword $(subst :, ,$(1))) + $(lastword $(subst :, ,$(1)))))
 endef
