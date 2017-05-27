@@ -18,8 +18,12 @@ power:
 
 prog: $(EXEC).prog
 
+# Set the ERASE_SEGMENTS in app Makefile to list of segment addresses to erase
+ERASE_SEGMENTS ?=
+ERASE_CMD = $(foreach segment,$(ERASE_SEGMENTS),"erase segment $(segment)" )
+
 define prog
-	mspdebug $(ARGS) tilib "prog $1"
+	mspdebug $(ARGS) tilib $(ERASE_CMD) "prog $1"
 endef
 
 export prog
