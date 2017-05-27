@@ -22,11 +22,14 @@ prog: $(EXEC).prog
 ERASE_SEGMENTS ?=
 ERASE_CMD = $(foreach segment,$(ERASE_SEGMENTS),"erase segment $(segment)" )
 
-define prog
-	mspdebug $(ARGS) tilib $(ERASE_CMD) "prog $1"
+define mspdebug_exec
+	mspdebug $(ARGS) tilib $(1)
 endef
 
 export prog
 
 %.prog: %.out
-	$(call prog,$<)
+	$(call mspdebug_exec,$(ERASE_CMD) "prog $<")
+
+erase:
+	$(call mspdebug_exec,$(ERASE_CMD))
