@@ -1,0 +1,9 @@
+# Maximum timer value (platform-specific var for generic functions in .pre)
+TIMER_MAX = (2^16 - 1)
+
+# Generate macros for setting timer divider from spec, e.g '8*4',
+# where the second divider ('*4') is optional.
+define msp_timer_div
+-DDIV_$(1)=$(word 1,$(subst *, ,$(2))) \
+-DDIVEX_$(1)=$(or $(word 2,$(subst *, ,$(2))),1)
+endef
