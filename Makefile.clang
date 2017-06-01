@@ -34,6 +34,7 @@ HWMULT ?= 1
 override CFLAGS += \
 	--target=msp430 \
 	-D$(DEVICEDEF) \
+	-D$(FAMILYDEF) \
 	-nobuiltininc \
 	-nostdinc++ \
 	-isysroot /none \
