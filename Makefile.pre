@@ -19,6 +19,13 @@ endef
 
 
 # Define macros for port and pin from a pin spec (e.g. '2.4')
+define gpio_pin
+-D$(1)_PORT=$(firstword $(subst ., ,$($(1)))) \
+-D$(1)_PIN=$(lastword $(subst ., ,$($(1))))
+endef
+
+# Define macros for port and pin from a pin spec (e.g. '2.4')
+# LEGACY: superceded by gpio_pin
 define pin
 -DPORT_$(1)=$(firstword $(subst ., ,$(PIN_$(1)))) \
 -DPIN_$(1)=$(lastword $(subst ., ,$(PIN_$(1))))
