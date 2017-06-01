@@ -7,3 +7,9 @@ define msp_timer_div
 -DDIV_$(1)=$(word 1,$(subst *, ,$(2))) \
 -DDIVEX_$(1)=$(or $(word 2,$(subst *, ,$(2))),1)
 endef
+
+# Convert UART baudrate to register settings (identifer, baudrate, freq)
+define uart_baudrate
+-DUART_BR0_$(1)=$(call calc_int,$(3) / $(2)) \
+-DUART_BR1_$(1)=$(call calc_int,(($(3) / $(2)) - $(call calc_int,$(3) / $(2))) * 8)
+endef
