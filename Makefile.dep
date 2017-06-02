@@ -73,3 +73,6 @@ $(if $(filter 0 1, $(words $(1))),\
 endef # unique
 
 $(foreach dep,$(call unique,$(DEPS)),$(eval $(call depend,$(dep))))
+
+# So that the nested call gets the CFLAGS settings from each lib's .options
+export CFLAGS
