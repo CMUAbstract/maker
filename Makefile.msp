@@ -41,7 +41,7 @@ BRS_REG = \
 # (frac, idx, keys)
 define find_sorted
 $(if $(call calc_test,$(1) <= $(firstword $(3))),$(2),\
-	 $(call find_sorted,$(1),$(call calc_int,$(2) + 1),$(wordlist 2,$(words $(3)))))
+	 $(call find_sorted,$(1),$(call calc_int,$(2) + 1),$(wordlist 2,$(words $(3)),$(3))))
 endef
 
 define uart_brs
