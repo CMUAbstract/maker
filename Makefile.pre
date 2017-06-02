@@ -1,7 +1,6 @@
 # Functions useful in pre-pre-processor, e.g. for generating macro values
 
 define run
-$(info $(1))
 $(shell $(1))
 endef
 
