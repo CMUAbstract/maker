@@ -30,12 +30,6 @@ define pin
 -DPIN_$(1)=$(lastword $(subst ., ,$(PIN_$(1))))
 endef
 
-# Define macros for comparator type and channel from chan spec (e.g. 'B.4')
-define comp_chan
--DCOMP_TYPE_$(1)=$(firstword $(subst ., ,$(COMP_CHAN_$(1)))) \
--DCOMP_CHAN_$(1)=$(lastword $(subst ., ,$(COMP_CHAN_$(1))))
-endef
-
 # Construct math expression for voltage divider from "R1:R2"
 define vdiv
 ($(lastword $(subst :, ,$(1))) / ($(firstword $(subst :, ,$(1))) + $(lastword $(subst :, ,$(1)))))

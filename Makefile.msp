@@ -50,3 +50,45 @@ endef
 
 endif # msp430fr%
 endif # ! cc430%
+
+# Define macros for comparator type and channel from chan spec (e.g. 'B.4')
+define comp_chan
+-DCOMP_TYPE_$(1)=$(firstword $(subst ., ,$(COMP_CHAN_$(1)))) \
+-DCOMP_CHAN_$(1)=$(lastword $(subst ., ,$(COMP_CHAN_$(1))))
+endef
+
+define comp_chan_type
+-D$(1)_TYPE=$(firstword $(subst ., ,$(2))) \
+-D$(1)_CHAN=$(lastword $(subst ., ,$(2)))
+endef
+
+# Number of tap points in comparator resistor ladder (MCU HW characteristic)
+export COMP_TAPS = 32
+
+define comp_ref
+$(strip \
+	 $(if $(filter VDD,$(1)),1,\
+		 $(if $(filter 1.2,$(1)),1,\
+			  $(if $(filter 2.0,$(1)),2,\
+				   $(if $(filter 2.5,$(1)),3,\
+						$(error Invalid comp reference: must be in {VDD, 1.2, 2.0, 2.5}))))))
+endef # comp_ref
+
+# Calc divider tap from voltage: (v, divider, ref, taps)
+define comp_tap
+$(call calc_int,$(4) * ($(1) * $(call vdiv,$(2))) / $(3))
+endef # comp_tap
+
+# Calc comparator macros: (var name, v, divider, ref, taps)
+# TODO: this should not deal with histerysis, it should only set one macro var
+define comp_thres
+-D$(1)_UP=$(strip \
+	$(if $(call calc_test,$(call comp_tap,$(2),$(3),$(4),$(5)) + 1 < $(5)),\
+		$(call calc_int,$(call comp_tap,$(2),$(3),$(4),$(5)) + 1),\
+		$(error LIBCAPYBARA_DEEP_DISCHARGE up threshold tap out of bounds))) \
+-D$(1)_DOWN=$(strip \
+	$(if $(call calc_test,$(call calc_int,$(call comp_tap,$(2),$(3),$(4),$(5))) < $(5)),\
+		$(call calc_int,$(call comp_tap,$(2),$(3),$(4),$(5))),\
+		$(error LIBCAPYBARA_DEEP_DISCHARGE down threshold tap out of bounds))) \
+-D$(1)_REF=$(call comp_ref,$(4))
+endef # comp_thres
