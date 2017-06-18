@@ -9,7 +9,7 @@ $(call run,echo -e "scale=8\n $(1)" | bc -l)
 endef
 
 define calc_int
-$(shell echo -e "scale=0\n ($(call calc,$(1))) / 1" | bc -l)
+$(call run,echo -e "scale=0\n ($(call calc,$(1))) / 1" | bc -l)
 endef
 
 define calc_test
