@@ -1,7 +1,7 @@
 # Functions useful in pre-pre-processor, e.g. for generating macro values
 
 define run
-$(shell $(1))
+$(strip $(shell $(1)))
 endef
 
 define calc
@@ -50,10 +50,10 @@ endef
 #   (variable name, interval in ms, freq, ticks enabled)
 # Prereq: TIMER_MAX must be defined by a platform-specific file
 define interval
-$(if $(call calc_test,$(call interval_cycles,$(2),$(3)) <= $(TIMER_MAX)),\
+$(strip $(if $(call calc_test,$(call interval_cycles,$(2),$(3)) <= $(TIMER_MAX)),\
 	 -DPERIOD_$(1)=$(call interval_cycles,$(2),$(3)),\
 	 $(if $(4),\
           -DPERIOD_$(1)=$(TIMER_MAX) \
           -DTICKS_$(1)=$(call calc_int,($(call interval_cycles,$(2),$(3)) / $(TIMER_MAX)) + 1),\
-		  $(error Ticks not enabled, but interval exceeds max timer period: $(1))))
+		  $(error Ticks not enabled, but interval exceeds max timer period: $(1)))))
 endef

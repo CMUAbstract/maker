@@ -45,7 +45,7 @@ $(if $(call calc_test,$(1) <= $(firstword $(3))),$(2),\
 endef
 
 define uart_brs
-$(word $(call find_sorted,$(1) - $(call calc_int,$(1)),1,$(BRS_FRAC)),$(BRS_REG))
+$(strip $(word $(call find_sorted,$(1) - $(call calc_int,$(1)),1,$(BRS_FRAC)),$(BRS_REG)))
 endef
 
 endif # msp430fr%
