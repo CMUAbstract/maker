@@ -133,3 +133,11 @@ endif
 ifeq ($(CONT_POWER),1)
 override CFLAGS += -DCONT_POWER
 endif
+
+ifneq ($(BOARD_MAJOR),)
+override CFLAGS += -DBOARD_MAJOR=$(BOARD_MAJOR)
+endif
+
+ifneq ($(BOARD_MINOR),)
+override CFLAGS += -DBOARD_MINOR=$(BOARD_MINOR)
+endif
