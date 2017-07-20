@@ -92,3 +92,11 @@ define comp_thres
 		$(error LIBCAPYBARA_DEEP_DISCHARGE down threshold tap out of bounds))) \
 -D$(1)_REF=$(call comp_ref,$(4))
 endef # comp_thres
+
+define volt_ref
+$(strip \
+	 $(if $(filter 1.2,$(1)),0,\
+		  $(if $(filter 2.0,$(1)),1,\
+			   $(if $(filter 2.5,$(1)),2,\
+					$(error Invalid comp reference: must be in {1.2, 2.0, 2.5})))))
+endef # volt_ref
