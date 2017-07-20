@@ -67,7 +67,7 @@ export COMP_TAPS = 32
 
 define comp_ref
 $(strip \
-	 $(if $(filter VDD,$(1)),1,\
+	 $(if $(filter VDD,$(1)),0,\
 		 $(if $(filter 1.2,$(1)),1,\
 			  $(if $(filter 2.0,$(1)),2,\
 				   $(if $(filter 2.5,$(1)),3,\
