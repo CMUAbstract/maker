@@ -42,6 +42,7 @@ override CFLAGS += \
 	-g \
 	-std=c99 \
 	-Wall \
+	-minrt \
 	-I $(TOOLCHAIN_ROOT)/include \
 	-I$(SRC_ROOT) \
 
