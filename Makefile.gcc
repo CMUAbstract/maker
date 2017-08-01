@@ -55,7 +55,14 @@ ifneq ($(HWMULT),1)
 override CFLAGS += -mhwmult=none
 endif
 
+# NOTE: --gc-sections is important otherwise cruft gets linked in (like,
+# open/close/read/etc syscalls from libnosys), which uses errno, which
+# prompts newlib to include 'impure_data' (~128 bytes) into .data,
+# which leads to a significant delay before main run son startup (~3ms)
+# spent on initializing this data. NOTE: --gc-sections only fixes for
+# TI GCC v5.00 (gcc 6.2.1), does not fix the issue with v3.00 (v4.9.1).
 override LFLAGS += \
+	-Wl,--gc-sections \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
 
