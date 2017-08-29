@@ -100,4 +100,5 @@ define add-lib
 endef
 endif
 
+#LIBS += -lm
 include $(MAKER_ROOT)/Makefile.dep
