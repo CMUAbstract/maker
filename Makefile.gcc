@@ -33,8 +33,7 @@ OPT_LEVEL ?= 2
 
 override CFLAGS += \
 	$(COMMONFLAGS) \
-	-D$(DEVICEDEF) \
-	-D$(FAMILYDEF) \
+	$(BOARDDEFS) \
 	-O$(OPT_LEVEL) \
 	-g \
 	-std=c99 \

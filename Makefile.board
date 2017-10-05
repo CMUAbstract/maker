@@ -133,3 +133,14 @@ endif
 ifeq ($(CONT_POWER),1)
 override CFLAGS += -DCONT_POWER
 endif
+
+ifeq ($(FAMILYDEF),__MSP430FR__)
+PERIPHDEFS += __MSP_EUSCI__
+else ifeq ($(FAMILYDEF),__CC430__)
+PERIPHDEFS += __MSP_USCI__
+endif # FAMILYDEF
+
+BOARDDEFS = \
+	-D$(DEVICEDEF) \
+	-D$(FAMILYDEF) \
+	$(foreach d,$(PERIPHDEFS),-D$(d)) \
