@@ -148,3 +148,14 @@ endif
 ifneq ($(BOARD_MINOR),)
 override CFLAGS += -DBOARD_MINOR=$(BOARD_MINOR)
 endif
+
+ifeq ($(FAMILYDEF),__MSP430FR__)
+PERIPHDEFS += __MSP_EUSCI__
+else ifeq ($(FAMILYDEF),__CC430__)
+PERIPHDEFS += __MSP_USCI__
+endif # FAMILYDEF
+
+BOARDDEFS = \
+	-D$(DEVICEDEF) \
+	-D$(FAMILYDEF) \
+	$(foreach d,$(PERIPHDEFS),-D$(d)) \

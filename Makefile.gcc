@@ -41,8 +41,7 @@ endif # GCC_VER_MAJ
 
 override CFLAGS += \
 	$(COMMONFLAGS) \
-	-D$(DEVICEDEF) \
-	-D$(FAMILYDEF) \
+	$(BOARDDEFS) \
 	-O$(OPT_LEVEL) \
 	-g \
 	-std=c99 \
