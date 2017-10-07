@@ -7,7 +7,7 @@ CONFIG_PRINTF_LIB ?=
 CONFIG_LIBEDB_PRINTF ?= eif
 
 VERBOSE ?= 0
-
+$(warning in Makefile.console)
 # All output channels use the same printf implementation, what differs is the
 # backend used by the printf implementation.
 

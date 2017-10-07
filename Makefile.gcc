@@ -77,7 +77,7 @@ all: $(BIN)
 
 %.o: %.c
 	mkdir -p "./$(shell dirname $@)"
-	$(CC) -c -MD $(CFLAGS) $< -o $@
+	$(CC) -c -DGCC -MD $(CFLAGS) $< -o $@
 
 %.o: %.S
 	mkdir -p "./$(shell dirname $@)"
