@@ -47,9 +47,12 @@ override CFLAGS += \
 	-I $(TOOLCHAIN_ROOT)/lib/gcc/msp430-elf/4.9.1/include \
 	-I $(TOOLCHAIN_ROOT)/msp430-elf/include \
 	-I $(TOOLCHAIN_ROOT)/include \
-	-I $(SRC_ROOT) \
+  -I $(SRC_ROOT) \
+#	-I $(SRC_ROOT)/$(TOOL)_apps/$(SRC) \
 #	-I /home/reviewer/src/apps/app-temp-log-alpaca-new/ext/libwispbase/src/include/libwispbase \
 #	-I /home/reviewer/src/apps/app-temp-log-alpaca-new/ext/libwispbase/src/include \
+
+$(info $(SRC_ROOT)/$(TOOL)_APPS/$(SRC))
 
 override LLC_FLAGS += \
 	-O0 \
@@ -69,7 +72,7 @@ LINK_OBJECTS ?= $(OBJECTS:.o=.bc)
 VPATH = $(SRC_ROOT)
 
 all: $(BIN)
-
+$(info making all! $(OBJECTS))
 -include $(OBJECTS:.o=.d)
 
 # disable implicit rule that for some reason overrides the chained rules below
@@ -131,9 +134,11 @@ endif
 
 ifeq ($(TARGET_TYPE),exec)
 define add-lib
+$(info deplib = [$(DEP_LIB_DIR_$(1))] $$(DEP_LIB_DIR_$(1))/$(1).$(LIB_SUFFIX))
 LLVM_LIBS += $$(DEP_LIB_DIR_$(1))/$(1).$(LIB_SUFFIX)
 endef
 else # TARGET_TYPE
+$(info no exec)
 define add-lib
 # nothing
 endef

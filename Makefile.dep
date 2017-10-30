@@ -35,10 +35,14 @@ depclean: depclean_$(1)
 endef
 
 define depend
-
-
 # These are designed to be overriddable from top-level app makefile
+ifneq ($(1),libtapir)
+$$(info inside depend)
 DEP_ROOT_$(1) ?= $(LIB_ROOT)
+else
+$$(info running libtapir $(1))
+DEP_ROOT_$(1) ?= $(SYS_ROOT)
+endif
 DEP_RELDIR_$(1) ?= $(1)
 DEP_INC_RELDIR_$(1) ?= src/include
 DEP_BLD_RELDIR_$(1) ?= bld
