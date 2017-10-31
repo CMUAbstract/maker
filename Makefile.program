@@ -1,5 +1,4 @@
 include $(MAKER_ROOT)/Makefile.env
-$(warning Included Makefile.program)
 
 VOLTAGE = 3300
 DEVICE_IDX ?= 0

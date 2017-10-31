@@ -11,7 +11,6 @@
 # the dependency declaration), but that's more verbose. It should be
 # possible to make the path argument optional.
 
-$(warning inside Makefile.dep)
 
 # Set up the depend-rule so that it's dynamic. This is composed of
 # lib*/some_file.x and it depends on all of that lib, I suppose? 
@@ -37,10 +36,8 @@ endef
 define depend
 # These are designed to be overriddable from top-level app makefile
 ifneq ($(1),libtapir)
-$$(info inside depend)
 DEP_ROOT_$(1) ?= $(LIB_ROOT)
 else
-$$(info running libtapir $(1))
 DEP_ROOT_$(1) ?= $(SYS_ROOT)
 endif
 DEP_RELDIR_$(1) ?= $(1)

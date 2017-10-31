@@ -1,5 +1,4 @@
 TOOLCHAIN = gcc
-$(warning inside Makefile.gcc)
 
 include $(MAKER_ROOT)/Makefile.env
 include $(MAKER_ROOT)/Makefile.board

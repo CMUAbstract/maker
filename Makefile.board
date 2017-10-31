@@ -1,5 +1,4 @@
 CONT_POWER ?= 0
-$(warning inside Makefile.gcc)
 
 ifeq ($(BOARD),)
 $(error Variable not set in app/lib Makefile: BOARD \
