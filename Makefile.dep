@@ -35,11 +35,7 @@ endef
 
 define depend
 # These are designed to be overriddable from top-level app makefile
-ifneq ($(1),libtapir)
 DEP_ROOT_$(1) ?= $(LIB_ROOT)
-else
-DEP_ROOT_$(1) ?= $(SYS_ROOT)
-endif
 DEP_RELDIR_$(1) ?= $(1)
 DEP_INC_RELDIR_$(1) ?= src/include
 DEP_BLD_RELDIR_$(1) ?= bld
