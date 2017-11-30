@@ -210,8 +210,8 @@ on the respective websites.
 
 | Target | Toolchain | ID | Version | Arch-Linux package | Implementation |
 | ------ | --------- | -- | ------- | ------------------ | -------------- |
-| [TI GCC](http://ti.com/tool/msp430-gcc-opensource) | MSP430 | gcc   | 5.00.00.00 | `mspgcc-ti` | [Makefile.gcc](Makefile.gcc)   |
-| [LLVM/Clang](http://clang.org)                     | MSP430 | clang | 3.8        | `clang`     | [Makefile.clang](Makefile.clang) |
+| MSP430 | [TI GCC](http://ti.com/tool/msp430-gcc-opensource) | gcc   | 5.00.00.00 | `mspgcc-ti` | [Makefile.gcc](Makefile.gcc)   |
+| MSP430 | [LLVM/Clang](http://clang.org)                     | clang | 3.8        | `clang`     | [Makefile.clang](Makefile.clang) |
 
 Clang toolchain depends on the TI GCC toolchain, because Clang can only
 generate MSP430 assembly, which must then be assembled by GCC.
