@@ -1,4 +1,4 @@
-# Maker: a dependency builder for C code based on GNU Make
+# Maker: a dependency builder for C code
 
 Maker builds C applications along with their dependencies, similar in purpose
 and philosophy to Rust's Cargo and Python's PIP. Maker requires only GNU Make
