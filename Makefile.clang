@@ -3,8 +3,6 @@ TOOLCHAIN = clang
 include $(MAKER_ROOT)/Makefile.env
 include $(MAKER_ROOT)/Makefile.board
 
-LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts
-
 PREFIX = $(CLANG_ROOT)/bin/
 CC      = $(PREFIX)clang
 export LLC     = $(PREFIX)llc
@@ -18,6 +16,10 @@ AS      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-as
 #LD      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-ld
 LD      = $(GCC)
 GDB     = $(TOOLCHAIN_ROOT)/bin/msp430-elf-gdb
+
+include $(MAKER_ROOT)/Makefile.version
+
+LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts/gcc-$(GCC_VER_MAJ)
 
 LIB_SUFFIX = a.bc
 EXEC_SUFFIX = out

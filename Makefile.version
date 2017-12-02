@@ -1,0 +1,3 @@
+GCC_VER = $(shell $(CC) -dumpversion)
+GCC_VER_MAJ = $(word 1,$(subst ., ,$(GCC_VER)))
+

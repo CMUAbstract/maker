@@ -9,8 +9,7 @@ LD      = $(PREFIX)gcc
 AS      = $(PREFIX)as
 GDB     = $(PREFIX)gdb
 
-GCC_VER = $(shell $(CC) -dumpversion)
-GCC_VER_MAJ = $(word 1,$(subst ., ,$(GCC_VER)))
+include $(MAKER_ROOT)/Makefile.version
 
 LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts/gcc-$(GCC_VER_MAJ)
 
