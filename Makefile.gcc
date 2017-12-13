@@ -8,6 +8,7 @@ CC      = $(PREFIX)gcc
 LD      = $(PREFIX)gcc
 AS      = $(PREFIX)as
 GDB     = $(PREFIX)gdb
+AR	= $(PREFIX)ar
 
 include $(MAKER_ROOT)/Makefile.version
 
