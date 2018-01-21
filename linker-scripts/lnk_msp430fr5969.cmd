@@ -232,7 +232,7 @@ SECTIONS
     .int26       : {}               > INT26
     .int27       : {}               > INT27
     .int28       : {}               > INT28
-    .int29       : {}               > INT29/*
+    .int29       : {}               > INT29
     AES256       : { * ( .int30 ) } > INT30 type = VECT_INIT
     RTC          : { * ( .int31 ) } > INT31 type = VECT_INIT
     PORT4        : { * ( .int32 ) } > INT32 type = VECT_INIT
@@ -252,12 +252,12 @@ SECTIONS
     ADC12        : { * ( .int46 ) } > INT46 type = VECT_INIT
     USCI_B0      : { * ( .int47 ) } > INT47 type = VECT_INIT
     USCI_A0      : { * ( .int48 ) } > INT48 type = VECT_INIT
-    WDT          : { * ( .int49 ) } > INT49 type = VECT_INIT*/
-    TIMER0_B1    : { * ( .int50 ) } > INT50 type = VECT_INIT/*
+    WDT          : { * ( .int49 ) } > INT49 type = VECT_INIT
+    TIMER0_B1    : { * ( .int50 ) } > INT50 type = VECT_INIT
     TIMER0_B0    : { * ( .int51 ) } > INT51 type = VECT_INIT
     COMP_E       : { * ( .int52 ) } > INT52 type = VECT_INIT
     UNMI         : { * ( .int53 ) } > INT53 type = VECT_INIT
-    SYSNMI       : { * ( .int54 ) } > INT54 type = VECT_INIT*/
+    SYSNMI       : { * ( .int54 ) } > INT54 type = VECT_INIT
     .reset       : {}               > RESET  /* MSP430 Reset vector         */
 }
 
