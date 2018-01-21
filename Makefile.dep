@@ -11,10 +11,14 @@
 # the dependency declaration), but that's more verbose. It should be
 # possible to make the path argument optional.
 
+$(warning inside Makefile.dep)
+
+# Set up the depend-rule so that it's dynamic. This is composed of
+# lib*/some_file.x and it depends on all of that lib, I suppose? 
 define depend-rule
 
 $(2)/$(1).$(3): $(2)
-	make -e -C $$^
+	$(MAKE) -e -C $$^
 
 # Only add dependency for executables, not libraries.  Can't have it for libs,
 # because we use dep array in the recipe for linking objects into libraries.
@@ -22,24 +26,27 @@ ifeq ($(TARGET_TYPE),exec)
 $(BIN): $(2)/$(1).$(3)
 endif # TARGET_TYPE
 
-dep: $(2)/$(1).$(3)
+dep: $(2)/$(1).$(3) 
 
 depclean_$(1): $(2)
-	make -C $$^ clean
+	$(MAKE) -C $$^ clean
 depclean: depclean_$(1)
 
 endef
 
 define depend
 
+
 # These are designed to be overriddable from top-level app makefile
 DEP_ROOT_$(1) ?= $(LIB_ROOT)
 DEP_RELDIR_$(1) ?= $(1)
 DEP_INC_RELDIR_$(1) ?= src/include
-DEP_LIB_RELDIR_$(1) ?= bld/$(TOOLCHAIN)
+DEP_BLD_RELDIR_$(1) ?= bld
+DEP_LIB_RELDIR_$(1) ?= $$(DEP_BLD_RELDIR_$(1))/$(TOOLCHAIN)
 
 DEP_INC_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_RELDIR_$(1))/$$(DEP_INC_RELDIR_$(1))
 DEP_LIB_DIR_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_RELDIR_$(1))/$$(DEP_LIB_RELDIR_$(1))
+DEP_BLD_DIR_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_RELDIR_$(1))/$$(DEP_BLD_RELDIR_$(1))
 
 # We override because when this file is included from a nested build directory
 # (say, when the app or toolchain has more than one build artifact, each built
@@ -51,11 +58,17 @@ override CFLAGS += -I$$(DEP_INC_$(1))
 
 $(eval $(call add-lib,$(1)))
 $(call depend-rule,$(1),$$(DEP_LIB_DIR_$(1)),$(LIB_SUFFIX))
+
+
+# Application may want to use the library config flags as well.
+# In particular, if library defines an ISR handler for the app to insert it
+# into an ISR, then the app needs library's pin macros.
+-include $$(DEP_BLD_DIR_$(1))/Makefile.config
+-include $$(DEP_BLD_DIR_$(1))/Makefile.options
 endef
 
 # Also clean the app when cleaning dependencies
 depclean: clean
-
 define unique
 $(if $(filter 0 1, $(words $(1))),\
      $(1),\
@@ -65,3 +78,6 @@ $(if $(filter 0 1, $(words $(1))),\
 endef # unique
 
 $(foreach dep,$(call unique,$(DEPS)),$(eval $(call depend,$(dep))))
+
+# So that the nested call gets the CFLAGS settings from each lib's .options
+export CFLAGS

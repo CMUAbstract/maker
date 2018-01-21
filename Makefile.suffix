@@ -1,4 +1,5 @@
 # This makefile supports building either a library or an executable
+$(warning inside Makefile.suffix)
 ifneq ($(LIB),)
 TARGET_TYPE = lib
 BIN = $(LIB).$(LIB_SUFFIX)

@@ -1,0 +1,53 @@
+# Functions useful in pre-pre-processor, e.g. for generating macro values
+
+define run
+$(strip $(shell $(1)))
+endef
+
+define calc
+$(call run,echo -e "scale=8\n $(1)" | bc -l)
+endef
+
+define calc_int
+$(call run,echo -e "scale=0\n ($(call calc,$(1))) / 1" | bc -l)
+endef
+
+define calc_test
+$(filter 1,$(call run,echo -e "$(1)" | bc -l))
+endef
+
+
+# Define macros for port and pin from a pin spec (e.g. '2.4')
+define gpio_pin
+-D$(1)_PORT=$(firstword $(subst ., ,$($(1)))) \
+-D$(1)_PIN=$(lastword $(subst ., ,$($(1))))
+endef
+
+# Define macros for port and pin from a pin spec (e.g. '2.4')
+# LEGACY: superceded by gpio_pin
+define pin
+-DPORT_$(1)=$(firstword $(subst ., ,$(PIN_$(1)))) \
+-DPIN_$(1)=$(lastword $(subst ., ,$(PIN_$(1))))
+endef
+
+# Construct math expression for voltage divider from "R1:R2"
+define vdiv
+($(lastword $(subst :, ,$(1))) / ($(firstword $(subst :, ,$(1))) + $(lastword $(subst :, ,$(1)))))
+endef
+
+# Convert interval in ms to cycles, given frequency (interval_ms, freq)
+define interval_cycles
+$(call calc_int,$(1) / 1000 * $(2))
+endef
+
+# Split an interval (in ms) into a timer period and count of periods (ticks)
+#   (variable name, interval in ms, freq, ticks enabled)
+# Prereq: TIMER_MAX must be defined by a platform-specific file
+define interval
+$(strip $(if $(call calc_test,$(call interval_cycles,$(2),$(3)) <= $(TIMER_MAX)),\
+	 -DPERIOD_$(1)=$(call interval_cycles,$(2),$(3)),\
+	 $(if $(4),\
+          -DPERIOD_$(1)=$(call calc_int,$(TIMER_MAX)) \
+          -DTICKS_$(1)=$(call calc_int,($(call interval_cycles,$(2),$(3)) / $(TIMER_MAX)) + 1),\
+		  $(error Ticks not enabled, but interval exceeds max timer period: $(1)))))
+endef
