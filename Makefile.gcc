@@ -71,7 +71,7 @@ all: $(BIN)
 	$(AS) $(ASFLAGS) $< -o $@
 
 %.out: $(OBJECTS)
-	$(LD) $(CFLAGS) $(LFLAGS) $(OBJECTS) $(LIBS) -o $(BIN)
+	$(LD) $(CFLAGS) $(LFLAGS) $(OBJECTS) $(LIBS) -lm -o $(BIN)
 
 %.a: $(OBJECTS)
 	$(AR) rcs $@ $^
