@@ -191,7 +191,7 @@ SECTIONS
 			. = ALIGN(2);
 			*(.nv_vars)
 			. = ALIGN(2);
-		} > FRAM
+		} > FRAM type = NOINIT
     .bss        : {} > RAM                  /* Global & static vars              */
     .data       : {} > RAM                  /* Global & static vars              */
     .TI.noinit  : {} > RAM                  /* For #pragma noinit                */
