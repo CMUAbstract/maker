@@ -236,9 +236,9 @@ SECTIONS
   {
     . = ALIGN(2);
     PROVIDE (__fram_vars_start = .);
-    *(.ro_nv_vars)
-    *(.nv_vars)
-    *(.fram_vars) /* legacy naming */
+    KEEP (*(.ro_nv_vars))
+    KEEP (*(.nv_vars))
+    KEEP (*(.fram_vars)) /* legacy naming */
     . = ALIGN(2);
     PROVIDE (__fram_vars_end = .);
   } > ROM
