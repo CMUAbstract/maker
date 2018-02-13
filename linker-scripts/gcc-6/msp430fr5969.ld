@@ -237,6 +237,17 @@ SECTIONS
     KEEP (*(.dtors))
   } > ROM
 
+  .nv_vars :
+  {
+    . = ALIGN(2);
+    PROVIDE (__fram_vars_start = .);
+    *(.ro_nv_vars)
+    *(.nv_vars)
+    *(.fram_vars) /* legacy naming */
+    . = ALIGN(2);
+    PROVIDE (__fram_vars_end = .);
+  } > ROM
+
   .upper.rodata :
   {
     *(.upper.rodata.* .upper.rodata)
