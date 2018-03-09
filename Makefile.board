@@ -124,11 +124,18 @@ FAMILYDEF = __MSP430FR__
 endif
 
 ifeq ($(BOARD),capybara)
+FAMILYDEF = __MSP430FR__
+ifeq ($(BOARD_MAJOR),1)
 override CFLAGS += -DBOARD_CAPYBARA
 DEVICE  = msp430fr5949
 DEVICEDEF = __MSP430FR5949__
-FAMILYDEF = __MSP430FR__
-endif
+else ifeq ($(BOARD_MAJOR),2)
+DEVICE  = msp430fr5994
+DEVICEDEF = __MSP430FR5994__
+else # BOARD_MAJOR
+$(error Device not specified for given board version)
+endif # BOARD_MAJOR
+endif # capybara
 
 ifeq ($(CONT_POWER),1)
 override CFLAGS += -DCONT_POWER
