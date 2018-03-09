@@ -261,6 +261,17 @@ SECTIONS
     . = ALIGN(2);
     PROVIDE (__persistent_end = .);
   } > ROM
+
+  .nv_vars :
+  {
+    . = ALIGN(2);
+    PROVIDE (__fram_vars_start = .);
+    KEEP (*(.ro_nv_vars))
+    KEEP (*(.nv_vars))
+    KEEP (*(.fram_vars)) /* legacy naming */
+    . = ALIGN(2);
+    PROVIDE (__fram_vars_end = .);
+  } > ROM
   
   .upper.rodata :
   {
