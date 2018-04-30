@@ -5,15 +5,15 @@ $(shell $(1))
 endef
 
 define calc
-$(call run,echo -e "scale=8\n $(1)" | bc -l)
+$(call run,/usr/bin/echo -e "scale=8\n $(1)" | bc -l)
 endef
 
 define calc_int
-$(shell echo -e "scale=0\n ($(call calc,$(1))) / 1" | bc -l)
+$(shell /usr/bin/echo -e "scale=0\n ($(call calc,$(1))) / 1" | bc -l)
 endef
 
 define calc_test
-$(filter 1,$(call run,echo -e "$(1)" | bc -l))
+$(filter 1,$(call run,/usr/bin/echo -e "$(1)" | bc -l))
 endef
 
 
