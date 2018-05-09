@@ -25,13 +25,14 @@ ASFLAGS = \
 
 HWMULT ?= 1
 
-OPT_LEVEL ?= 2
+OPT_LEVEL ?= 1
 
-ifeq ($(shell test $(GCC_VER_MAJ) -lt 6; echo $$?),0)
+#ifeq ($(shell test $(GCC_VER_MAJ) -lt 6; echo $$?),0)
+#DEVICES_CSV_DIR = include
+#else # GCC_VER_MAJ >= 6
+#DEVICES_CSV_DIR = msp430-elf/include
+#endif # GCC_VER_MAJ
 DEVICES_CSV_DIR = include
-else # GCC_VER_MAJ >= 6
-DEVICES_CSV_DIR = msp430-elf/include
-endif # GCC_VER_MAJ
 
 # We override because when this file is included from a nested build directory
 # (say, when the app or toolchain has more than one build artifact, each built
@@ -45,10 +46,11 @@ override CFLAGS += \
 	-O$(OPT_LEVEL) \
 	-g \
 	-std=c99 \
-	-Wall \
+	-w \
 	-minrt \
 	-I$(TOOLCHAIN_ROOT)/$(DEVICES_CSV_DIR) \
 	-I$(SRC_ROOT) \
+        -mlarge \
 
 # To prevent printf() getting replaced with puts from libc instead of from our
 # I/O backend lib. Note that we used to rely on overriding puts/putchar symbols,
@@ -65,10 +67,19 @@ endif
 # which leads to a significant delay before main run son startup (~3ms)
 # spent on initializing this data. NOTE: --gc-sections only fixes for
 # TI GCC v5.00 (gcc 6.2.1), does not fix the issue with v3.00 (v4.9.1).
+ifeq ($(SYSTEM), jit)
 override LFLAGS += \
 	-Wl,--gc-sections \
+    -mlarge \
+	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE)_framonly.ld \
+	-L $(TOOLCHAIN_ROOT)/include
+else
+override LFLAGS += \
+	-Wl,--gc-sections \
+    -mlarge \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
-	-L $(TOOLCHAIN_ROOT)/include \
+	-L $(TOOLCHAIN_ROOT)/include
+endif
 
 VPATH = $(SRC_ROOT)
 
