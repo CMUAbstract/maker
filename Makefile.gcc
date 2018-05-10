@@ -1,5 +1,4 @@
 TOOLCHAIN = gcc
-$(warning inside Makefile.gcc)
 
 include $(MAKER_ROOT)/Makefile.env
 include $(MAKER_ROOT)/Makefile.board
@@ -34,7 +33,6 @@ HWMULT ?= 1
 override CFLAGS += \
 	$(COMMONFLAGS) \
 	-D$(DEVICEDEF) \
-	-D$(FAMILYDEF) \
 	-O1 \
 	-g \
 	-std=c99 \
@@ -102,5 +100,5 @@ define add-lib
 endef
 endif
 
-#LIBS += -lm -lgcc
+#LIBS += -lm
 include $(MAKER_ROOT)/Makefile.dep

@@ -1,5 +1,4 @@
 CONT_POWER ?= 0
-$(warning inside Makefile.gcc)
 
 ifeq ($(BOARD),)
 $(error Variable not set in app/lib Makefile: BOARD \
@@ -16,129 +15,62 @@ ifeq ($(BOARD),wisp)
 override CFLAGS += -DBOARD_WISP
 DEVICE  = msp430fr5969
 DEVICEDEF = __MSP430FR5969__
-FAMILYDEF = __MSP430FR__
 endif
 
 ifeq ($(BOARD),mspts430)
 override CFLAGS += -DBOARD_MSP_TS430
 DEVICE  = msp430fr5969
 DEVICEDEF = __MSP430FR5969__
-FAMILYDEF = __MSP430FR__
 endif
 
 ifeq ($(BOARD),edb)
 override CFLAGS += -DBOARD_EDB
 DEVICE  = msp430f5340
 DEVICEDEF = __MSP430F5340__
-FAMILYDEF = __MSP430FR__
-endif
-
-ifeq ($(BOARD),edb-1.1)
-override CFLAGS += -DBOARD_EDB_1_1
-DEVICE  = msp430f5340
-DEVICEDEF = __MSP430F5340__
-FAMILYDEF = __MSP430FR__
 endif
 
 ifeq ($(BOARD),sprite-edb)
 override CFLAGS += -DBOARD_SPRITE_EDB
 DEVICE  = cc430f5137
 DEVICEDEF = __CC430F5137__
-FAMILYDEF = __CC430__
-endif
-
-ifeq ($(BOARD),sprite-edb-v1.1)
-override CFLAGS += -DBOARD_SPRITE_EDB_1_1
-DEVICE  = cc430f5137
-DEVICEDEF = __CC430F5137__
-FAMILYDEF = __CC430__
-endif
-
-ifeq ($(BOARD),sprite-edb-v1.2)
-override CFLAGS += -DBOARD_SPRITE_EDB_1_2
-DEVICE  = cc430f5137
-DEVICEDEF = __CC430F5137__
-FAMILYDEF = __CC430__
 endif
 
 ifeq ($(BOARD),sprite-app)
 override CFLAGS += -DBOARD_SPRITE_APP
 DEVICE  = msp430fr5949
 DEVICEDEF = __MSP430FR5949__
-FAMILYDEF = __MSP430FR__
-endif
-
-ifeq ($(BOARD),sprite-app-v1.1)
-override CFLAGS += -DBOARD_SPRITE_APP_1_1
-DEVICE  = msp430fr5949
-DEVICEDEF = __MSP430FR5949__
-FAMILYDEF = __MSP430FR__
-endif
-
-ifeq ($(BOARD),sprite-app-v1.2)
-override CFLAGS += -DBOARD_SPRITE_APP_1_2
-DEVICE  = msp430fr5949
-DEVICEDEF = __MSP430FR5949__
-FAMILYDEF = __MSP430FR__
 endif
 
 ifeq ($(BOARD),sprite-edb-socket-rgz)
 override CFLAGS += -DBOARD_SPRITE_EDB_SOCKET_RGZ
 DEVICE  = cc430f5137
 DEVICEDEF = __CC430F5137__
-FAMILYDEF = __CC430__
 endif
 
 ifeq ($(BOARD),sprite-app-socket-rha)
 override CFLAGS += -DBOARD_SPRITE_APP_SOCKET_RHA
 DEVICE  = msp430fr5949
 DEVICEDEF = __MSP430FR5949__
-FAMILYDEF = __MSP430FR__
 endif
 
 ifeq ($(BOARD),sprite-app-socket-rgz)
 override CFLAGS += -DBOARD_SPRITE_APP_SOCKET_RGZ
 DEVICE  = msp430fr5969
 DEVICEDEF = __MSP430FR5969__
-FAMILYDEF = __MSP430FR__
 endif
 
 ifeq ($(BOARD),sprite-app-launchpad)
 override CFLAGS += -DBOARD_SPRITE_APP_LAUNCHPAD
 DEVICE  = msp430fr5969
 DEVICEDEF = __MSP430FR5969__
-FAMILYDEF = __MSP430FR__
 endif
 
 ifeq ($(BOARD),msp-exp430fr6989)
 override CFLAGS += -DBOARD_MSP_EXP430FR6989
 DEVICE  = msp430fr6989
 DEVICEDEF = __MSP430FR6989__
-FAMILYDEF = __MSP430FR__
-endif
-
-ifeq ($(BOARD),msp-ts430rha40a)
-override CFLAGS += -DBOARD_MSP_TS430RHA40A
-DEVICE  = msp430fr5949
-DEVICEDEF = __MSP430FR5949__
-FAMILYDEF = __MSP430FR__
-endif
-
-ifeq ($(BOARD),capybara)
-override CFLAGS += -DBOARD_CAPYBARA
-DEVICE  = msp430fr5949
-DEVICEDEF = __MSP430FR5949__
-FAMILYDEF = __MSP430FR__
 endif
 
 ifeq ($(CONT_POWER),1)
 override CFLAGS += -DCONT_POWER
-endif
-
-ifneq ($(BOARD_MAJOR),)
-override CFLAGS += -DBOARD_MAJOR=$(BOARD_MAJOR)
-endif
-
-ifneq ($(BOARD_MINOR),)
-override CFLAGS += -DBOARD_MINOR=$(BOARD_MINOR)
 endif

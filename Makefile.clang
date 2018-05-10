@@ -35,7 +35,6 @@ HWMULT ?= 1
 override CFLAGS += \
 	--target=msp430 \
 	-D$(DEVICEDEF) \
-	-D$(FAMILYDEF) \
 	-nobuiltininc \
 	-nostdinc++ \
 	-isysroot /none \
@@ -58,10 +57,17 @@ ifneq ($(HWMULT),1)
 override LLC_FLAGS += -msp430-hwmult-mode=no
 endif
 
+ifeq ($(SYS), ratchet)
+override LFLAGS += \
+	-Wl,-Map=$(BIN).map \
+	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE)_ratchet.ld \
+	-L $(TOOLCHAIN_ROOT)/include
+else
 override LFLAGS += \
 	-Wl,-Map=$(BIN).map \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
-	-L $(TOOLCHAIN_ROOT)/include \
+	-L $(TOOLCHAIN_ROOT)/include
+endif
 
 # By default, link sources (given as object files), compiled bytecode
 LINK_OBJECTS ?= $(OBJECTS:.o=.bc)
@@ -107,6 +113,12 @@ all: $(BIN)
 
 %.S: %.a.bc
 	$(LLC) $(LLC_FLAGS) $^ -o $@
+ifeq ($(SYS), alpaca)
+	python2 ../../ext/python_dissembler/reg_spill_fix.py $@
+endif
+ifeq ($(SYS), ratchet)
+	python2 ../../ext/python_dissembler/ratchet_backend.py $@
+endif
 
 # Native assembly to native object code
 
