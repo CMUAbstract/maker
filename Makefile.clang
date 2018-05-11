@@ -52,6 +52,7 @@ override CFLAGS += \
 
 override LLC_FLAGS += \
 	-O0 \
+	-no-stack-slot-sharing \
 
 ifneq ($(HWMULT),1)
 override LLC_FLAGS += -msp430-hwmult-mode=no
