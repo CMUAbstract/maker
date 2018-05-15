@@ -17,7 +17,7 @@ include $(MAKER_ROOT)/Makefile.env
 
 define nested-rule
 $(1)/$(2)/%:
-	$(MAKE) TOOLCHAIN=$(2) -e -C $(1)/$(2) $$*
+	$$(MAKE) TOOLCHAIN=$(2) -e -C $(1)/$(2) $$*
 endef
 
 # Create rules for building the toolchains themselves (referred to as 'tools')
