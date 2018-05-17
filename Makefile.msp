@@ -48,7 +48,10 @@ define uart_brs
 $(strip $(word $(call find_sorted,$(1) - $(call calc_int,$(1)),1,$(BRS_FRAC)),$(BRS_REG)))
 endef
 
+else # device/family
+$(error Do not know how to configure UART buadrate registers for given device)
 endif # msp430fr%
+
 endif # ! cc430%
 
 # Define macros for comparator type and channel from chan spec (e.g. 'B.4')
