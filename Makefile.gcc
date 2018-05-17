@@ -17,15 +17,21 @@ LIB_SUFFIX = a
 EXEC_SUFFIX = out
 include $(MAKER_ROOT)/Makefile.suffix
 
+HWMULT ?= 1
+OPT_LEVEL ?= 2
+
 COMMONFLAGS = \
 	-mmcu=$(DEVICE) \
+	-mhwmult=auto \
+
+ifneq ($(HWMULT),1)
+COMMONFLAGS += -mhwmult=none
+else # HWMULT = 1
+COMMONFLAGS += -mhwmult=auto
+endif # HWMULT = 1
 
 ASFLAGS = \
 	$(COMMONFLAGS) \
-
-HWMULT ?= 1
-
-OPT_LEVEL ?= 2
 
 ifeq ($(shell test $(GCC_VER_MAJ) -lt 6; echo $$?),0)
 DEVICES_CSV_DIR = include
@@ -55,10 +61,6 @@ override CFLAGS += \
 # but that seems to be fragile. One day it just stopped overriding.
 override CFLAGS += -fno-builtin
 
-ifneq ($(HWMULT),1)
-override CFLAGS += -mhwmult=none
-endif
-
 # NOTE: --gc-sections is important otherwise cruft gets linked in (like,
 # open/close/read/etc syscalls from libnosys), which uses errno, which
 # prompts newlib to include 'impure_data' (~128 bytes) into .data,
@@ -66,6 +68,7 @@ endif
 # spent on initializing this data. NOTE: --gc-sections only fixes for
 # TI GCC v5.00 (gcc 6.2.1), does not fix the issue with v3.00 (v4.9.1).
 override LFLAGS += \
+	$(COMMONFLAGS) \
 	-Wl,--gc-sections \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
