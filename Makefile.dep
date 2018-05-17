@@ -59,6 +59,9 @@ $(call depend-rule,$(1),$$(DEP_LIB_DIR_$(1)),$(LIB_SUFFIX))
 # into an ISR, then the app needs library's pin macros.
 -include $$(DEP_BLD_DIR_$(1))/Makefile.config
 -include $$(DEP_BLD_DIR_$(1))/Makefile.options
+
+# Some libraries have customized recipies for linking against them
+-include $$(DEP_BLD_DIR_$(1))/Makefile.target
 endef
 
 # Also clean the app when cleaning dependencies
