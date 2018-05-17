@@ -29,7 +29,7 @@ ifeq ($(BOARD),edb)
 override CFLAGS += -DBOARD_EDB
 DEVICE  = msp430f5340
 DEVICEDEF = __MSP430F5340__
-FAMILYDEF = __MSP430FR__
+FAMILYDEF = __MSP430F__
 endif
 
 ifeq ($(BOARD),edb-1.1)
