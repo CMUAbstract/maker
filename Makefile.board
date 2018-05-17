@@ -166,3 +166,7 @@ BOARDDEFS = \
 	-D$(DEVICEDEF) \
 	-D$(FAMILYDEF) \
 	$(foreach d,$(PERIPHDEFS),-D$(d)) \
+
+# For use in makefiles
+export FAMILYDEF
+export DEFICEDEF
