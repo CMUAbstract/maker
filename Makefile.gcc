@@ -21,6 +21,7 @@ COMMONFLAGS = \
 	-mmcu=$(DEVICE) \
 
 ASFLAGS = \
+	-mlarge \
 	$(COMMONFLAGS) \
 
 HWMULT ?= 1
@@ -44,13 +45,13 @@ override CFLAGS += \
 	$(COMMONFLAGS) \
 	$(BOARDDEFS) \
 	-O$(OPT_LEVEL) \
-	-g \
 	-std=c99 \
 	-w \
 	-minrt \
 	-I$(TOOLCHAIN_ROOT)/$(DEVICES_CSV_DIR) \
 	-I$(SRC_ROOT) \
-        -mlarge \
+	-mlarge \
+	-g \
 
 # To prevent printf() getting replaced with puts from libc instead of from our
 # I/O backend lib. Note that we used to rely on overriding puts/putchar symbols,
@@ -70,15 +71,17 @@ endif
 ifeq ($(SYSTEM), jit)
 override LFLAGS += \
 	-Wl,--gc-sections \
-    -mlarge \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE)_framonly.ld \
-	-L $(TOOLCHAIN_ROOT)/include
+	-L $(TOOLCHAIN_ROOT)/include\
+  -mlarge \
+
 else
 override LFLAGS += \
 	-Wl,--gc-sections \
-    -mlarge \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
-	-L $(TOOLCHAIN_ROOT)/include
+	-L $(TOOLCHAIN_ROOT)/include\
+  -mlarge \
+
 endif
 
 VPATH = $(SRC_ROOT)
@@ -94,18 +97,26 @@ all: $(BIN)
 	mkdir -p "./$(shell dirname $@)"
 	$(CC) -c -MD $(CFLAGS) $< -o $@
 
-%.o: %.S
+%.S: %.c
 	mkdir -p "./$(shell dirname $@)"
-	$(AS) $(ASFLAGS) $< -o $@
+	$(CC) -S -c -MD $(CFLAGS) $< -o $@
+	python3 ../../ext/jit/python_script/mainPatcher.py $@
 
-%.out: $(OBJECTS)
-	$(LD) $(LFLAGS) $(OBJECTS) $(LIBS) -o $(BIN)
+#%.o: %.S
+#	mkdir -p "./$(shell dirname $@)"
+#	$(AS) $(ASFLAGS) $< -o $@
+
+#%.out: $(OBJECTS)
+#	$(LD) $(LFLAGS) $(OBJECTS) $(LIBS) -o $(BIN)
+%.out: %.S
+	$(LD) $(LFLAGS) $< $(LIBS) -o $(BIN)
+
 
 %.a: $(OBJECTS)
 	$(AR) rcs $@ $^
 
 clean:
-	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(BIN)
+	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(BIN) *.S
 
 debug: $(BIN)
 	$(GDB) $(BIN)
