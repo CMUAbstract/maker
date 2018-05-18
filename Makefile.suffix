@@ -1,10 +1,30 @@
+# Return the suffix for binary names when built by a given toolchain
+# $(1) : type of binary: {lib,exec}
+# $(2) : toolchain
+#
+# Note: this is a function instead of a variable, because we might need to
+# build some dependencies with a toolchain that's different from the app
+# toolchain.
+define bin-suffix
+$(strip \
+	$(if $(filter gcc,$(2)),\
+		$(if $(filter lib,$(1)),a,\
+		$(if $(filter exec,$(1)),out,\
+		$(error Suffix for binary type '$(1)' is not defined))),\
+    $(if $(filter clang,$(2)),
+		$(if $(filter lib,$(1)),a.bc,\
+	    $(if $(filter exec,$(1)),out,\
+		$(error Suffix for binary type '$(1)' is not defined))),\
+    $(error Library suffix for toolchain '$(2)' is not defined))))
+endef # bin-suffix
+
 # This makefile supports building either a library or an executable
 ifneq ($(LIB),)
 TARGET_TYPE = lib
-BIN = $(LIB).$(LIB_SUFFIX)
+BIN = $(LIB).$(call bin-suffix,lib,$(TOOLCHAIN))
 else ifneq ($(EXEC),)
 TARGET_TYPE = exec
-BIN = $(EXEC).$(EXEC_SUFFIX)
+BIN = $(EXEC).$(call bin-suffix,exec,$(TOOLCHAIN))
 else
 $(error Neither LIB nor EXEC is set: what are we building?)
 endif

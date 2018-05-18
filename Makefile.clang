@@ -1,4 +1,10 @@
-TOOLCHAIN = clang
+# Need to override for the case when we are building a dependency with a
+# different toolchain than the app's toolchain. In that case, this
+# makefile is included into a build environment where TOOLCHAIN has already
+# been defined and passed via the '-e' command line switch.
+# Need to export for included files to see this.
+override TOOLCHAIN = clang
+export TOOLCHAIN
 
 include $(MAKER_ROOT)/Makefile.env
 include $(MAKER_ROOT)/Makefile.board
@@ -21,8 +27,6 @@ include $(MAKER_ROOT)/Makefile.version
 
 LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts/gcc-$(GCC_VERSION_MAJOR)
 
-LIB_SUFFIX = a.bc
-EXEC_SUFFIX = out
 include $(MAKER_ROOT)/Makefile.suffix
 
 HWMULT ?= 1
@@ -128,8 +132,11 @@ include $(MAKER_ROOT)/Makefile.program
 endif
 
 ifeq ($(TARGET_TYPE),exec)
+# If toolchain matches, i.e. it is clang, then add to LLVM link line,
+# otherwise, add to the GCC link line
 define add-lib
-LLVM_LIBS += $$(DEP_LIB_DIR_$(1))/$(1).$(LIB_SUFFIX)
+LLVM_LIBS += $(if $(filter $(TOOLCHAIN),$(2)),$$(DEP_LIB_DIR_$(1))/$(1).$(call bin-suffix,lib,$(TOOLCHAIN)))
+LIBS += $(if $(filter $(TOOLCHAIN),$(2)),,-L$$(DEP_LIB_DIR_$(1)) -l$(subst lib,,$(1)))
 endef
 else # TARGET_TYPE
 define add-lib

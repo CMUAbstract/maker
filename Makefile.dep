@@ -32,12 +32,15 @@ endef
 
 define depend
 
+# $(1): library name
+# $(2): toolchain to use to build the library (may differ from app's toolchain)
+
 # These are designed to be overriddable from top-level app makefile
 DEP_ROOT_$(1) ?= $(LIB_ROOT)
 DEP_RELDIR_$(1) ?= $(1)
 DEP_INC_RELDIR_$(1) ?= src/include
 DEP_BLD_RELDIR_$(1) ?= bld
-DEP_LIB_RELDIR_$(1) ?= $$(DEP_BLD_RELDIR_$(1))/$(TOOLCHAIN)
+DEP_LIB_RELDIR_$(1) ?= $$(DEP_BLD_RELDIR_$(1))/$(2)
 
 DEP_INC_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_RELDIR_$(1))/$$(DEP_INC_RELDIR_$(1))
 DEP_LIB_DIR_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_RELDIR_$(1))/$$(DEP_LIB_RELDIR_$(1))
@@ -51,8 +54,8 @@ DEP_BLD_DIR_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_RELDIR_$(1))/$$(DEP_BLD_RELDIR_$(1))
 
 override CFLAGS += -I$$(DEP_INC_$(1))
 
-$(eval $(call add-lib,$(1)))
-$(call depend-rule,$(1),$$(DEP_LIB_DIR_$(1)),$(LIB_SUFFIX))
+$(eval $(call add-lib,$(1),$(2)))
+$(call depend-rule,$(1),$$(DEP_LIB_DIR_$(1)),$(call bin-suffix,lib,$(2)))
 
 # Application may want to use the library config flags as well.
 # In particular, if library defines an ISR handler for the app to insert it
@@ -75,7 +78,10 @@ $(if $(filter 0 1, $(words $(1))),\
           $(firstword $(1)) $(call unique, $(wordlist 2, $(words $(1)), $(1)))))
 endef # unique
 
-$(foreach dep,$(call unique,$(DEPS)),$(eval $(call depend,$(strip $(dep)))))
+# Syntax of each entry in DEPS is libname[:toolchain]
+$(foreach dep,$(call unique,$(DEPS)),$(eval \
+	$(call depend,$(word 1,$(subst :, ,$(strip $(dep)))),$(or \
+                     $(word 2,$(subst :, ,$(strip $(dep)))),$(TOOLCHAIN)))))
 
 # So that the nested call gets the CFLAGS settings from each lib's .options
 export CFLAGS
