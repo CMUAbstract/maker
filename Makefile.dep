@@ -49,6 +49,7 @@ DEP_INC_RELDIR_$(1) ?= src/include
 DEP_BLD_RELDIR_$(1) ?= bld
 DEP_LIB_RELDIR_$(1) ?= $$(DEP_BLD_RELDIR_$(1))/$(2)
 
+DEP_TOP_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_RELDIR_$(1))
 DEP_INC_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_RELDIR_$(1))/$$(DEP_INC_RELDIR_$(1))
 DEP_LIB_DIR_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_RELDIR_$(1))/$$(DEP_LIB_RELDIR_$(1))
 DEP_BLD_DIR_$(1) = $$(DEP_ROOT_$(1))/$$(DEP_RELDIR_$(1))/$$(DEP_BLD_RELDIR_$(1))
@@ -67,11 +68,11 @@ $(call depend-rule,$(1),$$(DEP_LIB_DIR_$(1)),$(call bin-suffix,lib,$(2)),$(2))
 # Application may want to use the library config flags as well.
 # In particular, if library defines an ISR handler for the app to insert it
 # into an ISR, then the app needs library's pin macros.
--include $$(DEP_BLD_DIR_$(1))/Makefile.config
--include $$(DEP_BLD_DIR_$(1))/Makefile.options
+-include $$(DEP_TOP_$(1))/Makefile.config
+-include $$(DEP_TOP_$(1))/Makefile.options
 
 # Some libraries have customized recipies for linking against them
--include $$(DEP_BLD_DIR_$(1))/Makefile.target
+-include $$(DEP_TOP_$(1))/Makefile.target
 endef
 
 # Also clean the app when cleaning dependencies
