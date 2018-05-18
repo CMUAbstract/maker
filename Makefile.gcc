@@ -29,7 +29,7 @@ else # HWMULT = 1
 CC_LD_FLAGS += -mhwmult=auto
 endif # HWMULT = 1
 
-ASFLAGS = \
+ASFLAGS_TOOLCHAIN = \
 	$(COMMONFLAGS) \
 
 ifeq ($(shell test $(GCC_VERSION_MAJOR) -lt 6; echo $$?),0)
@@ -44,7 +44,7 @@ endif # GCC_VERSION_MAJOR
 # changing the value of a variable is only possible with override. It's ugly,
 # but hopefully, this is enough to make things work.
 
-override CFLAGS += \
+CFLAGS_TOOLCHAIN += \
 	$(COMMONFLAGS) \
 	$(CC_LD_FLAGS) \
 	$(BOARDDEFS) \
@@ -59,7 +59,7 @@ override CFLAGS += \
 # To prevent printf() getting replaced with puts from libc instead of from our
 # I/O backend lib. Note that we used to rely on overriding puts/putchar symbols,
 # but that seems to be fragile. One day it just stopped overriding.
-override CFLAGS += -fno-builtin
+CFLAGS_TOOLCHAIN += -fno-builtin
 
 # NOTE: --gc-sections is important otherwise cruft gets linked in (like,
 # open/close/read/etc syscalls from libnosys), which uses errno, which
@@ -67,7 +67,7 @@ override CFLAGS += -fno-builtin
 # which leads to a significant delay before main run son startup (~3ms)
 # spent on initializing this data. NOTE: --gc-sections only fixes for
 # TI GCC v5.00 (gcc 6.2.1), does not fix the issue with v3.00 (v4.9.1).
-override LFLAGS += \
+LFLAGS_TOOLCHAIN += \
 	$(COMMONFLAGS) \
 	$(CC_LD_FLAGS) \
 	-Wl,--gc-sections \
@@ -85,14 +85,14 @@ bin: $(BIN)
 
 %.o: %.c
 	mkdir -p "./$(shell dirname $@)"
-	$(CC) -c -MD $(CFLAGS) $< -o $@
+	$(CC) -c -MD $(CFLAGS_TOOLCHAIN) $(CFLAGS) $< -o $@
 
 %.o: %.S
 	mkdir -p "./$(shell dirname $@)"
-	$(AS) $(ASFLAGS) $< -o $@
+	$(AS) $(ASFLAGS_TOOLCHAIN) $(ASFLAGS) $< -o $@
 
 %.out: $(OBJECTS)
-	$(LD) $(LFLAGS) $(OBJECTS) $(LIBS) -o $(BIN)
+	$(LD) $(LFLAGS_TOOLCHAIN) $(LFLAGS) $(OBJECTS) $(LIBS) -o $(BIN)
 
 %.a: $(OBJECTS)
 	$(AR) rcs $@ $^

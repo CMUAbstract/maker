@@ -29,7 +29,7 @@ HWMULT ?= 1
 # changing the value of a variable is only possible with override. It's ugly,
 # but hopefully, this is enough to make things work.
 
-override CFLAGS += \
+CFLAGS_TOOLCHAIN += \
 	--target=msp430 \
 	$(BOARDDEFS) \
 	-nobuiltininc \
@@ -45,14 +45,14 @@ override CFLAGS += \
 	-I $(TOOLCHAIN_ROOT)/include \
 	-I $(SRC_ROOT) \
 
-override LLC_FLAGS += \
+LLC_FLAGS_TOOLCHAIN += \
 	-O0 \
 
 ifneq ($(HWMULT),1)
-override LLC_FLAGS += -msp430-hwmult-mode=no
+LLC_FLAGS_TOOLCHAIN += -msp430-hwmult-mode=no
 endif
 
-override LFLAGS += \
+LFLAGS_TOOLCHAIN += \
 	-Wl,-Map=$(BIN).map \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
@@ -73,7 +73,7 @@ bin: $(BIN)
 
 %.bc: %.c
 	mkdir -p "./$(shell dirname $@)"
-	$(CC) -emit-llvm -c $(CFLAGS) $< -o $@
+	$(CC) -emit-llvm -c $(CFLAGS_TOOLCHAIN) $(CFLAGS) $< -o $@
 
 %.a.bc: $(LINK_OBJECTS)
 	$(LLVM_LINK) -o $@ $^ $(LLVM_LIBS)
@@ -97,15 +97,15 @@ bin: $(BIN)
 # LLVM bytecode to native assembly
 
 %.s: %.bc
-	$(LLC) $(LLC_FLAGS) $^ -o $@
+	$(LLC) $(LLC_FLAGS_TOOLCHAIN) $(LLC_FLAGS) $^ -o $@
 
 %.S: %.a.bc
-	$(LLC) $(LLC_FLAGS) $^ -o $@
+	$(LLC) $(LLC_FLAGS_TOOLCHAIN) $(LLC_FLAGS) $^ -o $@
 
 # Native assembly to native object code
 
 %.out: %.S
-	$(GCC) $(LFLAGS) -o $@ $< $(LIBS)
+	$(GCC) $(LFLAGS_TOOLCHAIN) $(LFLAGS) -o $@ $< $(LIBS)
 
 # Do not remove these intermediates
 .PRECIOUS: %.a.bc %.bc %.s %.S
