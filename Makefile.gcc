@@ -20,6 +20,9 @@ include $(MAKER_ROOT)/Makefile.version
 
 LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts/gcc-$(GCC_VERSION_MAJOR)
 
+# Makefile for the binary (library or executable)
+include ../Makefile
+
 include $(MAKER_ROOT)/Makefile.suffix
 
 HWMULT ?= 1

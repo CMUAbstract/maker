@@ -19,7 +19,7 @@ include $(MAKER_ROOT)/Makefile.env
 # is included before Makefile.$(TOOLCHAIN), but we want the var there.
 define nested-rule
 $(1)/$(2)/%:
-	$$(MAKE) TOOLCHAIN=$(2) -e -C $(1)/$(2) $$*
+	$$(MAKE) TOOLCHAIN=$(2) -e -C $(1)/$(2) -f $(MAKER_ROOT)/Makefile.$(2) $$*
 endef
 
 # Create rules for building the toolchains themselves (referred to as 'tools')
