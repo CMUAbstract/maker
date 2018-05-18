@@ -76,7 +76,7 @@ override LFLAGS += \
 
 VPATH = $(SRC_ROOT)
 
-all: $(BIN)
+bin: $(BIN)
 
 -include $(OBJECTS:.o=.d)
 

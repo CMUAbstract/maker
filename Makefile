@@ -23,8 +23,13 @@ define nested-rule
 $(1)/$(2):
 	mkdir -p $(1)/$(2)
 
+# Order: first build dependencies, then build the binary
+$(1)/$(2)/all: $(1)/$(2)/bin ;
+$(1)/$(2)/bin : $(1)/$(2)/dep ;
+
 $(1)/$(2)/%:
 	$$(MAKE) TOOLCHAIN=$(2) -e -C $(1)/$(2) -f $(MAKER_ROOT)/Makefile.$(2) $$*
+
 endef
 
 # Create rules for building the toolchains themselves (referred to as 'tools')

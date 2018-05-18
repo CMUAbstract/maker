@@ -62,7 +62,7 @@ LINK_OBJECTS ?= $(OBJECTS:.o=.bc)
 
 VPATH = $(SRC_ROOT)
 
-all: $(BIN)
+bin: $(BIN)
 
 -include $(OBJECTS:.o=.d)
 
