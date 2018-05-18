@@ -23,12 +23,14 @@ OPT_LEVEL ?= 2
 
 COMMONFLAGS = \
 	-mmcu=$(DEVICE) \
+
+CC_LD_FLAGS = \
 	-mhwmult=auto \
 
 ifneq ($(HWMULT),1)
-COMMONFLAGS += -mhwmult=none
+CC_LD_FLAGS += -mhwmult=none
 else # HWMULT = 1
-COMMONFLAGS += -mhwmult=auto
+CC_LD_FLAGS += -mhwmult=auto
 endif # HWMULT = 1
 
 ASFLAGS = \
@@ -48,6 +50,7 @@ endif # GCC_VERSION_MAJOR
 
 override CFLAGS += \
 	$(COMMONFLAGS) \
+	$(CC_LD_FLAGS) \
 	$(BOARDDEFS) \
 	-O$(OPT_LEVEL) \
 	-g \
@@ -70,6 +73,7 @@ override CFLAGS += -fno-builtin
 # TI GCC v5.00 (gcc 6.2.1), does not fix the issue with v3.00 (v4.9.1).
 override LFLAGS += \
 	$(COMMONFLAGS) \
+	$(CC_LD_FLAGS) \
 	-Wl,--gc-sections \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
