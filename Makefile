@@ -20,6 +20,9 @@ include $(MAKER_ROOT)/Makefile.binvars-export
 # Note: we need to pass TOOLCHAIN on the command line, because bld/Makefile
 # is included before Makefile.$(TOOLCHAIN), but we want the var there.
 define nested-rule
+$(1)/$(2):
+	mkdir -p $(1)/$(2)
+
 $(1)/$(2)/%:
 	$$(MAKE) TOOLCHAIN=$(2) -e -C $(1)/$(2) -f $(MAKER_ROOT)/Makefile.$(2) $$*
 endef
