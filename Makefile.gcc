@@ -12,7 +12,7 @@ GDB     = $(PREFIX)gdb
 
 include $(MAKER_ROOT)/Makefile.version
 
-LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts/gcc-$(GCC_VER_MAJ)
+LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts/gcc-$(GCC_VERSION_MAJOR)
 
 LIB_SUFFIX = a
 EXEC_SUFFIX = out
@@ -34,11 +34,11 @@ endif # HWMULT = 1
 ASFLAGS = \
 	$(COMMONFLAGS) \
 
-ifeq ($(shell test $(GCC_VER_MAJ) -lt 6; echo $$?),0)
+ifeq ($(shell test $(GCC_VERSION_MAJOR) -lt 6; echo $$?),0)
 DEVICES_CSV_DIR = include
-else # GCC_VER_MAJ >= 6
+else # GCC_VERSION_MAJOR >= 6
 DEVICES_CSV_DIR = msp430-elf/include
-endif # GCC_VER_MAJ
+endif # GCC_VERSION_MAJOR
 
 # We override because when this file is included from a nested build directory
 # (say, when the app or toolchain has more than one build artifact, each built
