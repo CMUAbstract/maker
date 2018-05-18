@@ -1,11 +1,3 @@
-# Need to override for the case when we are building a dependency with a
-# different toolchain than the app's toolchain. In that case, this
-# makefile is included into a build environment where TOOLCHAIN has already
-# been defined and passed via the '-e' command line switch.
-# Need to export for included files to see this.
-override TOOLCHAIN = clang
-export TOOLCHAIN
-
 include $(MAKER_ROOT)/Makefile.env
 include $(MAKER_ROOT)/Makefile.board
 
@@ -145,3 +137,9 @@ endef
 endif
 
 include $(MAKER_ROOT)/Makefile.dep
+
+unexport EXEC
+unexport OBJECTS
+unexport DEPS
+unexport DEPS_clang
+unexport DEPS_gcc

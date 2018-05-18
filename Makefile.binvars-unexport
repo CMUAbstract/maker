@@ -1,0 +1,9 @@
+# Variables that are defined by the binary (executable or library) makefile
+# The top-level Makefile includes Makefile.binvars-export to do the export.
+# Each toolchain file must include this makefile to do the unexport.
+
+unexport EXEC
+unexport OBJECTS
+unexport DEPS
+unexport TOOLCHAINS
+unexport $(foreach tc,$(TOOLCHAINS),DEPS_$(tc))

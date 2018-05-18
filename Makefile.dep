@@ -18,7 +18,7 @@
 define depend-rule
 
 $(2)/$(1).$(3): $(2)
-	$$(MAKE) -e -C $$^ -f $(MAKER_ROOT)/Makefile.$(4)
+	$$(MAKE) TOOLCHAIN=$(4) -e -C $$^ -f ../../Makefile
 
 # Only add dependency for executables, not libraries.  Can't have it for libs,
 # because we use dep array in the recipe for linking objects into libraries.
@@ -29,7 +29,7 @@ endif # TARGET_TYPE
 dep: $(2)/$(1).$(3)
 
 depclean_$(1): $(2)
-	$$(MAKE) -C $$^ clean
+	$$(MAKE) -C $$^ -f ../../Makefile clean
 depclean: depclean_$(1)
 
 endef
@@ -82,8 +82,8 @@ $(if $(filter 0 1, $(words $(1))),\
           $(firstword $(1)) $(call unique, $(wordlist 2, $(words $(1)), $(1)))))
 endef # unique
 
-# Syntax of each entry in DEPS is libname[:toolchain]
-$(foreach dep,$(call unique,$(DEPS)),$(eval \
+# Syntax of each entry in DEPS and DEPS_toolchain is libname[:toolchain]
+$(foreach dep,$(call unique,$(DEPS) $(DEPS_$(TOOLCHAIN))),$(eval \
 	$(call depend,$(word 1,$(subst :, ,$(strip $(dep)))),$(or \
                      $(word 2,$(subst :, ,$(strip $(dep)))),$(TOOLCHAIN)))))
 
