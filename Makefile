@@ -15,9 +15,11 @@ export MAKER_ROOT = $(abspath $(EXT_REL_ROOT)/maker)
 
 include $(MAKER_ROOT)/Makefile.env
 
+# Note: we need to pass TOOLCHAIN on the command line, because bld/Makefile
+# is included before Makefile.$(TOOLCHAIN), but we want the var there.
 define nested-rule
 $(1)/$(2)/%:
-	$$(MAKE) -e -C $(1)/$(2) $$*
+	$$(MAKE) TOOLCHAIN=$(2) -e -C $(1)/$(2) $$*
 endef
 
 # Create rules for building the toolchains themselves (referred to as 'tools')
