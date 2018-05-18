@@ -116,7 +116,7 @@ all: $(BIN)
 	$(AR) rcs $@ $^
 
 clean:
-	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(BIN) *.S
+	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(BIN) #*.S
 
 debug: $(BIN)
 	$(GDB) $(BIN)
