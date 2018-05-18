@@ -19,6 +19,7 @@ unmodified repository of `libfoo`, and will set configuration flags, exposed by
 An application built with maker must conform to a simple directory layout:
 
     + appfoo
+    + Makefile                 : build recipe that defines the source files to build and configures dependencies
     +--+ src/                  : contains application source files and headers
     +--+ ext/                  : contains dependencies (optionally but usually, included as Git submodules)
        +--+ maker/             : maker itself is a dependency included as a submodule
@@ -27,34 +28,34 @@ An application built with maker must conform to a simple directory layout:
        +--+ toolchainA/        : some dependencies may be toolchains that are used to build the application
        +--+ toolchainB/
        +--+ ...
-    +--+ bld/                   : contains the build recipe and build artifacts are generated in subdirectories
-       +--+ Makefile            : main build recipe that defines the source files to build and configures dependencies
+    +--+ bld/                   : contains the build artifacts in one subdirectory per toolchain
        +--+ toolchainA/
-          +--+ Makefile         : file needed for a silly technical reason only (see below)
        +--+ toolchainB/
-          +--+ Makefile
        +--+ ...
-    + Makefile                  : top-level makefile that provides entry-point and identifies toolchain dependencies
 
-The build recipe in `bld/Makefile` has the following structure:
+The build recipe in `Makefile` has the following structure:
 
     EXEC = appfoo
     OBJECTS = main.o srcA.o srcB.o ...
     DEPS += libbar libbaz ...
 
+    # Optinally a dependency may specify the toolchain it should be built with
+    # the format `libname:toolchain`, for example
+    DEPS += libnolikeclang:gcc
+
+    # Optionally toolchain-specific dependencies can be defined in
+    # variables of the form DEPS_toolchain, for example
+    DEPS_clang += libfoo
+
     # Compile-time configuration of dependencies
     export LIBBAR_CONFIGVAR = configvalue
     ...
 
-The top-level `Makefile` contains one include statement, names of built-in and
-custom toolchains, and optionally [Maker configuration
-settings](#maker-configuration-settings):
-
-    # Maker configuration settings
-    export CFGVAR ?= value
-
-    TOOLCHAINS = toolchainX ...
+    # Required boostrap of the Maker build recipies...
+    # ... for executables
     include ext/maker/Makefile
+    # ... for libraries
+    include $(MAKER_ROOT)/Makefile.$(TOOLCHAIN)
 
 An application is built with Maker by invoking [make targets described
 below](#usage-build-targets). Maker configuration settings are overridable on
@@ -77,18 +78,18 @@ Add the library to the dependency list in application\'s build recipe in `bld/Ma
 
     DEPS += libbar
 
+or to specify the toolchain that this library must be built if, if different
+from the toolchain the app is built, with `lib:toolchain`, for example:
+
+    DEPS += libbar:gcc
+
 Include the library\'s headers from the source:
 
     #include <libfoo/foo.h>
 
 Builds using different [built-in toolchains](#built-in-toolchains) (e.g. GCC,
 Clang) and [custom toolchains](#custom-toolchains) co-exist in separate
-subdirectories of the `bld/` directories. To use a toolchain `toolchainX`,
-the application must create `bld/toolchainX/Makefile` with 
-
-    TOOLCHAIN = toolchainX
-    include ../Makefile
-    include $(MAKER_ROOT)/Makefile.toolchainX
+subdirectories of the `bld/` directories.
 
 **NOTE**: Having to create this file is annoying, and hopefully it will be
 eliminated in the future.
@@ -134,10 +135,10 @@ Library dependencies
 To be a Maker package, a library conforms to a simple source tree layout: 
 
     + libbar/
+    + Makefile                  : build recipe for building the library (in the context of an application)
     +--+ src/                   : contains library source files and headers
        +--+ include/libbar/     : contains public headers
     +--+ bld/
-       +-- Makefile             : build recipe for building the library (in the context of an application)
        +-- Makefile.config      : available compile-time configuration flags and their defaults
        +-- Makefile.options     : implements the application of the configuration flags from Makefile.config
 
@@ -150,6 +151,9 @@ context of an application, and is structured as follows:
 
     LIB = libfoo
     OBJECTS = srcA.o srcB.o ...
+
+    # Required to bootstrap Maker recipies
+    include $(MAKER_ROOT)/Makefile.$(TOOLCHAIN)
 
 When desired, it is possible to include sources conditionally, based on
 a library configuration flag:
