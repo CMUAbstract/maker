@@ -21,7 +21,8 @@ LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts/gcc-$(GCC_VERSION_MAJOR)
 
 include $(MAKER_ROOT)/Makefile.suffix
 
-HWMULT ?= 1
+# With Clang, builtins are missing, so link fails with HW multiplier
+HWMULT ?= 0
 
 # We override because when this file is included from a nested build directory
 # (say, when the app or toolchain has more than one build artifact, each built
@@ -48,14 +49,17 @@ CFLAGS_TOOLCHAIN += \
 LLC_FLAGS_TOOLCHAIN += \
 	-O0 \
 
-ifneq ($(HWMULT),1)
-LLC_FLAGS_TOOLCHAIN += -msp430-hwmult-mode=no
-endif
-
 LFLAGS_TOOLCHAIN += \
 	-Wl,-Map=$(BIN).map \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
 	-L $(TOOLCHAIN_ROOT)/include \
+
+ifeq ($(HWMULT),1)
+LFLAGS_TOOLCHAIN += -mhwmult=auto
+else
+LLC_FLAGS_TOOLCHAIN += -msp430-hwmult-mode=no
+LFLAGS_TOOLCHAIN += -mhwmult=none
+endif
 
 # By default, link sources (given as object files), compiled bytecode
 LINK_OBJECTS ?= $(OBJECTS:.o=.bc)
