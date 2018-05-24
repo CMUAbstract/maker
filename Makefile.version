@@ -1,11 +1,3 @@
-GCC_VERSION = $(shell $(GCC) -dumpversion)
-GCC_VERSION_MAJOR = $(word 1,$(subst ., ,$(GCC_VERSION)))
-GCC_VERSION_MINOR = $(word 2,$(subst ., ,$(GCC_VERSION)))
-
-# We can't rely on __GNUC__ to distinguish version of MSPGCC, especially
-# because Clang defines this to its own version.
-# Even relying on the version of GCC shipped in the MSPGCC package is indirect,
-# but there's no obvious place where MSPGCC version is cleanly defined.
-override CFLAGS += \
-	-DGCC_VERSION_MAJOR=$(GCC_VERSION_MAJOR) \
-	-DGCC_VERSION_MINOR=$(GCC_VERSION_MINOR) \
+define version-lt
+$(filter-out $(2),$(firstword $(sort $(1) $(2))))
+endef # version-lt

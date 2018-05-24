@@ -8,7 +8,7 @@ LD      = $(PREFIX)gcc
 AS      = $(PREFIX)as
 GDB     = $(PREFIX)gdb
 
-include $(MAKER_ROOT)/Makefile.version
+include $(MAKER_ROOT)/Makefile.version.gcc
 
 LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts/gcc-$(GCC_VERSION_MAJOR)
 

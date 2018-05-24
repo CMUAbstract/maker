@@ -2,7 +2,8 @@ include $(MAKER_ROOT)/Makefile.env
 include $(MAKER_ROOT)/Makefile.board
 
 PREFIX = $(CLANG_ROOT)/bin/
-CC      = $(PREFIX)clang
+CC_CLANG = $(PREFIX)clang
+CC      := $(CC_CLANG)
 export LLC     = $(PREFIX)llc
 export LLVM_LINK= $(PREFIX)/llvm-link
 export LLVM_AS = $(PREFIX)/llvm-as
@@ -15,7 +16,8 @@ AS      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-as
 LD      = $(GCC)
 GDB     = $(TOOLCHAIN_ROOT)/bin/msp430-elf-gdb
 
-include $(MAKER_ROOT)/Makefile.version
+include $(MAKER_ROOT)/Makefile.version.gcc
+include $(MAKER_ROOT)/Makefile.version.clang
 
 LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts/gcc-$(GCC_VERSION_MAJOR)
 
