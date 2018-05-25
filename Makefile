@@ -26,6 +26,7 @@ $(1)/$(2):
 # Order: first build dependencies, then build the binary
 $(1)/$(2)/all: $(1)/$(2)/bin ;
 $(1)/$(2)/bin : $(1)/$(2)/dep
+$(1)/$(2)/prog : $(1)/$(2)/bin
 
 $(1)/$(2)/%: $(1)/$(2)
 	$$(MAKE) TOOLCHAIN=$(2) -e -C $(1)/$(2) -f $(MAKER_ROOT)/Makefile.$(2) $$*
