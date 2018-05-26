@@ -152,9 +152,8 @@ endef
 endif
 
 # Older Clang versions did not have builtins defined
-ifneq ($(call version-lt,$(CLANG_VERSION),5.0.0),)
 override DEPS_clang += libmspbuiltins:gcc
-endif
+export CLANG_VERSION # libmspbuiltins build is parametrized by Clang version
 
 include $(MAKER_ROOT)/Makefile.dep
 
