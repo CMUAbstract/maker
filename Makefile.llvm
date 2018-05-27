@@ -9,13 +9,11 @@ CMAKE_VARS += \
 LLVM_DIR ?= llvm
 LLVM_BLD_DIR ?= $(LLVM_DIR)/bld
 
-MAKE_ARGS ?= -j4
-
 all: llvm
 
 llvm:
 	mkdir -p $(LLVM_BLD_DIR)
-	cd $(LLVM_BLD_DIR) && cmake $(CMAKE_VARS) .. && make $(MAKE_ARGS)
+	cd $(LLVM_BLD_DIR) && cmake $(CMAKE_VARS) .. && $(MAKE)
 
 llvm.clean:
 	rm -rf $(LLVM_BLD_DIR)
