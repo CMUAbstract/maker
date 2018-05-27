@@ -30,7 +30,10 @@ $(1)/$(2)/bin : $(1)/$(2)/dep
 $(1)/$(2)/prog : $(1)/$(2)/bin
 
 $(1)/$(2)/%: $(1)/$(2)
-	$$(MAKE) TOOLCHAIN=$(2) -e -C $(1)/$(2) -f $(MAKER_ROOT)/Makefile.$(2) $$*
+	$$(MAKE) TOOLCHAIN=$(2) -e -C $(1)/$(2) \
+		-f $(if $(file <$(LIB_ROOT)/$(2)/Makefile.target),\
+				$(LIB_ROOT)/$(2)/Makefile.target,\
+				$(MAKER_ROOT)/Makefile.$(2)) $$*
 
 endef
 
