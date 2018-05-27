@@ -17,6 +17,7 @@ include $(MAKER_ROOT)/Makefile.env
 
 include $(MAKER_ROOT)/Makefile.binvars-export
 
+# Rule for building the app using a toolchain
 # Note: we need to pass TOOLCHAIN on the command line, because bld/Makefile
 # is included before Makefile.$(TOOLCHAIN), but we want the var there.
 define nested-rule
@@ -33,8 +34,15 @@ $(1)/$(2)/%: $(1)/$(2)
 
 endef
 
+# Rule for building a tool (which may later be used to build the app)
+define nested-tool-rule
+$(1)/$(2)/%: $(1)/$(2)
+	$$(MAKE) TOOLCHAIN=$(2) -e -C $(1)/$(2) $$*
+
+endef
+
 # Create rules for building the toolchains themselves (referred to as 'tools')
-$(foreach tl,$(TOOLS),$(eval $(call nested-rule,$(TOOL_REL_ROOT),$(tl))))
+$(foreach tl,$(TOOLS),$(eval $(call nested-tool-rule,$(TOOL_REL_ROOT),$(tl))))
 
 # Create rules for building/profiling/etc the app using a toolchain
 $(foreach tc,$(TOOLCHAINS),$(eval $(call nested-rule,$(BLD_REL_ROOT),$(tc))))
