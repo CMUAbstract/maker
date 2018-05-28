@@ -1,5 +1,5 @@
 PREFIX = $(CLANG_ROOT)/bin/
-CC_CLANG = $(PREFIX)clang
+export CC_CLANG = $(PREFIX)clang
 CC      := $(CC_CLANG)
 export LLC     = $(PREFIX)llc
 export LLVM_LINK= $(PREFIX)/llvm-link
