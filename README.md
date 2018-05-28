@@ -271,9 +271,11 @@ the command line when invoking make: `make CFGVAR=othervalue ...`.
 | ------------ | --------------------------------------------------------------------------------------------------- |
 | `FET_DEVICE` | Device path to MSP-FET programming device to use by the `bld/*/prog` [target](#usage-build-targets) |
 | `VOLTAGE`    | Voltage that MSP-FET is set to by the `bld/*/prog` [target](#usage-build-targets) |
-| `BOARD`      | **TO BE DEPRECATED** Selects target MCU device and defines a macro identifying a board, see [Makefile.board](Makefile.board) |
 | `DEP_ROOT_libx` | overrides the path to the parent directory of dependency `libx` from the default `ext/` |
 | `DEP_RELDIR_libx` | overrides the **sub-path** to the dependency `libx` from the default `libx/` |
+| `DEVICE`     | Target MCU model to build for |
+| `BOARD`      | Defines a `BOARD_*` macro that the app/lib code can use to identify the target board |
+| `BOARD_{MINOR,MAJOR}` | Defines a `BOARD_{MINOR,MAJOR}` macros that the app/lib code can use to identify the target board version |
 
 Flashing functionality
 ----------------------
