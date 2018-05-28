@@ -42,6 +42,7 @@ export BOARDDEFS := \
 	-DBOARD_$(call uppercase,$(BOARD)) \
 	$(if $(BOARD_MAJOR),-DBOARD_MAJOR=$(BOARD_MAJOR)) \
 	$(if $(BOARD_MINOR),-DBOARD_MINOR=$(BOARD_MINOR)) \
+	-D__$(call uppercase,$(DEVICE))__ \
 	-D__$(FAMILY)__ \
 	$(foreach p,$(PERIPHS),-D__$(p)__) \
 
