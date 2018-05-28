@@ -1,0 +1,25 @@
+#define devfamily
+#$(if $(filter \
+#	msp430fr%,$(1)),msp430fr,$(if $(filter \
+#	msp430f%,$(1)),msp430f,\
+#	cc430%,$(1)),cc430,\
+#	$(error Unknown family for device $(1)))
+#endef # devfamily
+
+ifeq ($(DEVICE),)
+$(error Variable not set in app Makefile: DEVICE)
+endif
+
+ifneq ($(filter msp430fr%,$(DEVICE)),)
+FAMILY := MSP430FR
+PERIPHS := MSP_EUSCI
+else ifneq ($(filter msp430f%,$(DEVICE)),)
+FAMILY := MSP430F
+PERIPHS := MSP_USCI
+else ifneq ($(filter cc430%,$(DEVICE)),)
+FAMILY := CC430
+PERIPHS := MSP_USCI
+endif
+
+export FAMILY
+export PERIPHS

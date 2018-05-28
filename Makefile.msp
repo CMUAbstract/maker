@@ -15,7 +15,7 @@ define uart_baudrate
 endef
 
 # Modulation pattern for UART
-ifneq ($(filter cc430%,$(DEVICE))$(filter __MSP430F__,$(FAMILYDEF)),)
+ifneq ($(filter cc430%,$(DEVICE))$(filter MSP430F,$(FAMILY)),)
 
 define uart_brs
 $(call calc_int,(($(1)) - $(call calc_int,$(1))) * 8)

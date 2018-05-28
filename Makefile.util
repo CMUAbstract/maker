@@ -12,3 +12,7 @@ define fileexists
 $(file <$(1))
 endef # fileexists
 endif # MAKE_VERSION >= 4.2
+
+define uppercase
+$(shell echo $(1) | tr a-z A-Z)
+endef # uppercase
