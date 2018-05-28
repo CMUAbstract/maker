@@ -1,4 +1,4 @@
-include $(MAKER_ROOT)/Makefile.version
+include $(MAKER_ROOT)/Makefile.util
 
 GCC_VERSION := $(shell $(GCC) -dumpversion)
 GCC_VERSION_MAJOR := $(word 1,$(subst ., ,$(GCC_VERSION)))

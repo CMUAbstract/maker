@@ -13,6 +13,8 @@ export LIB_ROOT = $(abspath $(EXT_REL_ROOT))
 export TOOL_ROOT = $(abspath $(TOOL_REL_ROOT))
 export MAKER_ROOT = $(abspath $(EXT_REL_ROOT)/maker)
 
+include $(MAKER_ROOT)/Makefile.util
+
 include $(MAKER_ROOT)/Makefile.env
 include $(MAKER_ROOT)/Makefile.board
 
@@ -32,7 +34,7 @@ $(1)/$(2)/prog : $(1)/$(2)/bin
 
 $(1)/$(2)/%: $(1)/$(2)
 	$$(MAKE) TOOLCHAIN=$(2) -e -C $(1)/$(2) \
-		-f $(if $(file <$(LIB_ROOT)/$(2)/Makefile.target),\
+		-f $(if $(call fileexists,$(LIB_ROOT)/$(2)/Makefile.target),\
 				$(LIB_ROOT)/$(2)/Makefile.target,\
 				$(MAKER_ROOT)/Makefile.$(2)) $$*
 

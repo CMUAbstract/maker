@@ -1,0 +1,14 @@
+define version-lt
+$(filter-out $(2),$(firstword $(sort $(1) $(2))))
+endef # version-lt
+
+# Reading from files was added in GNU Make 4.2
+ifneq ($(call version-lt,$(MAKE_VERSION),4.2),)
+define fileexists
+$(shell if [ -e "$(1)" ]; then echo 1; fi)
+endef # fileexists
+else # MAKE_VERSION >= 4.2
+define fileexists
+$(file <$(1))
+endef # fileexists
+endif # MAKE_VERSION >= 4.2

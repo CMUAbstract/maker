@@ -1,3 +1,0 @@
-define version-lt
-$(filter-out $(2),$(firstword $(sort $(1) $(2))))
-endef # version-lt
