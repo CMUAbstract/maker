@@ -1,5 +1,3 @@
-CONT_POWER ?= 0
-
 ifeq ($(BOARD),)
 $(error Variable not set in app/lib Makefile: BOARD \
 	    (see maker/Makefile.board for options))
@@ -143,10 +141,6 @@ else # BOARD_MAJOR
 $(error Device not specified for given board version)
 endif # BOARD_MAJOR
 endif # capybara
-
-ifeq ($(CONT_POWER),1)
-override CFLAGS += -DCONT_POWER
-endif
 
 ifneq ($(BOARD_MAJOR),)
 override CFLAGS += -DBOARD_MAJOR=$(BOARD_MAJOR)
