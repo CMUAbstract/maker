@@ -1,5 +1,3 @@
-include $(MAKER_ROOT)/Makefile.env
-
 # Caller can set CMAKE_VARS with "-DVAR=VAL" to pass options to cmake
 
 CMAKE_VARS += \

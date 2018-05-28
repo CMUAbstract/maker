@@ -14,6 +14,7 @@ export TOOL_ROOT = $(abspath $(TOOL_REL_ROOT))
 export MAKER_ROOT = $(abspath $(EXT_REL_ROOT)/maker)
 
 include $(MAKER_ROOT)/Makefile.env
+include $(MAKER_ROOT)/Makefile.board
 
 include $(MAKER_ROOT)/Makefile.binvars-export
 

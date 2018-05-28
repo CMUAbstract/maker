@@ -1,5 +1,3 @@
-include $(MAKER_ROOT)/Makefile.env
-
 VOLTAGE ?= 2400
 DEVICE_IDX ?= 0
 

@@ -1,6 +1,3 @@
-include $(MAKER_ROOT)/Makefile.env
-include $(MAKER_ROOT)/Makefile.board
-
 PREFIX = $(TOOLCHAIN_ROOT)/bin/msp430-elf-
 CC      = $(PREFIX)gcc
 GCC		= $(CC)

@@ -1,6 +1,3 @@
-include $(MAKER_ROOT)/Makefile.env
-include $(MAKER_ROOT)/Makefile.board
-
 PREFIX = $(CLANG_ROOT)/bin/
 CC_CLANG = $(PREFIX)clang
 CC      := $(CC_CLANG)
