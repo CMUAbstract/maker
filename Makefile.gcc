@@ -1,4 +1,4 @@
-PREFIX = $(TOOLCHAIN_ROOT)/bin/msp430-elf-
+PREFIX = $(MSPGCC_ROOT)/bin/msp430-elf-
 CC      = $(PREFIX)gcc
 GCC		= $(CC)
 LD      = $(PREFIX)gcc
@@ -50,7 +50,7 @@ CFLAGS_TOOLCHAIN += \
 	-std=c99 \
 	-Wall \
 	-minrt \
-	-I$(TOOLCHAIN_ROOT)/$(DEVICES_CSV_DIR) \
+	-I$(MSPGCC_ROOT)/$(DEVICES_CSV_DIR) \
 	-I$(SRC_ROOT) \
 
 # To prevent printf() getting replaced with puts from libc instead of from our
@@ -69,7 +69,7 @@ LFLAGS_TOOLCHAIN += \
 	$(CC_LD_FLAGS) \
 	-Wl,--gc-sections \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
-	-L $(TOOLCHAIN_ROOT)/include \
+	-L $(MSPGCC_ROOT)/include \
 
 VPATH = $(SRC_ROOT)
 

@@ -7,11 +7,11 @@ export LLVM_AS = $(PREFIX)/llvm-as
 export LLVM_DIS = $(PREFIX)/llvm-dis
 export OPT      = $(PREFIX)/opt
 
-GCC     = $(TOOLCHAIN_ROOT)/bin/msp430-elf-gcc
-AS      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-as
-#LD      = $(TOOLCHAIN_ROOT)/bin/msp430-elf-ld
+GCC     = $(MSPGCC_ROOT)/bin/msp430-elf-gcc
+AS      = $(MSPGCC_ROOT)/bin/msp430-elf-as
+#LD      = $(MSPGCC_ROOT)/bin/msp430-elf-ld
 LD      = $(GCC)
-GDB     = $(TOOLCHAIN_ROOT)/bin/msp430-elf-gdb
+GDB     = $(MSPGCC_ROOT)/bin/msp430-elf-gdb
 
 include $(MAKER_ROOT)/Makefile.version.gcc
 include $(MAKER_ROOT)/Makefile.version.clang
@@ -44,9 +44,9 @@ CFLAGS_TOOLCHAIN += \
 	-std=c99 \
 	-Wall \
 	-MD \
-	-I $(TOOLCHAIN_ROOT)/lib/gcc/msp430-elf/$(GCC_VERSION)/include \
-	-I $(TOOLCHAIN_ROOT)/msp430-elf/include \
-	-I $(TOOLCHAIN_ROOT)/include \
+	-I $(MSPGCC_ROOT)/lib/gcc/msp430-elf/$(GCC_VERSION)/include \
+	-I $(MSPGCC_ROOT)/msp430-elf/include \
+	-I $(MSPGCC_ROOT)/include \
 	-I $(SRC_ROOT) \
 
 LLC_FLAGS_TOOLCHAIN += \
@@ -55,7 +55,7 @@ LLC_FLAGS_TOOLCHAIN += \
 LFLAGS_TOOLCHAIN += \
 	-Wl,-Map=$(BIN).map \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
-	-L $(TOOLCHAIN_ROOT)/include \
+	-L $(MSPGCC_ROOT)/include \
 
 ifeq ($(HWMULT),1)
 LFLAGS_TOOLCHAIN += -mhwmult=auto
