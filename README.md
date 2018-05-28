@@ -136,17 +136,17 @@ To be a Maker package, a library conforms to a simple source tree layout:
 
     + libbar/
     + Makefile                  : build recipe for building the library (in the context of an application)
+    + Makefile.config           : available compile-time configuration flags and their defaults
+    + Makefile.options          : implements the application of the configuration flags from Makefile.config
     +--+ src/                   : contains library source files and headers
        +--+ include/libbar/     : contains public headers
-    +--+ bld/
-       +-- Makefile.config      : available compile-time configuration flags and their defaults
-       +-- Makefile.options     : implements the application of the configuration flags from Makefile.config
+    +--+ bld/                   : build artifacts will go here
 
 **Note**: libraries packaged for Maker are intended to be built in the context
 of an application, which will specify the compile-time configuration for the
 library. The recipes do not describe how to build the library out-of-context.
 
-The library\'s `bld/Makefile` described how to build the library in the
+The library\'s `Makefile` describes how to build the library in the
 context of an application, and is structured as follows:
 
     LIB = libfoo
