@@ -29,12 +29,6 @@ endif # HWMULT = 1
 ASFLAGS_TOOLCHAIN = \
 	$(COMMONFLAGS) \
 
-ifeq ($(shell test $(GCC_VERSION_MAJOR) -lt 6; echo $$?),0)
-DEVICES_CSV_DIR = include
-else # GCC_VERSION_MAJOR >= 6
-DEVICES_CSV_DIR = msp430-elf/include
-endif # GCC_VERSION_MAJOR
-
 # We override because when this file is included from a nested build directory
 # (say, when the app or toolchain has more than one build artifact, each built
 # by its own makefile), the CFLAGS are passed via '$(MAKE) -e', with which
@@ -50,7 +44,8 @@ CFLAGS_TOOLCHAIN += \
 	-std=c99 \
 	-Wall \
 	-minrt \
-	-I$(MSPGCC_ROOT)/$(DEVICES_CSV_DIR) \
+	-I$(MSPGCC_ROOT)/msp430-elf/include \
+	-I$(MSPGCC_ROOT)/include \
 	-I$(SRC_ROOT) \
 
 # To prevent printf() getting replaced with puts from libc instead of from our
