@@ -159,3 +159,6 @@ unexport OBJECTS
 unexport DEPS
 unexport DEPS_clang
 unexport DEPS_gcc
+
+# do not remove any intermediate artifacts
+.SECONDARY:
