@@ -8,6 +8,13 @@ define msp_timer_div
 -DDIVEX_$(1)=$(or $(word 2,$(subst *, ,$(2))),1)
 endef
 
+# Generate macros identifying a timer module, e.g. B.0.5
+define msp_timer
+-D$(1)_TYPE=$(word 1,$(subst ., ,$($(1)))) \
+-D$(1)_IDX=$(word 2,$(subst ., ,$($(1)))) \
+-D$(1)_CC=$(word 3,$(subst ., ,$($(1))))
+endef # msp_timer
+
 # Convert UART baudrate to register settings (identifer, baudrate, freq)
 define uart_baudrate
 -D$(1)_BR=$(call calc_int,$(3) / $(2)) \
