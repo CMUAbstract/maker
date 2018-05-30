@@ -1,3 +1,5 @@
+# Source code goes in this subdir
+SRC_REL_ROOT = src
 
 # Build artifacts go in this subdir
 BLD_REL_ROOT = bld
@@ -6,12 +8,12 @@ BLD_REL_ROOT = bld
 EXT_REL_ROOT = ext
 
 # Look for external toolchain-type dependencies in this subdir
-TOOL_REL_ROOT ?= $(EXT_REL_ROOT)
+TOOL_REL_ROOT ?= tools
 
-export SRC_ROOT = $(abspath src)
+export SRC_ROOT = $(abspath $(SRC_REL_ROOT))
 export LIB_ROOT = $(abspath $(EXT_REL_ROOT))
 export TOOL_ROOT = $(abspath $(TOOL_REL_ROOT))
-export MAKER_ROOT = $(abspath $(EXT_REL_ROOT)/maker)
+export MAKER_ROOT = $(abspath $(TOOL_REL_ROOT)/maker)
 
 include $(MAKER_ROOT)/Makefile.util
 
