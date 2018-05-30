@@ -25,6 +25,4 @@ BIN = $(LIB).$(call bin-suffix,lib,$(TOOLCHAIN))
 else ifneq ($(EXEC),)
 TARGET_TYPE = exec
 BIN = $(EXEC).$(call bin-suffix,exec,$(TOOLCHAIN))
-else
-$(error Neither LIB nor EXEC is set: what are we building?)
 endif
