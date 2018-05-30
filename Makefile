@@ -115,11 +115,13 @@ endef
 # Create rules for building the toolchains themselves (referred to as 'tools')
 $(foreach tl,$(TOOLS),$(eval $(call nested-tool-rule,$(TOOL_REL_ROOT),$(tl))))
 
+$(TOOL_REL_ROOT)/all/% :  $(foreach tc,$(TOOLS),$(TOOL_REL_ROOT)/$(tc)/%) ;
+
 # Create rules for building/profiling/etc the app using a toolchain
 # In multi-app projects, this is needed for bld/<toolchain>/dep target.
 $(foreach tc,$(TOOLCHAINS),$(eval $(call nested-rule,$(BLD_REL_ROOT),$(tc))))
 
-bld/all/% : $(foreach tc,$(TOOLCHAINS),bld/$(tc)/%) ;
+$(BLD_REL_ROOT)/all/% : $(foreach tc,$(TOOLCHAINS),$(BLD_REL_ROOT)/$(tc)/%) ;
 
 ifdef APPS
 
@@ -129,12 +131,13 @@ $(foreach app,$(APPS),\
 	$(foreach tc,$(TOOLCHAINS),\
 		$(eval $(call nested-app-rule,$(APP_REL_ROOT)/$(app)/$(BLD_REL_ROOT),$(tc),$(app)))))
 
-apps/all/%: $(foreach app,$(APPS),apps/$(app)/%) ;
+$(APP_REL_ROOT)/all/%: $(foreach app,$(APPS),$(APP_REL_ROOT)/$(app)/%) ;
 
 # Not sure why the apps/all/% in conjunction with bld/all/% is not working,
 # so just define this explicitly
-apps/all/bld/all/%: $(foreach app,$(APPS),\
-						$(foreach tc,$(TOOLCHAINS),apps/$(app)/bld/$(tc)/%)) ;
+$(APP_REL_ROOT)/all/$(BLD_REL_ROOT)/all/%: \
+	$(foreach app,$(APPS),\
+		$(foreach tc,$(TOOLCHAINS),$(APP_REL_ROOT)/$(app)/$(BLD_REL_ROOT)/$(tc)/%)) ;
 
 endif # APPS
 
