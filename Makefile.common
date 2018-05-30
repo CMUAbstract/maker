@@ -1,5 +1,15 @@
 # Makefile that should be included by all toolchains, at the bottom
 
+# For multi-app project, we cannot have the top-level multi-app Makefile
+# define deps in the DEPS variable, because then the per-app DEPS settings
+# would not take affect (unless we require all app Makefiles to override their
+# assignemnts to DEPS). At this point, we're inside the nested invocation
+# of make, so it is safe to assign to DEPS.
+#
+ifndef EXEC # multi-project
+DEPS = $(SHARED_DEPS)
+endif # EXEC
+
 include $(MAKER_ROOT)/Makefile.dep
 
 include $(MAKER_ROOT)/Makefile.binvars-unexport

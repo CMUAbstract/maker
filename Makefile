@@ -10,6 +10,9 @@ EXT_REL_ROOT = ext
 # Look for external toolchain-type dependencies in this subdir
 TOOL_REL_ROOT ?= tools
 
+# Applications for multi-app projects are here
+APP_REL_ROOT ?= apps
+
 export SRC_ROOT = $(abspath $(SRC_REL_ROOT))
 export LIB_ROOT = $(abspath $(EXT_REL_ROOT))
 export TOOL_ROOT = $(abspath $(TOOL_REL_ROOT))
@@ -75,6 +78,29 @@ $(1)/$(2)/%: $(1)/$(2)
 
 endef
 
+define nested-app-rule
+$(1)/$(2):
+	mkdir -p $(1)/$(2)
+
+# This is a hack, to make the line 'include tools/maker/Makefile' in top-level
+# app Makefile work when included from both: a multi-app project and by the
+# standalone app build. Because of the latter, we can't use any variables
+# (unless we require each app makefile to define those variables). So we
+# create a symbolic link, to make that path resolve from the build directrory.
+#
+$(1)/$(2)/$(TOOL_REL_ROOT): $(1)/$(2)
+	ln -sTf $(TOOL_ROOT) $(1)/$(2)/$(TOOL_REL_ROOT)
+
+$(1)/$(2)/all: $(1)/$(2)/bin ;
+$(1)/$(2)/prog : $(1)/$(2)/bin
+
+$(1)/$(2)/%: $(1)/$(2) $(1)/$(2)/$(TOOL_REL_ROOT)
+	$$(MAKE) APP=$(3) TOOLCHAIN=$(2) SRC_ROOT=$(abspath $(1)/../$(SRC_REL_ROOT)) -e -C $(1)/$(2) \
+		-f ../../Makefile $$*
+
+endef
+
+
 # Rule for building a tool (which may later be used to build the app)
 define nested-tool-rule
 $(1)/$(2)/%: $(1)/$(2)
@@ -86,4 +112,22 @@ endef
 $(foreach tl,$(TOOLS),$(eval $(call nested-tool-rule,$(TOOL_REL_ROOT),$(tl))))
 
 # Create rules for building/profiling/etc the app using a toolchain
+# In multi-app projects, this is needed for bld/<toolchain>/dep target.
 $(foreach tc,$(TOOLCHAINS),$(eval $(call nested-rule,$(BLD_REL_ROOT),$(tc))))
+
+ifdef APPS
+
+# Create rules for building/profiling/etc the apps using a toolchain,
+# for multi-app top-level projects
+$(foreach app,$(APPS),\
+	$(foreach tc,$(TOOLCHAINS),\
+		$(eval $(call nested-app-rule,$(APP_REL_ROOT)/$(app)/$(BLD_REL_ROOT),$(tc),$(app)))))
+
+apps/all/%: $(foreach app,$(APPS),apps/$(app)/%) ;
+
+endif # APPS
+
+# When we are including this file as a result of a nested build of an app
+ifdef APP
+include $(MAKER_ROOT)/Makefile.$(TOOLCHAIN)
+endif # APP

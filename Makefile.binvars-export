@@ -2,8 +2,19 @@
 # The top-level Makefile includes this makefile to do the export.
 # Each toolchain file must include Makefile.binvars-unexport to do the unexport.
 
+# For the case of multi-app projects, where the top-level maker Makefile is
+# included twice, once for the top-level and once as part of building each app,
+# we do not want the first include (in which these vars will be undefined,
+# or in case of DEPS defined but to list of shared deps not app's deps) to
+# export those empty values. Instead, we want the second include to define them.
+
+ifdef EXEC
 export EXEC
 export OBJECTS
 export DEPS
+else # !EXEC
+export SHARED_DEPS
+endif # !EXEC
+
 export TOOLCHAINS
 export $(foreach tc,$(TOOLCHAINS),DEPS_$(tc))
