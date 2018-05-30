@@ -115,6 +115,8 @@ $(foreach tl,$(TOOLS),$(eval $(call nested-tool-rule,$(TOOL_REL_ROOT),$(tl))))
 # In multi-app projects, this is needed for bld/<toolchain>/dep target.
 $(foreach tc,$(TOOLCHAINS),$(eval $(call nested-rule,$(BLD_REL_ROOT),$(tc))))
 
+bld/all/% : $(foreach tc,$(TOOLCHAINS),bld/$(tc)/%) ;
+
 ifdef APPS
 
 # Create rules for building/profiling/etc the apps using a toolchain,
@@ -124,6 +126,11 @@ $(foreach app,$(APPS),\
 		$(eval $(call nested-app-rule,$(APP_REL_ROOT)/$(app)/$(BLD_REL_ROOT),$(tc),$(app)))))
 
 apps/all/%: $(foreach app,$(APPS),apps/$(app)/%) ;
+
+# Not sure why the apps/all/% in conjunction with bld/all/% is not working,
+# so just define this explicitly
+apps/all/bld/all/%: $(foreach app,$(APPS),\
+						$(foreach tc,$(TOOLCHAINS),apps/$(app)/bld/$(tc)/%)) ;
 
 endif # APPS
 
