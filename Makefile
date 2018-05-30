@@ -58,6 +58,13 @@ export BOARD_MAJOR
 export BOARD_MINOR
 export DEVICE
 
+define toolchain-makefile
+$(if $(call fileexists,$(TOOL_ROOT)/$(1)/Makefile.target),\
+				$(TOOL_ROOT)/$(1)/Makefile.target,\
+				$(MAKER_ROOT)/Makefile.$(1))
+endef # toolchain-makefile
+
+
 # Rule for building the app using a toolchain
 # Note: we need to pass TOOLCHAIN on the command line, because bld/Makefile
 # is included before Makefile.$(TOOLCHAIN), but we want the var there.
@@ -71,10 +78,7 @@ $(1)/$(2)/bin : $(1)/$(2)/dep
 $(1)/$(2)/prog : $(1)/$(2)/bin
 
 $(1)/$(2)/%: $(1)/$(2)
-	$$(MAKE) TOOLCHAIN=$(2) -e -C $(1)/$(2) \
-		-f $(if $(call fileexists,$(LIB_ROOT)/$(2)/Makefile.target),\
-				$(LIB_ROOT)/$(2)/Makefile.target,\
-				$(MAKER_ROOT)/Makefile.$(2)) $$*
+	$$(MAKE) TOOLCHAIN=$(2) -e -C $(1)/$(2) -f $(call toolchain-makefile,$(2)) $$*
 
 endef
 
@@ -136,5 +140,5 @@ endif # APPS
 
 # When we are including this file as a result of a nested build of an app
 ifdef APP
-include $(MAKER_ROOT)/Makefile.$(TOOLCHAIN)
+include $(call toolchain-makefile,$(TOOLCHAIN))
 endif # APP
