@@ -95,13 +95,6 @@ clean:
 debug: $(BIN)
 	$(GDB) $(BIN)
 
-# disable implicit rules, for personal sanity
-.SUFFIXES:
-
-ifeq ($(TARGET_TYPE),exec)
-include $(MAKER_ROOT)/Makefile.program
-endif
-
 ifeq ($(TARGET_TYPE),exec)
 define add-lib
 LIBS += -l$(subst lib,,$(1))
@@ -113,9 +106,4 @@ define add-lib
 endef
 endif
 
-include $(MAKER_ROOT)/Makefile.dep
-
-include $(MAKER_ROOT)/Makefile.binvars-unexport
-
-# do not remove intermediates
-.SECONDARY:
+include $(MAKER_ROOT)/Makefile.common

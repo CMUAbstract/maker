@@ -1,0 +1,15 @@
+# Makefile that should be included by all toolchains, at the bottom
+
+include $(MAKER_ROOT)/Makefile.dep
+
+include $(MAKER_ROOT)/Makefile.binvars-unexport
+
+ifeq ($(TARGET_TYPE),exec)
+include $(MAKER_ROOT)/Makefile.program
+endif
+
+# disable implicit rules, for personal sanity
+.SUFFIXES:
+
+# do not remove intermediates
+.SECONDARY:

@@ -128,13 +128,6 @@ clean:
 debug: $(BIN)
 	$(GDB) $(BIN)
 
-# disable implicit rules, for personal sanity
-.SUFFIXES:
-
-ifeq ($(TARGET_TYPE),exec)
-include $(MAKER_ROOT)/Makefile.program
-endif
-
 ifeq ($(TARGET_TYPE),exec)
 # If toolchain matches, i.e. it is clang, then add to LLVM link line,
 # otherwise, add to the GCC link line
@@ -152,13 +145,4 @@ endif
 override DEPS_clang += libmspbuiltins:gcc
 export CLANG_VERSION # libmspbuiltins build is parametrized by Clang version
 
-include $(MAKER_ROOT)/Makefile.dep
-
-unexport EXEC
-unexport OBJECTS
-unexport DEPS
-unexport DEPS_clang
-unexport DEPS_gcc
-
-# do not remove any intermediate artifacts
-.SECONDARY:
+include $(MAKER_ROOT)/Makefile.common
