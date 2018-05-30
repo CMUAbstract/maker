@@ -11,7 +11,7 @@ TOOL_REL_ROOT ?= $(EXT_REL_ROOT)
 export SRC_ROOT = $(abspath src)
 export LIB_ROOT = $(abspath $(EXT_REL_ROOT))
 export TOOL_ROOT = $(abspath $(TOOL_REL_ROOT))
-export MAKER_ROOT = $(abspath $(EXT_REL_ROOT)/maker)
+export MAKER_ROOT = $(abspath $(TOOL_REL_ROOT)/maker)
 
 include $(MAKER_ROOT)/Makefile.util
 
