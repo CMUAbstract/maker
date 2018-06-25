@@ -471,6 +471,14 @@ SECTIONS
     *(.upper.text.* .upper.text)
   } > HIFRAM
 
+	.upper.nv_vars	:
+	{
+    . = ALIGN(2);
+    /*PROVIDE (__fram_vars_start = .);*/
+    KEEP (*(.upper.nv_vars))
+    . = ALIGN(2);
+    /*PROVIDE (__fram_vars_end = .);*/
+	} > HIFRAM
   /* MSP430 INFO FLASH MEMORY SEGMENTS */
   .infoD (NOLOAD) : {} > INFOD
   .infoC (NOLOAD) : {} > INFOC
