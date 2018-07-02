@@ -42,16 +42,20 @@ DEVICES_CSV_DIR = include
 # but hopefully, this is enough to make things work.
 
 override CFLAGS += \
-	$(COMMONFLAGS) \
 	$(BOARDDEFS) \
 	-O$(OPT_LEVEL) \
 	-std=c99 \
 	-w \
-	-minrt \
 	-I$(TOOLCHAIN_ROOT)/$(DEVICES_CSV_DIR) \
 	-I$(SRC_ROOT) \
-	-mlarge \
 	-g \
+
+# This is for clang frontend.
+# They cannot parse this args
+EXTRACFLAGS = \
+	$(COMMONFLAGS) \
+	-minrt \
+	-mlarge \
 
 # To prevent printf() getting replaced with puts from libc instead of from our
 # I/O backend lib. Note that we used to rely on overriding puts/putchar symbols,
@@ -95,11 +99,14 @@ all: $(BIN)
 
 %.o: %.c
 	mkdir -p "./$(shell dirname $@)"
-	$(CC) -c -MD $(CFLAGS) $< -o $@
+	$(CC) -c -MD $(CFLAGS) $(EXTRACFLAGS) $< -o $@
 
 %.S: %.c
 	mkdir -p "./$(shell dirname $@)"
-	$(CC) -S -c -MD $(CFLAGS) $< -o $@
+#	cp ./src/$2_$1.c ./bak/$2_$1_bak.c
+	../../ext/jit/JitFrontend/bld/jit_frontend $< -- $(CFLAGS) --target=msp430 -I $(TOOLCHAIN_ROOT)/lib/gcc/msp430-elf/6.4.0/include -I $(TOOLCHAIN_ROOT)/msp430-elf/include
+	pwd
+	$(CC) -S -c -MD $(CFLAGS) $(EXTRACFLAGS) $< -o $@
 	python3 ../../ext/jit/python_script/mainPatcher.py $@
 
 #%.o: %.S
