@@ -104,7 +104,7 @@ all: $(BIN)
 %.S: %.c
 	mkdir -p "./$(shell dirname $@)"
 #	cp ./src/$2_$1.c ./bak/$2_$1_bak.c
-	../../ext/jit/JitFrontend/bld/jit_frontend $< -- $(CFLAGS) --target=msp430 -I $(TOOLCHAIN_ROOT)/lib/gcc/msp430-elf/6.4.0/include -I $(TOOLCHAIN_ROOT)/msp430-elf/include
+	../../ext/jit/JitFrontend/bld/jit_frontend $< -- $(CFLAGS) --target=msp430 -I $(TOOLCHAIN_ROOT)/lib/gcc/msp430-elf/6.4.0/include -I $(TOOLCHAIN_ROOT)/msp430-elf/include -fheinous-gnu-extensions
 	pwd
 	$(CC) -S -c -MD $(CFLAGS) $(EXTRACFLAGS) $< -o $@
 	python3 ../../ext/jit/python_script/mainPatcher.py $@
@@ -116,7 +116,7 @@ all: $(BIN)
 #%.out: $(OBJECTS)
 #	$(LD) $(LFLAGS) $(OBJECTS) $(LIBS) -o $(BIN)
 %.out: %.S
-	$(LD) $(LFLAGS) $< $(LIBS) -o $(BIN)
+	$(LD) $(COMMONFLAGS) $(LFLAGS) $< $(LIBS) -o $(BIN)
 
 
 %.a: $(OBJECTS)
