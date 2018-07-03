@@ -416,7 +416,10 @@ SECTIONS
   /* WARNING: Do not place anything in RAM here.
      The heap section must be the last section in RAM and the stack
      section must be placed at the very end of the RAM region.  */
-  .stack (ORIGIN (FRAM) + LENGTH(FRAM)) :
+		 /* NOTE: default stack is RAM. On entering main, we manually
+			 switch the SP to FRAM. If not, the startup routine (e.g., init bss)
+			 might damage FRAM stack*/
+  .stack (ORIGIN (RAM) + LENGTH(RAM)) :
   {
     PROVIDE (__stack = .);
     *(.stack)
