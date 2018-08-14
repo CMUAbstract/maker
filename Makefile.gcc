@@ -1,4 +1,4 @@
-PREFIX = $(MSPGCC_ROOT)/bin/msp430-elf-
+PREFIX = $(RISCVGCC_ROOT)/bin/riscv32-unknown-elf-
 CC      = $(PREFIX)gcc
 GCC		= $(CC)
 LD      = $(PREFIX)gcc
@@ -7,24 +7,15 @@ GDB     = $(PREFIX)gdb
 
 include $(MAKER_ROOT)/Makefile.version.gcc
 
-LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts/gcc-$(GCC_VERSION_MAJOR)
+# LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts/gcc-$(GCC_VERSION_MAJOR)
 
 include $(MAKER_ROOT)/Makefile.suffix
 
-HWMULT ?= 1
-OPT_LEVEL ?= 2
+OPT_LEVEL ?= 3
 
-COMMONFLAGS = \
-	-mmcu=$(DEVICE) \
+COMMONFLAGS =
 
-CC_LD_FLAGS = \
-	-mhwmult=auto \
-
-ifneq ($(HWMULT),1)
-CC_LD_FLAGS += -mhwmult=none
-else # HWMULT = 1
-CC_LD_FLAGS += -mhwmult=auto
-endif # HWMULT = 1
+CC_LD_FLAGS =
 
 ASFLAGS_TOOLCHAIN = \
 	$(COMMONFLAGS) \
@@ -38,33 +29,20 @@ ASFLAGS_TOOLCHAIN = \
 CFLAGS_TOOLCHAIN += \
 	$(COMMONFLAGS) \
 	$(CC_LD_FLAGS) \
-	$(BOARDDEFS) \
 	-O$(OPT_LEVEL) \
+	-march=rv32em \
+	-mabi=ilp32e \
 	-g \
 	-std=c99 \
 	-Wall \
-	-minrt \
-	-I$(MSPGCC_ROOT)/msp430-elf/include \
-	-I$(MSPGCC_ROOT)/include \
 	-I$(SRC_ROOT) \
 
-# To prevent printf() getting replaced with puts from libc instead of from our
-# I/O backend lib. Note that we used to rely on overriding puts/putchar symbols,
-# but that seems to be fragile. One day it just stopped overriding.
-CFLAGS_TOOLCHAIN += -fno-builtin
+CFLAGS_TOOLCHAIN +=
 
-# NOTE: --gc-sections is important otherwise cruft gets linked in (like,
-# open/close/read/etc syscalls from libnosys), which uses errno, which
-# prompts newlib to include 'impure_data' (~128 bytes) into .data,
-# which leads to a significant delay before main run son startup (~3ms)
-# spent on initializing this data. NOTE: --gc-sections only fixes for
-# TI GCC v5.00 (gcc 6.2.1), does not fix the issue with v3.00 (v4.9.1).
 LFLAGS_TOOLCHAIN += \
 	$(COMMONFLAGS) \
 	$(CC_LD_FLAGS) \
 	-Wl,--gc-sections \
-	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
-	-L $(MSPGCC_ROOT)/include \
 
 VPATH = $(SRC_ROOT)
 

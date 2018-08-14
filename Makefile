@@ -22,42 +22,6 @@ include $(MAKER_ROOT)/Makefile.util
 
 include $(MAKER_ROOT)/Makefile.env
 
-include $(MAKER_ROOT)/Makefile.device
-
-# Maker doesn't require BOARD, but most app/lib code does, so check
-ifeq ($(BOARD),)
-$(error Variable not set in app Makefile: BOARD)
-endif
-
-# This is for specifying board like so 'boardname:2.0', but we
-# can't use it because then the app makefile can't use the BOARD
-# and version variables simply (unless we require it include
-# a second Makefile from Maker before such usage and after the
-# BOARD definition). To keep the interface simple, we don't.
-#
-# ifneq ($(findstring :,$(BOARD)),)
-# BOARD_VERSION := $(lastword $(subst :, ,$(BOARD)))
-# BOARD_MAJOR := $(firstword $(subst ., ,$(BOARD_VERSION)))
-# ifneq ($(findstring .,$(BOARD_VERSION)),)
-# BOARD_MINOR := $(lastword $(subst ., ,$(BOARD_VERSION)))
-# endif # has '.'
-# endif # has ':'
-
-export BOARDDEFS := \
-	-DBOARD_$(call uppercase,$(BOARD)) \
-	$(if $(BOARD_MAJOR),-DBOARD_MAJOR=$(BOARD_MAJOR)) \
-	$(if $(BOARD_MINOR),-DBOARD_MINOR=$(BOARD_MINOR)) \
-	-D__$(call uppercase,$(DEVICE))__ \
-	-D__$(FAMILY)__ \
-	$(foreach p,$(PERIPHS),-D__$(p)__) \
-
-include $(MAKER_ROOT)/Makefile.binvars-export
-
-export BOARD
-export BOARD_MAJOR
-export BOARD_MINOR
-export DEVICE
-
 define toolchain-makefile
 $(if $(call fileexists,$(TOOL_ROOT)/$(1)/Makefile.target),\
 				$(TOOL_ROOT)/$(1)/Makefile.target,\

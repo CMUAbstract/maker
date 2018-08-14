@@ -14,10 +14,6 @@ include $(MAKER_ROOT)/Makefile.dep
 
 include $(MAKER_ROOT)/Makefile.binvars-unexport
 
-ifeq ($(TARGET_TYPE),exec)
-include $(MAKER_ROOT)/Makefile.program
-endif
-
 # disable implicit rules, for personal sanity
 .SUFFIXES:
 

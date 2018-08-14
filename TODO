@@ -1,4 +1,0 @@
-* Rename EXEC to BINARY since used for execs and libs
-* Have the target makefile define SRCDIR and always add it to includes
-* Allow defining only DEVICE and not BOARD (useful for libraries)
-* Use the linker script from TI GCC distributable by default
