@@ -7,7 +7,7 @@ GDB     = $(PREFIX)gdb
 
 include $(MAKER_ROOT)/Makefile.version.gcc
 
-# LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts/gcc-$(GCC_VERSION_MAJOR)
+LINKER_SCRIPT = $(MAKER_ROOT)/linker-scripts/link.ld
 
 include $(MAKER_ROOT)/Makefile.suffix
 
@@ -42,6 +42,7 @@ CFLAGS_TOOLCHAIN +=
 LFLAGS_TOOLCHAIN += \
 	$(COMMONFLAGS) \
 	$(CC_LD_FLAGS) \
+	-T $(LINKER_SCRIPT) \
 	-Wl,--gc-sections \
 
 VPATH = $(SRC_ROOT)
