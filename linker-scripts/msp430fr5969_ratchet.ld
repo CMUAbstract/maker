@@ -417,3 +417,4 @@ SECTIONS
   /DISCARD/ : { *(.note.GNU-stack) }
 }
 
+INCLUDE msp430fr5969_symbols.ld
