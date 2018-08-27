@@ -47,8 +47,6 @@ override CFLAGS += \
 	-I $(TOOLCHAIN_ROOT)/msp430-elf/include \
 	-I $(TOOLCHAIN_ROOT)/include \
 	-I $(SRC_ROOT) \
-#	-I /home/reviewer/src/apps/app-temp-log-alpaca-new/ext/libwispbase/src/include/libwispbase \
-#	-I /home/reviewer/src/apps/app-temp-log-alpaca-new/ext/libwispbase/src/include \
 
 override LLC_FLAGS += \
 	-O0 \
@@ -113,7 +111,7 @@ all: $(BIN)
 
 %.S: %.a.bc
 	$(LLC) $(LLC_FLAGS) $^ -o $@
-ifeq ($(SYS), alpaca)
+ifeq ($(SYS), chinchilla)
 	python2 ../../ext/python_dissembler/reg_spill_fix.py $@
 endif
 ifeq ($(SYS), ratchet)
