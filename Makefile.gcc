@@ -13,7 +13,8 @@ include $(MAKER_ROOT)/Makefile.suffix
 
 OPT_LEVEL ?= 3
 
-COMMONFLAGS =
+COMMONFLAGS = -march=rv32em \
+			-mabi=ilp32e
 
 CC_LD_FLAGS =
 
@@ -30,10 +31,7 @@ CFLAGS_TOOLCHAIN += \
 	$(COMMONFLAGS) \
 	$(CC_LD_FLAGS) \
 	-O$(OPT_LEVEL) \
-	-march=rv32em \
-	-mabi=ilp32e \
 	-g \
-	-std=c99 \
 	-Wall \
 	-I$(SRC_ROOT) \
 
@@ -43,6 +41,7 @@ LFLAGS_TOOLCHAIN += \
 	$(COMMONFLAGS) \
 	$(CC_LD_FLAGS) \
 	-T $(LINKER_SCRIPT) \
+	-nostartfiles -nostdlib -static \
 	-Wl,--gc-sections \
 
 VPATH = $(SRC_ROOT)
