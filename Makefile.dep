@@ -31,7 +31,6 @@ depclean: depclean_$(1)
 endef
 
 define depend
-
 # These are designed to be overriddable from top-level app makefile
 DEP_ROOT_$(1) ?= $(LIB_ROOT)
 DEP_RELDIR_$(1) ?= $(1)
