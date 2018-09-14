@@ -11,11 +11,15 @@ $(strip \
 		$(if $(filter lib,$(1)),a,\
 		$(if $(filter exec,$(1)),out,\
 		$(error Suffix for binary type '$(1)' is not defined))),\
+	$(if $(filter exgcc,$(2)),\
+		$(if $(filter lib,$(1)),a,\
+		$(if $(filter exec,$(1)),out,\
+		$(error Suffix for binary type '$(1)' is not defined))),\
     $(if $(filter clang,$(2)),
 		$(if $(filter lib,$(1)),a.bc,\
 	    $(if $(filter exec,$(1)),out,\
 		$(error Suffix for binary type '$(1)' is not defined))),\
-    $(error Library suffix for toolchain '$(2)' is not defined))))
+    $(error Library suffix for toolchain '$(2)' is not defined)))))
 endef # bin-suffix
 
 # This makefile supports building either a library or an executable

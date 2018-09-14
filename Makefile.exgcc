@@ -1,8 +1,8 @@
 PREFIX = $(RISCVGCC_ROOT)/bin/riscv32-unknown-elf-
 CC      = $(PREFIX)gcc
 GCC		= $(CC)
-LD      = $(PREFIX)gcc
-AS      = $(PREFIX)as
+LD      = $(RISCVEXGCC_ALT_ROOT)/ld/ld-new
+AS      = $(RISCVEXGCC_ALT_ROOT)/gas/as-new
 GDB     = $(PREFIX)gdb
 
 include $(MAKER_ROOT)/Makefile.version.gcc
@@ -13,8 +13,7 @@ include $(MAKER_ROOT)/Makefile.suffix
 
 OPT_LEVEL ?= 3
 
-COMMONFLAGS = -march=rv32em \
-			-mabi=ilp32e
+COMMONFLAGS = 
 
 CC_LD_FLAGS =
 
@@ -35,6 +34,8 @@ CFLAGS_TOOLCHAIN += \
 	-g \
 	-Wall \
 	-I$(SRC_ROOT) \
+	-march=rv32em \
+	-mabi=ilp32e
 
 CFLAGS_TOOLCHAIN +=
 
@@ -42,8 +43,7 @@ LFLAGS_TOOLCHAIN += \
 	$(COMMONFLAGS) \
 	$(CC_LD_FLAGS) \
 	-T $(LINKER_SCRIPT) \
-	-nostartfiles -nostdlib -static \
-	-Wl,--gc-sections \
+	-nostartfiles -nostdlib -static
 
 VPATH = $(SRC_ROOT)
 
@@ -54,13 +54,12 @@ bin: $(BIN)
 # disable implicit rule that for some reason overrides the chained rules below
 #.SUFFIXES:
 
-%.o: %.c
-	mkdir -p "./$(shell dirname $@)"
-	$(CC) -c -MD $(CFLAGS_TOOLCHAIN) $(CFLAGS) $< -o $@
-
 %.o: %.S
-	mkdir -p "./$(shell dirname $@)"
 	$(AS) $(ASFLAGS_TOOLCHAIN) $(ASFLAGS) $< -o $@
+
+%.S: %.c
+	mkdir -p "./$(shell dirname $@)"
+	$(CC) -S -MD $(CFLAGS_TOOLCHAIN) $(CFLAGS) $< -o $@
 
 %.out: $(OBJECTS)
 	$(LD) $(LFLAGS_TOOLCHAIN) $(LFLAGS) $(OBJECTS) $(LIBS) -o $(BIN)
