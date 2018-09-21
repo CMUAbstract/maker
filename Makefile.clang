@@ -115,6 +115,8 @@ all: $(BIN)
 # Native assembly to native object code
 
 %.out: %.S
+	pwd
+	python3 ../../scripts/ABI_patcher.py $<
 	$(GCC) $(LFLAGS) -o $@ $< $(LIBS)
 
 # Do not remove these intermediates
