@@ -117,7 +117,7 @@ bin: $(BIN)
 # Native assembly to native object code
 
 %.out: %.S
-	$(GCC) $(LFLAGS_TOOLCHAIN) $(LFLAGS) -o $@ $< $(LIBS)
+	$(GCC) $(LFLAGS_TOOLCHAIN) $(LFLAGS) -o $@ $< $(LIBS) -lmul_f5
 
 # Do not remove these intermediates
 .PRECIOUS: %.a.bc %.bc %.s %.S
