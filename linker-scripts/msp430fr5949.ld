@@ -229,6 +229,14 @@ SECTIONS
     PROVIDE (__fram_vars_end = .);
   } > ROM
 
+  .noclear (NOLOAD) :
+  {
+    . = ALIGN(2);
+    PROVIDE (__noclear_start = .);
+    *(.noclear)
+    . = ALIGN(2);
+    PROVIDE (__noclear_end = .);
+  } > ROM
   .upper.rodata :
   {
     *(.upper.rodata.* .upper.rodata)
