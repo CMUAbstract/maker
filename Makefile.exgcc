@@ -19,6 +19,7 @@ CC_LD_FLAGS =
 
 ASFLAGS_TOOLCHAIN = \
 	$(COMMONFLAGS) \
+	-march=rv32emv
 
 # We override because when this file is included from a nested build directory
 # (say, when the app or toolchain has more than one build artifact, each built
@@ -49,6 +50,9 @@ VPATH = $(SRC_ROOT)
 
 bin: $(BIN)
 
+install:
+	cp $(BLD_ROOT)/$(BIN) .
+
 -include $(OBJECTS:.o=.d)
 
 # disable implicit rule that for some reason overrides the chained rules below
@@ -68,7 +72,7 @@ bin: $(BIN)
 	$(AR) rcs $@ $^
 
 clean:
-	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(BIN)
+	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(OBJECTS:.o=.S) $(BIN)
 
 debug: $(BIN)
 	$(GDB) $(BIN)

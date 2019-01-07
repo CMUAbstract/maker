@@ -4,6 +4,9 @@ SRC_REL_ROOT = src
 # Build artifacts go in this subdir
 BLD_REL_ROOT = bld
 
+# Install artifacts go in this subdir
+INSTALL_REL_ROOT = bin
+
 # Look for external library-type dependencies in this subdir
 EXT_REL_ROOT = ext
 
@@ -47,8 +50,11 @@ $(1)/$(2)/%: $(1)/$(2)
 endef
 
 define nested-app-rule
-$(1)/$(2):
-	mkdir -p $(1)/$(2)
+$(1)/$(3):
+	mkdir -p $(1)/$(3)
+
+$(2)/$(3):
+	mkdir -p $(2)/$(3)
 
 # This is a hack, to make the line 'include tools/maker/Makefile' in top-level
 # app Makefile work when included from both: a multi-app project and by the
@@ -56,14 +62,25 @@ $(1)/$(2):
 # (unless we require each app makefile to define those variables). So we
 # create a symbolic link, to make that path resolve from the build directrory.
 #
-$(1)/$(2)/$(TOOL_REL_ROOT): $(1)/$(2)
-	ln -sTf $(TOOL_ROOT) $(1)/$(2)/$(TOOL_REL_ROOT)
+$(1)/$(3)/$(TOOL_REL_ROOT): $(1)/$(3)
+	ln -sTf $(TOOL_ROOT) $(1)/$(3)/$(TOOL_REL_ROOT)
 
-$(1)/$(2)/all: $(1)/$(2)/bin ;
-$(1)/$(2)/prog : $(1)/$(2)/bin
+$(2)/$(3)/$(TOOL_REL_ROOT): $(2)/$(3)
+	ln -sTf $(TOOL_ROOT) $(2)/$(3)/$(TOOL_REL_ROOT)
 
-$(1)/$(2)/%: $(1)/$(2) $(1)/$(2)/$(TOOL_REL_ROOT)
-	$$(MAKE) APP=$(3) TOOLCHAIN=$(2) SRC_ROOT=$(abspath $(1)/../$(SRC_REL_ROOT)) -e -C $(1)/$(2) \
+$(1)/$(3)/all: $(1)/$(3)/bin ;
+$(1)/$(3)/prog : $(1)/$(3)/bin
+
+$(2)/$(3)/all: $(1)/$(3)/all $(2)/$(3)/install
+	rm $(2)/$(3)/$(TOOL_REL_ROOT)
+
+$(1)/$(3)/%: $(1)/$(3) $(1)/$(3)/$(TOOL_REL_ROOT)
+	$$(MAKE) APP=$(4) TOOLCHAIN=$(3) SRC_ROOT=$(abspath $(1)/../$(SRC_REL_ROOT)) -e -C $(1)/$(3) \
+		-f ../../Makefile $$*
+
+$(2)/$(3)/%: $(2)/$(3) $(2)/$(3)/$(TOOL_REL_ROOT)
+	$$(MAKE) APP=$(4) TOOLCHAIN=$(3) SRC_ROOT=$(abspath $(1)/../$(SRC_REL_ROOT)) \
+		BLD_ROOT=$(abspath $(1)/$(3)) -e -C $(2)/$(3) \
 		-f ../../Makefile $$*
 
 endef
@@ -93,7 +110,8 @@ ifdef APPS
 # for multi-app top-level projects
 $(foreach app,$(APPS),\
 	$(foreach tc,$(TOOLCHAINS),\
-		$(eval $(call nested-app-rule,$(APP_REL_ROOT)/$(app)/$(BLD_REL_ROOT),$(tc),$(app)))))
+		$(eval $(call nested-app-rule,$(APP_REL_ROOT)/$(app)/$(BLD_REL_ROOT),\
+			$(APP_REL_ROOT)/$(app)/$(INSTALL_REL_ROOT),$(tc),$(app)))))
 
 $(APP_REL_ROOT)/all/%: $(foreach app,$(APPS),$(APP_REL_ROOT)/$(app)/%) ;
 
