@@ -4,7 +4,8 @@ ENTRY( reset_vector )
 
 MEMORY
 {
-  NVRAM (wxa!ri) : ORIGIN = 0x80000000, LENGTH = 0x200000
+  NVRAM (wxa!ri) : ORIGIN = 0x80000000, LENGTH = 0x40000
+  RAM   (wxa!ri) : ORIGIN = 0x80040000, LENGTH = 0x10000
 }
 
 PHDRS
@@ -24,11 +25,11 @@ SECTIONS
   	*(.sdata .sdata.*) 
   	*(.data .data.*)
   	__end_data = .;
-  } > NVRAM : data
+  } >RAM AT > NVRAM : data
   .persistent     : {
     *(.persistent)
     *(.nv_vars)
   } > NVRAM
   .htif   : { . = ALIGN(1024); *(.htif) }           >NVRAM
-  .bss    : { *(.sbss .sbss.*) *(.bss .bss.*) }     >NVRAM
+  .bss    : { *(.sbss .sbss.*) *(.bss .bss.*) }     >RAM
 }
