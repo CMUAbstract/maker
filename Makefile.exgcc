@@ -36,6 +36,7 @@ CFLAGS_TOOLCHAIN += \
 	-Wall \
 	-I$(SRC_ROOT) \
 	-march=rv32em \
+	-mno-div \
 	-mabi=ilp32e
 
 CFLAGS_TOOLCHAIN +=
