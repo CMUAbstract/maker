@@ -5,6 +5,7 @@ ENTRY( reset_vector )
 MEMORY
 {
   NVRAM (wxa!ri) : ORIGIN = 0x80000000, LENGTH = 0x200000
+  MEMIO (wxa!ri) : ORIGIN = 0x80200000, LENGTH = 0x400
 }
 
 PHDRS
@@ -29,6 +30,6 @@ SECTIONS
     *(.persistent)
     *(.nv_vars)
   } > NVRAM
-  .htif   : { . = ALIGN(1024); *(.htif) }           >NVRAM
   .bss    : { *(.sbss .sbss.*) *(.bss .bss.*) }     >NVRAM
+  .htif   : { . = ALIGN(1024); *(.htif) }           >MEMIO
 }
