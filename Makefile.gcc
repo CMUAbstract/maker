@@ -26,7 +26,7 @@ ASFLAGS = \
 
 HWMULT ?= 1
 
-OPT_LEVEL ?= 0
+OPT_LEVEL ?= 3
 
 #ifeq ($(shell test $(GCC_VER_MAJ) -lt 6; echo $$?),0)
 #DEVICES_CSV_DIR = include
@@ -90,7 +90,7 @@ endif
 # use fram only
 override LFLAGS += \
 	-Wl,--gc-sections \
-	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE)_framonly.ld \
+	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE)_framonly_largetext.ld \
 	-L $(TOOLCHAIN_ROOT)/include\
   -mlarge \
 
