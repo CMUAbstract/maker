@@ -121,8 +121,9 @@ all: $(BIN)
 
 #%.out: $(OBJECTS)
 #	$(LD) $(LFLAGS) $(OBJECTS) $(LIBS) -o $(BIN)
-%.out: %.S
-	$(LD) $(COMMONFLAGS) $(LFLAGS) $< $(LIBS) -lm -o $(BIN)
+%.out: %.S $(OBJECTS)
+	$(LD) $(COMMONFLAGS) $(LFLAGS) $^ $(LIBS) -lm -o $(BIN)
+#	$(LD) $(COMMONFLAGS) $(LFLAGS) $< $(LIBS) -lm -o $(BIN)
 
 
 %.a: $(OBJECTS)
