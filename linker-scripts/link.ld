@@ -8,7 +8,9 @@ MEMORY
   HTIF (wxa!ri) : ORIGIN = 0x80200000, LENGTH = 0x10
   I2CADDR (wxa!ri) : ORIGIN = 0x80200010, LENGTH = 0x04 
   I2CDATA (wxa!ri) : ORIGIN = 0x80200014, LENGTH = 0x04 
-  I2CSTATUS (wxa!ri) : ORIGIN = 0x80200018, LENGTH = 0x04 
+  I2CSTATUS (wxa!ri) : ORIGIN = 0x80200018, LENGTH = 0x04
+  PIN1STATUS(wxa!ri) : ORIGIN = 0x80200020, LENGTH = 0x04
+  PIN2STATUS(wxa!ri) : ORIGIN = 0x80200024, LENGTH = 0x04
 }
 
 PHDRS
@@ -39,4 +41,6 @@ SECTIONS
   .i2c_addr_vec   : { KEEP(*(.i2c_addr_vec)) }      >I2CADDR : mmio
   .i2c_data_vec   : { KEEP(*(.i2c_data_vec)) }      >I2CDATA : mmio
   .i2c_status_vec : { KEEP(*(.i2c_status_vec)) }    >I2CSTATUS : mmio
+  .pin1_status_vec : { KEEP(*(.pin1_status_vec)) }  >PIN1STATUS : mmio
+  .pin2_status_vec : { KEEP(*(.pin2_status_vec)) }  >PIN2STATUS : mmio
 }
