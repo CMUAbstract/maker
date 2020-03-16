@@ -39,13 +39,13 @@ MEMORY
   STAT_VRF_WRITE (r)              : ORIGIN = 0x80200078, LENGTH = 0x04
   STAT_VRF_WRITE_OVERFLOW (r)     : ORIGIN = 0x8020007C, LENGTH = 0x04
 
-  SMV_VECTOR_ADDR (rw)            : ORIGIN = 0x80200080, LENGTH = 0x04 
-  SMV_VECTOR_LEN (rw)             : ORIGIN = 0x80200084, LENGTH = 0x04 
+  SMV_MAT_ADDR (rw)               : ORIGIN = 0x80200080, LENGTH = 0x04 
+  SMV_MAT_LEN (rw)                : ORIGIN = 0x80200084, LENGTH = 0x04 
   SMV_ROW_ADDR (rw)               : ORIGIN = 0x80200088, LENGTH = 0x04 
   SMV_ROW_LEN (rw)                : ORIGIN = 0x8020008C, LENGTH = 0x04 
   SMV_COL_ADDR (rw)               : ORIGIN = 0x80200090, LENGTH = 0x04 
   SMV_COL_LEN (rw)                : ORIGIN = 0x80200094, LENGTH = 0x04 
-  SMV_MAT_ADDR (rw)               : ORIGIN = 0x80200098, LENGTH = 0x04 
+  SMV_VECTOR_ADDR (rw)            : ORIGIN = 0x80200098, LENGTH = 0x04 
   SMV_DEST_ADDR (rw)              : ORIGIN = 0x8020009C, LENGTH = 0x04 
   SMV_STATUS (rw)                 : ORIGIN = 0x80200100, LENGTH = 0x04
   
@@ -133,13 +133,13 @@ SECTIONS
   .stat_vrf_write_overflow  : { KEEP(*(.stat_vrf_write_overflow)) }
     >STAT_VRF_WRITE_OVERFLOW : mmio
   
-  .smv_vector_addr : { KEEP(*(.smv_vector_addr)) }  >SMV_VECTOR_ADDR : mmio
-  .smv_vector_len  : { KEEP(*(.smv_vector_len)) }   >SMV_VECTOR_LEN : mmio
+  .smv_mat_addr    : { KEEP(*(.smv_mat_addr)) }     >SMV_MAT_ADDR : mmio
+  .smv_mat_len     : { KEEP(*(.smv_mat_len)) }      >SMV_MAT_LEN : mmio
   .smv_row_addr    : { KEEP(*(.smv_row_addr)) }     >SMV_ROW_ADDR : mmio
   .smv_row_len     : { KEEP(*(.smv_row_len)) }      >SMV_ROW_LEN : mmio
   .smv_col_addr    : { KEEP(*(.smv_col_addr)) }     >SMV_COL_ADDR : mmio
   .smv_col_len     : { KEEP(*(.smv_col_len)) }      >SMV_COL_LEN : mmio
-  .smv_mat_addr    : { KEEP(*(.smv_mat_addr)) }     >SMV_MAT_ADDR : mmio
+  .smv_vector_addr : { KEEP(*(.smv_vector_addr)) }  >SMV_VECTOR_ADDR : mmio
   .smv_dest_addr   : { KEEP(*(.smv_dest_addr)) }    >SMV_DEST_ADDR : mmio
   .smv_status      : { KEEP(*(.smv_status)) }       >SMV_STATUS : mmio
   
