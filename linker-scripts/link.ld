@@ -39,14 +39,14 @@ MEMORY
   STAT_VRF_WRITE (r)              : ORIGIN = 0x80200078, LENGTH = 0x04
   STAT_VRF_WRITE_OVERFLOW (r)     : ORIGIN = 0x8020007C, LENGTH = 0x04
 
-  SMV_MAT_ADDR (rw)               : ORIGIN = 0x80200080, LENGTH = 0x04 
-  SMV_MAT_LEN (rw)                : ORIGIN = 0x80200084, LENGTH = 0x04 
+  SMV_VECTOR_ADDR (rw)            : ORIGIN = 0x80200080, LENGTH = 0x04 
+  SMV_VECTOR_LEN (rw)             : ORIGIN = 0x80200084, LENGTH = 0x04 
   SMV_ROW_ADDR (rw)               : ORIGIN = 0x80200088, LENGTH = 0x04 
-  SMV_ROW_LEN (rw)                : ORIGIN = 0x8020008C, LENGTH = 0x04 
-  SMV_COL_ADDR (rw)               : ORIGIN = 0x80200090, LENGTH = 0x04 
-  SMV_COL_LEN (rw)                : ORIGIN = 0x80200094, LENGTH = 0x04 
-  SMV_VECTOR_ADDR (rw)            : ORIGIN = 0x80200098, LENGTH = 0x04 
-  SMV_DEST_ADDR (rw)              : ORIGIN = 0x8020009C, LENGTH = 0x04 
+  SMV_COL_ADDR (rw)               : ORIGIN = 0x8020008C, LENGTH = 0x04 
+  SMV_COL_LEN (rw)                : ORIGIN = 0x80200090, LENGTH = 0x04 
+  SMV_MAT_ADDR (rw)               : ORIGIN = 0x80200094, LENGTH = 0x04 
+  SMV_DEST_ADDR (rw)              : ORIGIN = 0x80200098, LENGTH = 0x04 
+  SMV_CLIP (rw)                   : ORIGIN = 0x8020009C, LENGTH = 0x04
   SMV_STATUS (rw)                 : ORIGIN = 0x80200100, LENGTH = 0x04
   
   DCONV_SRC_ADDR (rw)             : ORIGIN = 0x80200104, LENGTH = 0x04 
@@ -56,12 +56,13 @@ MEMORY
   DCONV_FILTER_ROWS (rw)          : ORIGIN = 0x80200114, LENGTH = 0x04 
   DCONV_FILTER_COLS (rw)          : ORIGIN = 0x80200118, LENGTH = 0x04 
   DCONV_DEST_ADDR (rw)            : ORIGIN = 0x8020011C, LENGTH = 0x04 
-  DCONV_STATUS (rw)               : ORIGIN = 0x80200120, LENGTH = 0x04
+  DCONV_CLIP (rw)                 : ORIGIN = 0x80200120, LENGTH = 0x04
+  DCONV_STATUS (rw)               : ORIGIN = 0x80200124, LENGTH = 0x04
   
-  SORT_SRC_ADDR (rw)              : ORIGIN = 0x80200124, LENGTH = 0x04
-  SORT_SRC_LEN (rw)               : ORIGIN = 0x80200128, LENGTH = 0x04
-  SORT_DEST_ADDR (rw)             : ORIGIN = 0x8020012C, LENGTH = 0x04
-  SORT_STATUS (rw)                : ORIGIN = 0x80200130, LENGTH = 0x04
+  SORT_SRC_ADDR (rw)              : ORIGIN = 0x80200128, LENGTH = 0x04
+  SORT_SRC_LEN (rw)               : ORIGIN = 0x8020012C, LENGTH = 0x04
+  SORT_DEST_ADDR (rw)             : ORIGIN = 0x80200130, LENGTH = 0x04
+  SORT_STATUS (rw)                : ORIGIN = 0x80200134, LENGTH = 0x04
 }
 
 PHDRS
@@ -133,14 +134,14 @@ SECTIONS
   .stat_vrf_write_overflow  : { KEEP(*(.stat_vrf_write_overflow)) }
     >STAT_VRF_WRITE_OVERFLOW : mmio
   
-  .smv_mat_addr    : { KEEP(*(.smv_mat_addr)) }     >SMV_MAT_ADDR : mmio
-  .smv_mat_len     : { KEEP(*(.smv_mat_len)) }      >SMV_MAT_LEN : mmio
+  .smv_vector_addr : { KEEP(*(.smv_vector_addr)) }  >SMV_VECTOR_ADDR : mmio
+  .smv_vector_len  : { KEEP(*(.smv_vector_len)) }   >SMV_VECTOR_LEN : mmio
   .smv_row_addr    : { KEEP(*(.smv_row_addr)) }     >SMV_ROW_ADDR : mmio
-  .smv_row_len     : { KEEP(*(.smv_row_len)) }      >SMV_ROW_LEN : mmio
   .smv_col_addr    : { KEEP(*(.smv_col_addr)) }     >SMV_COL_ADDR : mmio
   .smv_col_len     : { KEEP(*(.smv_col_len)) }      >SMV_COL_LEN : mmio
-  .smv_vector_addr : { KEEP(*(.smv_vector_addr)) }  >SMV_VECTOR_ADDR : mmio
+  .smv_mat_addr    : { KEEP(*(.smv_mat_addr)) }     >SMV_MAT_ADDR : mmio
   .smv_dest_addr   : { KEEP(*(.smv_dest_addr)) }    >SMV_DEST_ADDR : mmio
+  .smv_clip        : { KEEP(*(.smv_clip)) }         >SMV_CLIP : mmio
   .smv_status      : { KEEP(*(.smv_status)) }       >SMV_STATUS : mmio
   
   .dconv_src_addr    : { KEEP(*(.dconv_src_addr)) }    >DCONV_SRC_ADDR : mmio
@@ -150,6 +151,7 @@ SECTIONS
   .dconv_filter_rows : { KEEP(*(.dconv_filter_rows)) } >DCONV_FILTER_ROWS : mmio
   .dconv_filter_cols : { KEEP(*(.dconv_filter_cols)) } >DCONV_FILTER_COLS : mmio
   .dconv_dest_addr   : { KEEP(*(.dconv_dest_addr)) }   >DCONV_DEST_ADDR : mmio
+  .dconv_clip        : { KEEP(*(.dconv_clip)) }        >DCONV_CLIP : mmio
   .dconv_status      : { KEEP(*(.dconv_status)) }      >DCONV_STATUS : mmio
   
   .sort_src_addr   : { KEEP(*(.sort_src_addr)) }    >SORT_SRC_ADDR : mmio
