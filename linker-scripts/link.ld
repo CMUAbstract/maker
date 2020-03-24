@@ -61,8 +61,9 @@ MEMORY
   
   SORT_SRC_ADDR (rw)              : ORIGIN = 0x80200128, LENGTH = 0x04
   SORT_SRC_LEN (rw)               : ORIGIN = 0x8020012C, LENGTH = 0x04
-  SORT_DEST_ADDR (rw)             : ORIGIN = 0x80200130, LENGTH = 0x04
-  SORT_STATUS (rw)                : ORIGIN = 0x80200134, LENGTH = 0x04
+  SORT_TMP_ADDR (rw)              : ORIGIN = 0x80200130, LENGTH = 0x04
+  SORT_DEST_ADDR (rw)             : ORIGIN = 0x80200134, LENGTH = 0x04
+  SORT_STATUS (rw)                : ORIGIN = 0x80200138, LENGTH = 0x04
 }
 
 PHDRS
@@ -156,6 +157,7 @@ SECTIONS
   
   .sort_src_addr   : { KEEP(*(.sort_src_addr)) }    >SORT_SRC_ADDR : mmio
   .sort_src_len    : { KEEP(*(.sort_src_len)) }     >SORT_SRC_LEN : mmio
+  .sort_tmp_addr   : { KEEP(*(.sort_tmp_addr)) }    >SORT_TMP_ADDR : mmio
   .sort_dest_addr  : { KEEP(*(.sort_dest_addr)) }   >SORT_DEST_ADDR : mmio
   .sort_status     : { KEEP(*(.sort_status)) }      >SORT_STATUS : mmio
 }
