@@ -4,7 +4,8 @@ ENTRY( reset_vector )
 
 MEMORY
 {
-  NVRAM (wxa!ri)                  : ORIGIN = 0x80000000, LENGTH = 0x10000
+  NVRAM (wxa!ri)                  : ORIGIN = 0x80000000, LENGTH = 0x40000
+  RAM (wxa!ri)                    : ORIGIN = 0x80040000, LENGTH = 0x10000
   HTIF (rw)                       : ORIGIN = 0x80200000, LENGTH = 0x10
 
   I2C_ADDR (rw)                   : ORIGIN = 0x80200010, LENGTH = 0x04 
@@ -74,23 +75,19 @@ PHDRS
 
 SECTIONS
 {
-  .text   : { *(.text.init) *(.text .text.*) }      >NVRAM : image
-  .rodata : { 
-  	*(.rodata .rodata.*) 
-    __end_rodata = .;
+  .text     : { *(.text.init) *(.text .text.*) }          >NVRAM : image
+  .rodata   : { *(.rodata .rodata.*) __end_rodata = .; }  > NVRAM : image
+  .data     : {
+    __start_data = .;
+      *(.sdata .sdata.*) 
+      *(.data .data.*)
+    __end_data = .;
   } > NVRAM : image
-  .data   : {
-  	__start_data = .;
-  	*(.sdata .sdata.*) 
-  	*(.data .data.*)
-  	__end_data = .;
-  } > NVRAM : image
-  .persistent     : {
-    *(.persistent)
-    *(.nv_vars)
-  } > NVRAM : image
-  .bss    : { *(.sbss .sbss.*) *(.bss .bss.*) }     >NVRAM : image
-  .htif   : { . = ALIGN(1024); *(.htif) }           >HTIF : mmio
+  .persistent : { *(.persistent) *(.nv_vars) }            >NVRAM : image
+  .bss        : { *(.sbss .sbss.*) *(.bss .bss.*) }       >NVRAM : image
+  .volatile   : { *(.volatile) }                          > RAM : image
+
+  .htif   : { . = ALIGN(1024); *(.htif) }       >HTIF : mmio
 
   .i2c_addr        : { KEEP(*(.i2c_addr)) }     >I2C_ADDR : mmio
   .i2c_data        : { KEEP(*(.i2c_data)) }     >I2C_DATA : mmio
