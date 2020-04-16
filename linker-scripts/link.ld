@@ -51,12 +51,12 @@ MEMORY
   SMV_STATUS (rw)                 : ORIGIN = 0x80200100, LENGTH = 0x04
   
   DCONV_SRC_ADDR (rw)             : ORIGIN = 0x80200104, LENGTH = 0x04 
-  DCONV_SRC_ROWS (rw)             : ORIGIN = 0x80200108, LENGTH = 0x04 
-  DCONV_SRC_COLS (rw)             : ORIGIN = 0x8020010C, LENGTH = 0x04 
-  DCONV_FILTER_ADDR (rw)          : ORIGIN = 0x80200110, LENGTH = 0x04 
-  DCONV_FILTER_ROWS (rw)          : ORIGIN = 0x80200114, LENGTH = 0x04 
-  DCONV_FILTER_COLS (rw)          : ORIGIN = 0x80200118, LENGTH = 0x04 
-  DCONV_DEST_ADDR (rw)            : ORIGIN = 0x8020011C, LENGTH = 0x04 
+  DCONV_FILTER_ADDR (rw)          : ORIGIN = 0x80200108, LENGTH = 0x04 
+  DCONV_FILTER_COUNT (rw)         : ORIGIN = 0x8020010C, LENGTH = 0x04 
+  DCONV_FILTER_COLS (rw)          : ORIGIN = 0x80200110, LENGTH = 0x04 
+  DCONV_DEST_ADDR (rw)            : ORIGIN = 0x80200114, LENGTH = 0x04 
+  DCONV_DEST_COUNT (rw)           : ORIGIN = 0x80200118, LENGTH = 0x04 
+  DCONV_DEST_COLS (rw)            : ORIGIN = 0x8020011C, LENGTH = 0x04 
   DCONV_CLIP (rw)                 : ORIGIN = 0x80200120, LENGTH = 0x04
   DCONV_STATUS (rw)               : ORIGIN = 0x80200124, LENGTH = 0x04
   
@@ -142,15 +142,15 @@ SECTIONS
   .smv_clip        : { KEEP(*(.smv_clip)) }         >SMV_CLIP : mmio
   .smv_status      : { KEEP(*(.smv_status)) }       >SMV_STATUS : mmio
   
-  .dconv_src_addr    : { KEEP(*(.dconv_src_addr)) }    >DCONV_SRC_ADDR : mmio
-  .dconv_src_rows    : { KEEP(*(.dconv_src_rows)) }    >DCONV_SRC_ROWS : mmio
-  .dconv_src_cols    : { KEEP(*(.dconv_src_cols)) }    >DCONV_SRC_COLS : mmio
-  .dconv_filter_addr : { KEEP(*(.dconv_filter_addr)) } >DCONV_FILTER_ADDR : mmio
-  .dconv_filter_rows : { KEEP(*(.dconv_filter_rows)) } >DCONV_FILTER_ROWS : mmio
-  .dconv_filter_cols : { KEEP(*(.dconv_filter_cols)) } >DCONV_FILTER_COLS : mmio
-  .dconv_dest_addr   : { KEEP(*(.dconv_dest_addr)) }   >DCONV_DEST_ADDR : mmio
-  .dconv_clip        : { KEEP(*(.dconv_clip)) }        >DCONV_CLIP : mmio
-  .dconv_status      : { KEEP(*(.dconv_status)) }      >DCONV_STATUS : mmio
+  .dconv_src_addr     : { KEEP(*(.dconv_src_addr)) }     >DCONV_SRC_ADDR : mmio
+  .dconv_filter_addr  : { KEEP(*(.dconv_filter_addr)) }  >DCONV_FILTER_ADDR : mmio
+  .dconv_filter_count : { KEEP(*(.dconv_filter_count)) } >DCONV_FILTER_COUNT : mmio
+  .dconv_filter_cols  : { KEEP(*(.dconv_filter_cols)) }  >DCONV_FILTER_COLS : mmio
+  .dconv_dest_addr    : { KEEP(*(.dconv_dest_addr)) }    >DCONV_DEST_ADDR : mmio
+  .dconv_dest_count   : { KEEP(*(.dconv_dest_count)) }   >DCONV_DEST_COUNT : mmio
+  .dconv_dest_cols    : { KEEP(*(.dconv_dest_cols)) }    >DCONV_DEST_COLS : mmio
+  .dconv_clip         : { KEEP(*(.dconv_clip)) }         >DCONV_CLIP : mmio
+  .dconv_status       : { KEEP(*(.dconv_status)) }       >DCONV_STATUS : mmio
   
   .sort_src_addr   : { KEEP(*(.sort_src_addr)) }    >SORT_SRC_ADDR : mmio
   .sort_src_len    : { KEEP(*(.sort_src_len)) }     >SORT_SRC_LEN : mmio
