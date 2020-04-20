@@ -48,7 +48,6 @@ CFLAGS_TOOLCHAIN += \
 	-I$(MSPGCC_ROOT)/include \
 	-I$(SRC_ROOT) \
   -mlarge \
-  -lm
   #-mcode-region=none \
   #-mdata-region=none
 
