@@ -47,6 +47,10 @@ CFLAGS_TOOLCHAIN += \
 	-I$(MSPGCC_ROOT)/msp430-elf/include \
 	-I$(MSPGCC_ROOT)/include \
 	-I$(SRC_ROOT) \
+  -mlarge \
+  -lm
+  #-mcode-region=none \
+  #-mdata-region=none
 
 # To prevent printf() getting replaced with puts from libc instead of from our
 # I/O backend lib. Note that we used to rely on overriding puts/putchar symbols,
@@ -65,6 +69,8 @@ LFLAGS_TOOLCHAIN += \
 	-Wl,--gc-sections \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
 	-L $(MSPGCC_ROOT)/include \
+  -mlarge\
+  -lm
 
 VPATH = $(SRC_ROOT)
 
@@ -84,13 +90,13 @@ bin: $(BIN)
 	$(AS) $(ASFLAGS_TOOLCHAIN) $(ASFLAGS) $< -o $@
 
 %.out: $(OBJECTS)
-	$(LD) $(LFLAGS_TOOLCHAIN) $(LFLAGS) $(OBJECTS) $(LIBS) -o $(BIN)
+	$(LD) $(LFLAGS_TOOLCHAIN) $(LFLAGS) $(OBJECTS) $(LIBS) -lm -o $(BIN)
 
 %.a: $(OBJECTS)
 	$(AR) rcs $@ $^
 
 clean:
-	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(BIN)
+	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(BIN) *.o *.d
 
 debug: $(BIN)
 	$(GDB) $(BIN)
