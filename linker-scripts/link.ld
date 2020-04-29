@@ -12,63 +12,64 @@ MEMORY
 
   I2C_ADDR (rw)                   : ORIGIN = 0x80200014, LENGTH = 0x04 
   I2C_DATA (rw)                   : ORIGIN = 0x80200018, LENGTH = 0x04 
-  I2C_STATUS (rw)                 : ORIGIN = 0x8020001C, LENGTH = 0x04
+  I2C_PRER (rw)                   : ORIGIN = 0x8020001C, LENGTH = 0x04 
+  I2C_STATUS (rw)                 : ORIGIN = 0x80200020, LENGTH = 0x04
 
-  PIN1_STATUS (rw)                : ORIGIN = 0x80200020, LENGTH = 0x04
-  PIN2_STATUS (rw)                : ORIGIN = 0x80200024, LENGTH = 0x04
-  PIN3_STATUS (rw)                : ORIGIN = 0x80200028, LENGTH = 0x04
-  PIN4_STATUS (rw)                : ORIGIN = 0x8020002C, LENGTH = 0x04
+  PIN1_STATUS (rw)                : ORIGIN = 0x80200024, LENGTH = 0x04
+  PIN2_STATUS (rw)                : ORIGIN = 0x80200028, LENGTH = 0x04
+  PIN3_STATUS (rw)                : ORIGIN = 0x8020002C, LENGTH = 0x04
+  PIN4_STATUS (rw)                : ORIGIN = 0x80200030, LENGTH = 0x04
   
-  INFO_CONFIG (r)                 : ORIGIN = 0x80200030, LENGTH = 0x04 
+  INFO_CONFIG (r)                 : ORIGIN = 0x80200034, LENGTH = 0x04 
   
-  STAT_STATUS (w)                 : ORIGIN = 0x80200034, LENGTH = 0x04
-  STAT_CYCLE (r)                  : ORIGIN = 0x80200038, LENGTH = 0x04
-  STAT_CYCLE_OVERFLOW (r)         : ORIGIN = 0x8020003C, LENGTH = 0x04
-  STAT_INSN (r)                   : ORIGIN = 0x80200040, LENGTH = 0x04 
-  STAT_INSN_OVERFLOW (r)          : ORIGIN = 0x80200044, LENGTH = 0x04 
-  STAT_I_MISS (r)                 : ORIGIN = 0x80200048, LENGTH = 0x04 
-  STAT_I_MISS_OVERFLOW (r)        : ORIGIN = 0x8020004C, LENGTH = 0x04 
-  STAT_I_HIT (r)                  : ORIGIN = 0x80200050, LENGTH = 0x04 
-  STAT_I_HIT_OVERFLOW (r)         : ORIGIN = 0x80200054, LENGTH = 0x04 
-  STAT_D_MISS (r)                 : ORIGIN = 0x80200058, LENGTH = 0x04 
-  STAT_D_MISS_OVERFLOW (r)        : ORIGIN = 0x8020005C, LENGTH = 0x04 
-  STAT_D_HIT (r)                  : ORIGIN = 0x80200060, LENGTH = 0x04
-  STAT_D_HIT_OVERFLOW (r)         : ORIGIN = 0x80200064, LENGTH = 0x04
-  STAT_MM_READ (r)                : ORIGIN = 0x80200068, LENGTH = 0x04
-  STAT_MM_READ_OVERFLOW (r)       : ORIGIN = 0x8020006C, LENGTH = 0x04
-  STAT_MM_WRITE (r)               : ORIGIN = 0x80200070, LENGTH = 0x04
-  STAT_MM_WRITE_OVERFLOW (r)      : ORIGIN = 0x80200074, LENGTH = 0x04
-  STAT_VRF_READ (r)               : ORIGIN = 0x80200078, LENGTH = 0x04
-  STAT_VRF_WRITE (r)              : ORIGIN = 0x8020007C, LENGTH = 0x04
-  STAT_HAZARD_INSN (r)            : ORIGIN = 0x80200080, LENGTH = 0x04
-  STAT_HAZARD_XDATA (r)           : ORIGIN = 0x80200084, LENGTH = 0x04
-  STAT_HAZARD_FRF (r)             : ORIGIN = 0x80200088, LENGTH = 0x04
+  STAT_STATUS (w)                 : ORIGIN = 0x80200038, LENGTH = 0x04
+  STAT_CYCLE (r)                  : ORIGIN = 0x8020003C, LENGTH = 0x04
+  STAT_CYCLE_OVERFLOW (r)         : ORIGIN = 0x80200040, LENGTH = 0x04
+  STAT_INSN (r)                   : ORIGIN = 0x80200044, LENGTH = 0x04 
+  STAT_INSN_OVERFLOW (r)          : ORIGIN = 0x80200048, LENGTH = 0x04 
+  STAT_I_MISS (r)                 : ORIGIN = 0x8020004C, LENGTH = 0x04 
+  STAT_I_MISS_OVERFLOW (r)        : ORIGIN = 0x80200050, LENGTH = 0x04 
+  STAT_I_HIT (r)                  : ORIGIN = 0x80200054, LENGTH = 0x04 
+  STAT_I_HIT_OVERFLOW (r)         : ORIGIN = 0x80200058, LENGTH = 0x04 
+  STAT_D_MISS (r)                 : ORIGIN = 0x8020005C, LENGTH = 0x04 
+  STAT_D_MISS_OVERFLOW (r)        : ORIGIN = 0x80200060, LENGTH = 0x04 
+  STAT_D_HIT (r)                  : ORIGIN = 0x80200064, LENGTH = 0x04
+  STAT_D_HIT_OVERFLOW (r)         : ORIGIN = 0x80200068, LENGTH = 0x04
+  STAT_MM_READ (r)                : ORIGIN = 0x8020006C, LENGTH = 0x04
+  STAT_MM_READ_OVERFLOW (r)       : ORIGIN = 0x80200070, LENGTH = 0x04
+  STAT_MM_WRITE (r)               : ORIGIN = 0x80200074, LENGTH = 0x04
+  STAT_MM_WRITE_OVERFLOW (r)      : ORIGIN = 0x80200078, LENGTH = 0x04
+  STAT_VRF_READ (r)               : ORIGIN = 0x8020007C, LENGTH = 0x04
+  STAT_VRF_WRITE (r)              : ORIGIN = 0x80200080, LENGTH = 0x04
+  STAT_HAZARD_INSN (r)            : ORIGIN = 0x80200084, LENGTH = 0x04
+  STAT_HAZARD_XDATA (r)           : ORIGIN = 0x80200088, LENGTH = 0x04
+  STAT_HAZARD_FRF (r)             : ORIGIN = 0x8020008C, LENGTH = 0x04
 
-  SMV_VECTOR_ADDR (rw)            : ORIGIN = 0x8020008C, LENGTH = 0x04 
-  SMV_VECTOR_LEN (rw)             : ORIGIN = 0x80200090, LENGTH = 0x04 
-  SMV_ROW_ADDR (rw)               : ORIGIN = 0x80200094, LENGTH = 0x04 
-  SMV_COL_ADDR (rw)               : ORIGIN = 0x80200098, LENGTH = 0x04 
-  SMV_COL_LEN (rw)                : ORIGIN = 0x8020009C, LENGTH = 0x04 
-  SMV_MAT_ADDR (rw)               : ORIGIN = 0x80200100, LENGTH = 0x04 
-  SMV_DEST_ADDR (rw)              : ORIGIN = 0x80200104, LENGTH = 0x04 
-  SMV_CLIP (rw)                   : ORIGIN = 0x80200108, LENGTH = 0x04
-  SMV_STATUS (rw)                 : ORIGIN = 0x8020010C, LENGTH = 0x04
+  SMV_VECTOR_ADDR (rw)            : ORIGIN = 0x80200090, LENGTH = 0x04 
+  SMV_VECTOR_LEN (rw)             : ORIGIN = 0x80200094, LENGTH = 0x04 
+  SMV_ROW_ADDR (rw)               : ORIGIN = 0x80200098, LENGTH = 0x04 
+  SMV_COL_ADDR (rw)               : ORIGIN = 0x8020009C, LENGTH = 0x04 
+  SMV_COL_LEN (rw)                : ORIGIN = 0x80200100, LENGTH = 0x04 
+  SMV_MAT_ADDR (rw)               : ORIGIN = 0x80200104, LENGTH = 0x04 
+  SMV_DEST_ADDR (rw)              : ORIGIN = 0x80200108, LENGTH = 0x04 
+  SMV_CLIP (rw)                   : ORIGIN = 0x8020010C, LENGTH = 0x04
+  SMV_STATUS (rw)                 : ORIGIN = 0x80200110, LENGTH = 0x04
   
-  DCONV_SRC_ADDR (rw)             : ORIGIN = 0x80200110, LENGTH = 0x04 
-  DCONV_FILTER_ADDR (rw)          : ORIGIN = 0x80200114, LENGTH = 0x04 
-  DCONV_FILTER_COUNT (rw)         : ORIGIN = 0x80200118, LENGTH = 0x04 
-  DCONV_FILTER_COLS (rw)          : ORIGIN = 0x8020011C, LENGTH = 0x04 
-  DCONV_DEST_ADDR (rw)            : ORIGIN = 0x80200120, LENGTH = 0x04 
-  DCONV_DEST_COUNT (rw)           : ORIGIN = 0x80200124, LENGTH = 0x04 
-  DCONV_DEST_COLS (rw)            : ORIGIN = 0x80200128, LENGTH = 0x04 
-  DCONV_CLIP (rw)                 : ORIGIN = 0x8020012C, LENGTH = 0x04
-  DCONV_STATUS (rw)               : ORIGIN = 0x80200130, LENGTH = 0x04
+  DCONV_SRC_ADDR (rw)             : ORIGIN = 0x80200114, LENGTH = 0x04 
+  DCONV_FILTER_ADDR (rw)          : ORIGIN = 0x80200118, LENGTH = 0x04 
+  DCONV_FILTER_COUNT (rw)         : ORIGIN = 0x8020011C, LENGTH = 0x04 
+  DCONV_FILTER_COLS (rw)          : ORIGIN = 0x80200120, LENGTH = 0x04 
+  DCONV_DEST_ADDR (rw)            : ORIGIN = 0x80200124, LENGTH = 0x04 
+  DCONV_DEST_COUNT (rw)           : ORIGIN = 0x80200128, LENGTH = 0x04 
+  DCONV_DEST_COLS (rw)            : ORIGIN = 0x8020012C, LENGTH = 0x04 
+  DCONV_CLIP (rw)                 : ORIGIN = 0x80200130, LENGTH = 0x04
+  DCONV_STATUS (rw)               : ORIGIN = 0x80200134, LENGTH = 0x04
   
-  SORT_SRC_ADDR (rw)              : ORIGIN = 0x80200134, LENGTH = 0x04
-  SORT_SRC_LEN (rw)               : ORIGIN = 0x80200138, LENGTH = 0x04
-  SORT_TMP_ADDR (rw)              : ORIGIN = 0x8020013C, LENGTH = 0x04
-  SORT_DEST_ADDR (rw)             : ORIGIN = 0x80200140, LENGTH = 0x04
-  SORT_STATUS (rw)                : ORIGIN = 0x80200144, LENGTH = 0x04
+  SORT_SRC_ADDR (rw)              : ORIGIN = 0x80200138, LENGTH = 0x04
+  SORT_SRC_LEN (rw)               : ORIGIN = 0x8020013C, LENGTH = 0x04
+  SORT_TMP_ADDR (rw)              : ORIGIN = 0x80200140, LENGTH = 0x04
+  SORT_DEST_ADDR (rw)             : ORIGIN = 0x80200144, LENGTH = 0x04
+  SORT_STATUS (rw)                : ORIGIN = 0x80200148, LENGTH = 0x04
 }
 
 PHDRS
@@ -97,6 +98,7 @@ SECTIONS
 
   .i2c_addr        : { KEEP(*(.i2c_addr)) }     >I2C_ADDR : mmio
   .i2c_data        : { KEEP(*(.i2c_data)) }     >I2C_DATA : mmio
+  .i2c_prer        : { KEEP(*(.i2c_prer)) }     >I2C_STATUS : mmio
   .i2c_status      : { KEEP(*(.i2c_status)) }   >I2C_STATUS : mmio
   
   .pin1_status     : { KEEP(*(.pin1_status)) }  >PIN1_STATUS : mmio
