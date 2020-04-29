@@ -1,11 +1,10 @@
-PREFIX = $(CLANG_ROOT)/bin/
-export CC_CLANG = $(PREFIX)clang
+export CC_CLANG = clang
 CC      := $(CC_CLANG)
-export LLC     = $(PREFIX)llc
-export LLVM_LINK= $(PREFIX)/llvm-link
-export LLVM_AS = $(PREFIX)/llvm-as
-export LLVM_DIS = $(PREFIX)/llvm-dis
-export OPT      = $(PREFIX)/opt
+export LLC     = llc
+export LLVM_LINK= llvm-link
+export LLVM_AS = llvm-as
+export LLVM_DIS = llvm-dis
+export OPT      = opt
 
 GCC     = $(MSPGCC_ROOT)/bin/msp430-elf-gcc
 AS      = $(MSPGCC_ROOT)/bin/msp430-elf-as
@@ -27,6 +26,7 @@ else # clang >= 5.0.0
 HWMULT ?= 1
 endif # clang version
 
+
 # We override because when this file is included from a nested build directory
 # (say, when the app or toolchain has more than one build artifact, each built
 # by its own makefile), the CFLAGS are passed via '$(MAKE) -e', with which
@@ -34,8 +34,8 @@ endif # clang version
 # but hopefully, this is enough to make things work.
 
 CFLAGS_TOOLCHAIN += \
-	--target=msp430 \
 	$(BOARDDEFS) \
+	--target=msp430 \
 	-nobuiltininc \
 	-nostdinc++ \
 	-isysroot /none \
@@ -54,8 +54,9 @@ LLC_FLAGS_TOOLCHAIN += \
 
 LFLAGS_TOOLCHAIN += \
 	-Wl,-Map=$(BIN).map \
-	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
+	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE)$(CHKPT_TYPE).ld \
 	-L $(MSPGCC_ROOT)/include \
+
 
 ifeq ($(HWMULT),1)
 LFLAGS_TOOLCHAIN += -mhwmult=auto
@@ -84,8 +85,10 @@ bin: $(BIN)
 # LLVM/Clang compiler and linker part of the pipeline
 
 %.bc: %.c
+	@echo "cur objects:" $(OBJECTS) $(VPATH)
 	mkdir -p "./$(shell dirname $@)"
-	$(CC) -emit-llvm -c $(CFLAGS_TOOLCHAIN) $(CFLAGS) $< -o $@
+	$(CC) -Xclang -disable-O0-optnone -emit-llvm -c $(CFLAGS_TOOLCHAIN) $(CFLAGS) \
+  -lm $< -o $@
 
 %.a.bc: $(LINK_OBJECTS)
 	$(LLVM_LINK) -o $@ $^ $(LLVM_LIBS)
@@ -117,7 +120,7 @@ bin: $(BIN)
 # Native assembly to native object code
 
 %.out: %.S
-	$(GCC) $(LFLAGS_TOOLCHAIN) $(LFLAGS) -o $@ $< $(LIBS) -lmul_f5
+	$(GCC) $(LFLAGS_TOOLCHAIN) $(LFLAGS) -o $@ $< $(LIBS) -lmul_f5 -lm
 
 # Do not remove these intermediates
 .PRECIOUS: %.a.bc %.bc %.s %.S

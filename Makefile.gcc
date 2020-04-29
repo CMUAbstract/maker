@@ -12,7 +12,7 @@ LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts/gcc-$(GCC_VERSION_MAJOR)
 include $(MAKER_ROOT)/Makefile.suffix
 
 HWMULT ?= 1
-OPT_LEVEL ?= 2
+OPT_LEVEL ?= 1
 
 COMMONFLAGS = \
 	-mmcu=$(DEVICE) \
@@ -28,6 +28,8 @@ endif # HWMULT = 1
 
 ASFLAGS_TOOLCHAIN = \
 	$(COMMONFLAGS) \
+  #--code_model=large \
+  #-ml \
 
 # We override because when this file is included from a nested build directory
 # (say, when the app or toolchain has more than one build artifact, each built
@@ -40,15 +42,15 @@ CFLAGS_TOOLCHAIN += \
 	$(CC_LD_FLAGS) \
 	$(BOARDDEFS) \
 	-O$(OPT_LEVEL) \
-	-g \
 	-std=c99 \
 	-Wall \
 	-minrt \
 	-I$(MSPGCC_ROOT)/msp430-elf/include \
 	-I$(MSPGCC_ROOT)/include \
 	-I$(SRC_ROOT) \
-  -mlarge \
-  #-mcode-region=none \
+  #-mlarge \
+  #-mcode-region=either \
+	#-g \
   #-mdata-region=none
 
 # To prevent printf() getting replaced with puts from libc instead of from our
@@ -66,10 +68,10 @@ LFLAGS_TOOLCHAIN += \
 	$(COMMONFLAGS) \
 	$(CC_LD_FLAGS) \
 	-Wl,--gc-sections \
-	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE).ld \
+	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE)$(CHKPT_TYPE).ld \
 	-L $(MSPGCC_ROOT)/include \
   -mlarge\
-  -lm
+  #-lm
 
 VPATH = $(SRC_ROOT)
 
