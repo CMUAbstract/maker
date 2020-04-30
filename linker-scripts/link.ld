@@ -70,6 +70,11 @@ MEMORY
   SORT_TMP_ADDR (rw)              : ORIGIN = 0x80200140, LENGTH = 0x04
   SORT_DEST_ADDR (rw)             : ORIGIN = 0x80200144, LENGTH = 0x04
   SORT_STATUS (rw)                : ORIGIN = 0x80200148, LENGTH = 0x04
+
+  FFT_SRC_ADDR (rw)               : ORIGIN = 0x8020014C, LENGTH = 0x04
+  FFT_SRC_LEN (rw)                : ORIGIN = 0x80200150, LENGTH = 0x04
+  FFT_DEST_ADDR (rw)              : ORIGIN = 0x80200154, LENGTH = 0x04
+  FFT_STATUS (rw)                 : ORIGIN = 0x80200158, LENGTH = 0x04
 }
 
 PHDRS
@@ -167,4 +172,9 @@ SECTIONS
   .sort_tmp_addr   : { KEEP(*(.sort_tmp_addr)) }    >SORT_TMP_ADDR : mmio
   .sort_dest_addr  : { KEEP(*(.sort_dest_addr)) }   >SORT_DEST_ADDR : mmio
   .sort_status     : { KEEP(*(.sort_status)) }      >SORT_STATUS : mmio
+
+  .fft_src_addr    : { KEEP(*(.fft_src_addr)) }     > FFT_SRC_ADDR : mmio
+  .fft_src_len     : { KEEP(*(.fft_src_len)) }      > FFT_SRC_LEN : mmio
+  .fft_dest_addr   : { KEEP(*(.fft_dest_addr)) }    > FFT_DEST_ADDR : mmio
+  .fft_status      : { KEEP(*(.fft_status)) }       > FFT_STATUS : mmio
 }
