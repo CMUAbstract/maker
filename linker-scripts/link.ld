@@ -103,7 +103,7 @@ SECTIONS
 
   .i2c_addr        : { KEEP(*(.i2c_addr)) }     >I2C_ADDR : mmio
   .i2c_data        : { KEEP(*(.i2c_data)) }     >I2C_DATA : mmio
-  .i2c_prer        : { KEEP(*(.i2c_prer)) }     >I2C_STATUS : mmio
+  .i2c_prer        : { KEEP(*(.i2c_prer)) }     >I2C_PRER : mmio
   .i2c_status      : { KEEP(*(.i2c_status)) }   >I2C_STATUS : mmio
   
   .pin1_status     : { KEEP(*(.pin1_status)) }  >PIN1_STATUS : mmio
