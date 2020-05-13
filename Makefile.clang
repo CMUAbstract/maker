@@ -88,7 +88,7 @@ bin: $(BIN)
 	@echo "cur objects:" $(OBJECTS) $(VPATH)
 	mkdir -p "./$(shell dirname $@)"
 	$(CC) -Xclang -disable-O0-optnone -emit-llvm -c $(CFLAGS_TOOLCHAIN) $(CFLAGS) \
-  -lm $< -o $@
+  $< -o $@
 
 %.a.bc: $(LINK_OBJECTS)
 	$(LLVM_LINK) -o $@ $^ $(LLVM_LIBS)
@@ -120,7 +120,7 @@ bin: $(BIN)
 # Native assembly to native object code
 
 %.out: %.S
-	$(GCC) $(LFLAGS_TOOLCHAIN) $(LFLAGS) -o $@ $< $(LIBS) -lmul_f5 -lm
+	$(GCC) $(LFLAGS_TOOLCHAIN) $(LFLAGS) $< $(LIBS) -lm -lmul_f5 -o $@
 
 # Do not remove these intermediates
 .PRECIOUS: %.a.bc %.bc %.s %.S
