@@ -49,7 +49,7 @@ CFLAGS_TOOLCHAIN += \
 	-I$(MSPGCC_ROOT)/include \
 	-I$(SRC_ROOT) \
   -mlarge \
-  -mcode-region=either \
+  #-mcode-region=either \
 	#-g \
   #-mdata-region=none
 
@@ -84,7 +84,9 @@ bin: $(BIN)
 
 %.o: %.c
 	mkdir -p "./$(shell dirname $@)"
-	$(CC) -c -MD $(CFLAGS_TOOLCHAIN) $(CFLAGS) $< -lm -o $@
+	$(CC) -c -MD $(CFLAGS_TOOLCHAIN) $(CFLAGS) $< -o $@
+	#$(CC) -c -MD $(CFLAGS_TOOLCHAIN) $(CFLAGS) $< -static -o $@
+	#$(CC) -c -MD $(CFLAGS_TOOLCHAIN) $(CFLAGS) $< -static -lm -o $@
 
 %.o: %.S
 	mkdir -p "./$(shell dirname $@)"
