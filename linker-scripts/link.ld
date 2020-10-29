@@ -6,7 +6,6 @@ MEMORY
 {
   NVRAM (wxa!ri)                  : ORIGIN = 0x80000000, LENGTH = 0x40000
   RAM (wxa!ri)                    : ORIGIN = 0x80040000, LENGTH = 0x10000
-  STREAM (wxa!ri)                 : ORIGIN = 0x80050000, LENGTH = 0x10000
   HTIF (rw)                       : ORIGIN = 0x80200000, LENGTH = 0x10
 
   PROG_STATUS (r)                 : ORIGIN = 0x80200010, LENGTH = 0x4
@@ -77,7 +76,6 @@ PHDRS
 {
   image PT_LOAD;
   volatile PT_LOAD;
-  stream PT_LOAD;
   mmio PT_LOAD;
 }
 
@@ -92,11 +90,10 @@ SECTIONS
     __end_data = .;
   } > NVRAM : image
   .persistent : { *(.persistent) *(.nv_vars) }            >NVRAM : image
+  .stream     : { *(.stream) }                            >NVRAM : image
   .bss        : { *(.sbss .sbss.*) *(.bss .bss.*) }       >NVRAM : image
   
   .volatile   : { *(.volatile) }                          >RAM : volatile
-
-  .stream     : { *(.stream) }                            >STREAM : stream
 
   .htif   : { . = ALIGN(1024); *(.htif) }                 >HTIF : mmio
 
