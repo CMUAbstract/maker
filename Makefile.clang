@@ -5,7 +5,6 @@ export LLVM_LINK= llvm-link
 export LLVM_AS = llvm-as
 export LLVM_DIS = llvm-dis
 export OPT      = opt
-
 GCC     = $(MSPGCC_ROOT)/bin/msp430-elf-gcc
 AS      = $(MSPGCC_ROOT)/bin/msp430-elf-as
 #LD      = $(MSPGCC_ROOT)/bin/msp430-elf-ld
@@ -39,8 +38,7 @@ CFLAGS_TOOLCHAIN += \
 	-nobuiltininc \
 	-nostdinc++ \
 	-isysroot /none \
-	-O0 \
-	-g \
+	-O1 \
 	-std=c99 \
 	-Wall \
 	-MD \
@@ -48,15 +46,20 @@ CFLAGS_TOOLCHAIN += \
 	-I $(MSPGCC_ROOT)/msp430-elf/include \
 	-I $(MSPGCC_ROOT)/include \
 	-I $(SRC_ROOT) \
+	#-g \
 
 LLC_FLAGS_TOOLCHAIN += \
-	-O0 \
+	-O1 \
 
 LFLAGS_TOOLCHAIN += \
-	-Wl,-Map=$(BIN).map \
+	-Wl,--gc-sections \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE)$(CHKPT_TYPE).ld \
 	-L $(MSPGCC_ROOT)/include \
-	#-mmcu=$(DEVICE) \
+	-mmcu=$(DEVICE) \
+  #-mcode-region=lower \
+  -mdata-region=upper \
+	#-mlarge \
+	#-Wl,-Map=$(BIN).map
 
 
 ifeq ($(HWMULT),1)

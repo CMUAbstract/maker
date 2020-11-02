@@ -12,7 +12,7 @@ LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts/gcc-$(GCC_VERSION_MAJOR)
 include $(MAKER_ROOT)/Makefile.suffix
 
 HWMULT ?= 1
-OPT_LEVEL ?= 1
+OPT_LEVEL ?= 0
 
 COMMONFLAGS = \
 	-mmcu=$(DEVICE) \
@@ -48,8 +48,11 @@ CFLAGS_TOOLCHAIN += \
 	-I$(MSPGCC_ROOT)/msp430-elf/include \
 	-I$(MSPGCC_ROOT)/include \
 	-I$(SRC_ROOT) \
-  #-mlarge \
-  #-mcode-region=either \
+  -mlarge \
+  #-g
+  #-mcode-region=lower \
+  #-mdata-region=upper \
+  -mlarge \
 	#-g \
   #-mdata-region=none
 
@@ -71,6 +74,9 @@ LFLAGS_TOOLCHAIN += \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE)$(CHKPT_TYPE).ld \
 	-L $(MSPGCC_ROOT)/include \
   -mlarge\
+  #-mcode-region=lower \
+  #-mdata-region=upper \
+  #-mlarge\
 
 
 VPATH = $(SRC_ROOT)
