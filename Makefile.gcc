@@ -12,7 +12,10 @@ LINKER_SCRIPTS_ROOT = $(MAKER_ROOT)/linker-scripts/gcc-$(GCC_VERSION_MAJOR)
 include $(MAKER_ROOT)/Makefile.suffix
 
 HWMULT ?= 1
-OPT_LEVEL ?= 0
+
+#OPT_LEVEL NEEDS TO BE SET TO AT LEASET 1 FOR HIFRAM ACCESSES TO WORK
+#TODO FIGURE OUT WHY
+OPT_LEVEL ?= 2
 
 COMMONFLAGS = \
 	-mmcu=$(DEVICE) \
@@ -49,12 +52,10 @@ CFLAGS_TOOLCHAIN += \
 	-I$(MSPGCC_ROOT)/include \
 	-I$(SRC_ROOT) \
   -mlarge \
-  #-g
+  #-mdata-region=upper
   #-mcode-region=lower \
   #-mdata-region=upper \
-  -mlarge \
 	#-g \
-  #-mdata-region=none
 
 # To prevent printf() getting replaced with puts from libc instead of from our
 # I/O backend lib. Note that we used to rely on overriding puts/putchar symbols,
@@ -73,10 +74,9 @@ LFLAGS_TOOLCHAIN += \
 	-Wl,--gc-sections \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE)$(CHKPT_TYPE).ld \
 	-L $(MSPGCC_ROOT)/include \
-  -mlarge\
+  -mlarge \
+  #-mdata-region=upper
   #-mcode-region=lower \
-  #-mdata-region=upper \
-  #-mlarge\
 
 
 VPATH = $(SRC_ROOT)
@@ -91,8 +91,6 @@ bin: $(BIN)
 %.o: %.c
 	mkdir -p "./$(shell dirname $@)"
 	$(CC) -c -MD $(CFLAGS_TOOLCHAIN) $(CFLAGS) $< -o $@
-	#$(CC) -c -MD $(CFLAGS_TOOLCHAIN) $(CFLAGS) $< -static -o $@
-	#$(CC) -c -MD $(CFLAGS_TOOLCHAIN) $(CFLAGS) $< -static -lm -o $@
 
 %.o: %.S
 	mkdir -p "./$(shell dirname $@)"
