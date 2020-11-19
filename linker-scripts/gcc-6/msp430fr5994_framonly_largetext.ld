@@ -265,7 +265,15 @@ SECTIONS
     . = ALIGN(2);
     PROVIDE (__persistent_end = .);
   } > ROM
-
+  .v_vars :
+  {
+    . = ALIGN(2);
+    PROVIDE (__vram_vars_start = .);
+    KEEP (*(.v_vars))
+    . = ALIGN(2);
+    PROVIDE (__vram_vars_end = .);
+  } > RAM
+  
   .nv_vars :
   {
     . = ALIGN(2);
