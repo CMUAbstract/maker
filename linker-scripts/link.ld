@@ -70,6 +70,15 @@ MEMORY
   SORT_TMP_ADDR (rw)              : ORIGIN = 0x802000e0, LENGTH = 0x4
   SORT_DEST_ADDR (rw)             : ORIGIN = 0x802000e4, LENGTH = 0x4
   SORT_STATUS (rw)                : ORIGIN = 0x802000e8, LENGTH = 0x4
+
+  DMM_ROWS (rw)                   : ORIGIN = 0x802000ec, LENGTH = 0x4
+  DMM_COLS (rw)                   : ORIGIN = 0x802000f0, LENGTH = 0x4
+  DMM_DCOLS (rw)                  : ORIGIN = 0x802000f4, LENGTH = 0x4
+  DMM_CLIP (rw)                   : ORIGIN = 0x802000f8, LENGTH = 0x4
+  DMM_SRCA_ADDR (rw)              : ORIGIN = 0x802000fc, LENGTH = 0x4
+  DMM_SRCB_ADDR (rw)              : ORIGIN = 0x80200100, LENGTH = 0x4
+  DMM_DEST_ADDR (rw)              : ORIGIN = 0x80200104, LENGTH = 0x4
+  DMM_STATUS (rw)                 : ORIGIN = 0x80200108, LENGTH = 0x4
 }
 
 PHDRS
@@ -159,4 +168,13 @@ SECTIONS
   .sort_tmp_addr          : { KEEP(*(.sort_tmp_addr)) }           >SORT_TMP_ADDR : mmio
   .sort_dest_addr         : { KEEP(*(.sort_dest_addr)) }          >SORT_DEST_ADDR : mmio
   .sort_status            : { KEEP(*(.sort_status)) }             >SORT_STATUS : mmio
+
+  .dmm_rows               : { KEEP(*(.dmm_rows)) }                >DMM_ROWS : mmio
+  .dmm_cols               : { KEEP(*(.dmm_cols)) }                >DMM_COLS : mmio
+  .dmm_dcols              : { KEEP(*(.dmm_dcols)) }               >DMM_DCOLS : mmio
+  .dmm_clip               : { KEEP(*(.dmm_clip)) }                >DMM_CLIP : mmio
+  .dmm_srca_addr          : { KEEP(*(.dmm_srca_addr)) }           >DMM_SRCA_ADDR : mmio
+  .dmm_srcb_addr          : { KEEP(*(.dmm_srcb_addr)) }           >DMM_SRCB_ADDR : mmio
+  .dmm_dest_addr          : { KEEP(*(.dmm_dest_addr)) }           >DMM_DEST_ADDR : mmio
+  .dmm_status             : { KEEP(*(.dmm_status)) }              >DMM_STATUS : mmio
 }
