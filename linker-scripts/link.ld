@@ -82,11 +82,14 @@ MEMORY
 
   FFT_ROWS (rw)                   : ORIGIN = 0x8020010c, LENGTH = 0x4
   FFT_COLS (rw)                   : ORIGIN = 0x80200110, LENGTH = 0x4
-  FFT_SRC_REAL_ADDR (rw)          : ORIGIN = 0x80200114, LENGTH = 0x4
-  FFT_SRC_IMAG_ADDR (rw)          : ORIGIN = 0x80200118, LENGTH = 0x4
-  FFT_DEST_REAL_ADDR (rw)         : ORIGIN = 0x8020011c, LENGTH = 0x4
-  FFT_DEST_IMAG_ADDR (rw)         : ORIGIN = 0x80200120, LENGTH = 0x4
-  FFT_STATUS (rw)                 : ORIGIN = 0x80200124, LENGTH = 0x4
+  FFT_CLIP (rw)                   : ORIGIN = 0x80200114, LENGTH = 0x4
+  FFT_SRC_REAL_ADDR (rw)          : ORIGIN = 0x80200118, LENGTH = 0x4
+  FFT_SRC_IMAG_ADDR (rw)          : ORIGIN = 0x8020011c, LENGTH = 0x4
+  FFT_DEST_REAL_ADDR (rw)         : ORIGIN = 0x80200120, LENGTH = 0x4
+  FFT_DEST_IMAG_ADDR (rw)         : ORIGIN = 0x80200124, LENGTH = 0x4
+  FFT_TWIDDLE_REAL_ADDR (rw)      : ORIGIN = 0x80200128, LENGTH = 0x4
+  FFT_TWIDDLE_IMAG_ADDR (rw)      : ORIGIN = 0x8020012c, LENGTH = 0x4
+  FFT_STATUS (rw)                 : ORIGIN = 0x80200130, LENGTH = 0x4
 }
 
 PHDRS
@@ -188,9 +191,12 @@ SECTIONS
 
   .fft_rows               : { KEEP(*(.fft_rows)) }                >FFT_ROWS : mmio
   .fft_cols               : { KEEP(*(.fft_cols)) }                >FFT_COLS : mmio
+  .fft_clip               : { KEEP(*(.fft_clip)) }                >FFT_CLIP : mmio
   .fft_src_real_addr      : { KEEP(*(.fft_src_real_addr)) }       >FFT_SRC_REAL_ADDR : mmio
   .fft_src_imag_addr      : { KEEP(*(.fft_src_imag_addr)) }       >FFT_SRC_IMAG_ADDR : mmio
   .fft_dest_real_addr     : { KEEP(*(.fft_dest_real_addr)) }      >FFT_DEST_REAL_ADDR : mmio
   .fft_dest_imag_addr     : { KEEP(*(.fft_dest_imag_addr)) }      >FFT_DEST_IMAG_ADDR : mmio
+  .fft_twiddle_real_addr  : { KEEP(*(.fft_twiddle_real_addr)) }   >FFT_TWIDDLE_REAL_ADDR : mmio
+  .fft_twiddle_imag_addr  : { KEEP(*(.fft_twiddle_imag_addr)) }   >FFT_TWIDDLE_IMAG_ADDR : mmio
   .fft_status             : { KEEP(*(.fft_status)) }              >FFT_STATUS : mmio
 }
