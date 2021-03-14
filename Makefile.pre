@@ -13,7 +13,7 @@ $(call run,/bin/echo "scale=0; ($(call calc,$(1))) / 1" | bc -l)
 endef
 
 define calc_test
-$(filter 1,$(call run,/bin/echo -e "$(1)" | bc -l))
+$(filter 1,$(call run,/bin/echo "$(1)" | bc -l))
 endef
 
 
