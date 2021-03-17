@@ -43,11 +43,12 @@ CFLAGS_TOOLCHAIN += \
 	-g \
 	-std=c99 \
 	-Wall \
-	-minrt \
 	-I$(MSPGCC_ROOT)/msp430-elf/include \
 	-I$(MSPGCC_ROOT)/include \
 	-I$(SRC_ROOT) \
   -mlarge \
+  -mtiny-printf
+	#-minrt \
   #-mcode-region=none \
   #-mdata-region=none
 
