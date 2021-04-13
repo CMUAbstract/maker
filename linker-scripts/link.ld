@@ -101,12 +101,9 @@ PHDRS
 
 SECTIONS
 {
-  .text_init : {
-    *(.text.init) 
-  } > NVRAM : image
-
   .text     : { 
     __start_text = .; 
+    *(.text.init) 
     *(.text .text.*) 
     __end_text = .;
   } > NVRAM : image
