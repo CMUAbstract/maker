@@ -101,9 +101,12 @@ PHDRS
 
 SECTIONS
 {
+  .text_init : {
+    *(.text.init) 
+  } > NVRAM : image
+
   .text     : { 
     __start_text = .; 
-    *(.text.init) 
     *(.text .text.*) 
     __end_text = .;
   } > NVRAM : image
@@ -132,6 +135,12 @@ SECTIONS
     *(.volatile) 
     __end_volatile = .;
   } > RAM : volatile
+
+  __nvram_origin = ORIGIN(NVRAM);
+  __ram_origin = ORIGIN(RAM);
+
+  __nvram_size = LENGTH(NVRAM);
+  __ram_size = LENGTH(RAM);
 
   __free_nvram = ORIGIN(NVRAM) + LENGTH(NVRAM) - __nvram_end; 
   __free_ram = ORIGIN(RAM) + LENGTH(RAM) - __start_volatile;
