@@ -101,19 +101,40 @@ PHDRS
 
 SECTIONS
 {
-  .text     : { *(.text.init) *(.text .text.*) }          >NVRAM : image
-  .rodata   : { *(.rodata .rodata.*) __end_rodata = .; }  >NVRAM : image
+  .text     : { 
+    __start_text = .; 
+    *(.text.init) 
+    *(.text .text.*) 
+    __end_text = .;
+  } > NVRAM : image
+  
+  .rodata   : { 
+    __start_rodata = .;
+    *(.rodata .rodata.*) 
+    __end_rodata = .; 
+  } > NVRAM : image
+  
   .data     : {
     __start_data = .;
       *(.sdata .sdata.*) 
       *(.data .data.*)
+    . = ALIGN(4);
     __end_data = .;
   } > NVRAM : image
+
   .persistent : { *(.persistent) *(.nv_vars) }            >NVRAM : image
   .stream     : { *(.stream) }                            >NVRAM : image
   .bss        : { *(.sbss .sbss.*) *(.bss .bss.*) }       >NVRAM : image
+  .end        : { __nvram_end = .; }                      >NVRAM : image
   
-  .volatile   : { *(.volatile) }                          >RAM : volatile
+  .volatile   : { 
+    __start_volatile = .;
+    *(.volatile) 
+    __end_volatile = .;
+  } > RAM : volatile
+
+  __free_nvram = ORIGIN(NVRAM) + LENGTH(NVRAM) - __nvram_end; 
+  __free_ram = ORIGIN(RAM) + LENGTH(RAM) - __start_volatile;
 
   .htif   : { . = ALIGN(1024); *(.htif) }                 >HTIF : mmio
 
