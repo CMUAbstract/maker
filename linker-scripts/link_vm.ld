@@ -105,13 +105,14 @@ SECTIONS
     *(.text.init) 
   } > NVRAM : image
 
-  .persistent : { *(.persistent) *(.nv_vars) }            >NVRAM : image
+  .persistent : { *(.persistent) }            >NVRAM : image
   .bss        : { *(.sbss .sbss.*) *(.bss .bss.*) }       >NVRAM : image
   .end        : { __nvram_end = .; }                      >NVRAM : image
 
   .text     : { 
     __start_text = .; 
     *(.text .text.*) 
+    *(.nv_vars)
     __end_text = .;
   } > RAM : image
   
