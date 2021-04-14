@@ -7,7 +7,7 @@ GDB     = $(PREFIX)gdb
 
 include $(MAKER_ROOT)/Makefile.version.gcc
 
-LINKER_SCRIPT = $(MAKER_ROOT)/linker-scripts/link.ld
+LINKER_SCRIPT ?= $(MAKER_ROOT)/linker-scripts/link.ld
 
 include $(MAKER_ROOT)/Makefile.suffix
 
