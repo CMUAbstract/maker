@@ -40,16 +40,15 @@ CFLAGS_TOOLCHAIN += \
 	$(CC_LD_FLAGS) \
 	$(BOARDDEFS) \
 	-O$(OPT_LEVEL) \
-	-g \
 	-std=c99 \
 	-Wall \
 	-I$(MSPGCC_ROOT)/msp430-elf/include \
 	-I$(MSPGCC_ROOT)/include \
 	-I$(SRC_ROOT) \
   -mlarge \
-  -mtiny-printf
+	-g \
+  #-mcode-region=upper \
 	#-minrt \
-  #-mcode-region=none \
   #-mdata-region=none
 
 # To prevent printf() getting replaced with puts from libc instead of from our
