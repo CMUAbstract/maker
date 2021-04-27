@@ -1,10 +1,10 @@
-export CC_CLANG = clang
+export CC_CLANG = clang-7
 CC      := $(CC_CLANG)
-export LLC     = llc
-export LLVM_LINK= llvm-link
-export LLVM_AS = llvm-as
-export LLVM_DIS = llvm-dis
-export OPT      = opt
+export LLC     = llc-7
+export LLVM_LINK= llvm-link-7
+export LLVM_AS = llvm-as-7
+export LLVM_DIS = llvm-dis-7
+export OPT      = opt-7
 GCC     = $(MSPGCC_ROOT)/bin/msp430-elf-gcc
 AS      = $(MSPGCC_ROOT)/bin/msp430-elf-as
 #LD      = $(MSPGCC_ROOT)/bin/msp430-elf-ld
@@ -38,7 +38,6 @@ CFLAGS_TOOLCHAIN += \
 	-nobuiltininc \
 	-nostdinc++ \
 	-isysroot /none \
-	-O1 \
 	-std=c99 \
 	-Wall \
 	-MD \
@@ -46,10 +45,13 @@ CFLAGS_TOOLCHAIN += \
 	-I $(MSPGCC_ROOT)/msp430-elf/include \
 	-I $(MSPGCC_ROOT)/include \
 	-I $(SRC_ROOT) \
-	#-g \
+	-g \
+  #-O0
+	#-O1 \
 
 LLC_FLAGS_TOOLCHAIN += \
-	-O1 \
+  #-O0
+	#-O1 \
 
 LFLAGS_TOOLCHAIN += \
 	-Wl,--gc-sections \

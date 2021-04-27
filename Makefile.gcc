@@ -51,7 +51,12 @@ CFLAGS_TOOLCHAIN += \
 	-I$(MSPGCC_ROOT)/msp430-elf/include \
 	-I$(MSPGCC_ROOT)/include \
 	-I$(SRC_ROOT) \
-  -mlarge \
+
+ifeq ($(NO_MLARGE),)
+CFLAGS_TOOLCHAIN += -mlarge
+endif
+  #-mlarge \
+  #^Returning for now, since we're not using clang
   #-mdata-region=upper
   #-mcode-region=lower \
   #-mdata-region=upper \
@@ -74,9 +79,12 @@ LFLAGS_TOOLCHAIN += \
 	-Wl,--gc-sections \
 	-T $(LINKER_SCRIPTS_ROOT)/$(DEVICE)$(CHKPT_TYPE).ld \
 	-L $(MSPGCC_ROOT)/include \
-  -mlarge \
   #-mdata-region=upper
   #-mcode-region=lower \
+
+ifeq ($(NO_MLARGE),)
+LFLAGS_TOOLCHAIN += -mlarge
+endif
 
 
 VPATH = $(SRC_ROOT)
