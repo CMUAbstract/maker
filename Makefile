@@ -92,6 +92,11 @@ $(1)/$(2):
 # (unless we require each app makefile to define those variables). So we
 # create a symbolic link, to make that path resolve from the build directrory.
 #
+# To get this to work on OSX, replace ln -sTf ...  with the following:
+#
+#	ln -sf $(TOOL_ROOT) $(1)/$(2)/$(TOOL_REL_ROOT)
+#
+#
 $(1)/$(2)/$(TOOL_REL_ROOT): $(1)/$(2)
 	ln -sTf $(TOOL_ROOT) $(1)/$(2)/$(TOOL_REL_ROOT)
 
