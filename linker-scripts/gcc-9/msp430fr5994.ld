@@ -265,6 +265,11 @@ SECTIONS
     PROVIDE (__persistent_end = .);
   } > FRAM
   
+  .upper.persistent :
+  {
+    *(.upper.persistent.* .upper.persistent)
+  } > HIFRAM
+  
   .upper.rodata :
   {
     /* Note: If this section is not defined then please add:
