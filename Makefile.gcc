@@ -17,6 +17,7 @@ OPT_LEVEL ?= 2
 
 COMMONFLAGS = \
 	-mmcu=$(DEVICE) \
+	-g
 
 CC_LD_FLAGS = \
 	-mhwmult=auto \
@@ -48,9 +49,6 @@ CFLAGS_TOOLCHAIN += \
 	-I$(SRC_ROOT) \
   -mlarge \
 	-g \
-  #-mcode-region=upper \
-	#-minrt \
-  #-mdata-region=none
 
 # To prevent printf() getting replaced with puts from libc instead of from our
 # I/O backend lib. Note that we used to rely on overriding puts/putchar symbols,
