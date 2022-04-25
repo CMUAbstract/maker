@@ -51,7 +51,7 @@ CFLAGS_TOOLCHAIN += \
 	-I$(MSPGCC_ROOT)/msp430-elf/include \
 	-I$(MSPGCC_ROOT)/include \
 	-I$(SRC_ROOT) \
-  -g
+  #-g
 
 ifeq ($(NO_MLARGE),)
 CFLAGS_TOOLCHAIN += -mlarge
